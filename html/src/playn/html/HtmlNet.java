@@ -19,6 +19,7 @@ import com.google.gwt.xhr.client.ReadyStateChangeHandler;
 import com.google.gwt.xhr.client.XMLHttpRequest;
 
 import playn.core.Net;
+import playn.core.CookieStore;
 import playn.core.util.Callback;
 
 public class HtmlNet implements Net {
@@ -28,7 +29,8 @@ public class HtmlNet implements Net {
     return new HtmlWebSocket(url, listener);
   }
 
-  public void get(String url, final Callback<String> callback) {
+    @Override
+  public void get(String url, CookieStore cs, final Callback<String> callback) {
     try {
       XMLHttpRequest xhr = XMLHttpRequest.create();
       xhr.open("GET", url);
@@ -51,7 +53,7 @@ public class HtmlNet implements Net {
   }
 
   @Override
-  public void post(String url, String data, final Callback<String> callback) {
+  public void post(String url, CookieStore cs, String data, final Callback<String> callback) {
     try {
       XMLHttpRequest xhr = XMLHttpRequest.create();
       xhr.open("POST", url);

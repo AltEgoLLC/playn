@@ -23,6 +23,7 @@ import cli.System.Net.WebRequest;
 import cli.System.Net.WebResponse;
 
 import playn.core.NetImpl;
+import playn.core.CookieStore;
 import playn.core.util.Callback;
 
 public class IOSNet extends NetImpl {
@@ -32,7 +33,7 @@ public class IOSNet extends NetImpl {
   }
 
   @Override
-  public void get(String url, Callback<String> callback) {
+  public void get(String url, CookieStore cs, Callback<String> callback) {
     try {
       final WebRequest req = WebRequest.Create(url);
       req.BeginGetResponse(gotResponse(req, callback), null);
@@ -42,7 +43,7 @@ public class IOSNet extends NetImpl {
   }
 
   @Override
-  public void post(String url, final String data, final Callback<String> callback) {
+  public void post(String url, CookieStore cs, final String data, final Callback<String> callback) {
     try {
       final WebRequest req = WebRequest.Create(url);
       req.set_Method("POST");

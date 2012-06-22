@@ -18,12 +18,13 @@ package playn.flash;
 import playn.core.Net;
 import playn.core.PlayN;
 import playn.core.ResourceCallback;
+import playn.core.CookieStore;
 import playn.core.util.Callback;
 
 public class FlashNet implements Net {
 
   @Override
-  public void get(String url, final Callback<String> callback) {
+  public void get(String url, CookieStore cs, final Callback<String> callback) {
     PlayN.assets().getText(url, new ResourceCallback<String>() {
         @Override
         public void done(String resource) {
@@ -38,7 +39,7 @@ public class FlashNet implements Net {
   }
 
   @Override
-  public native void post(String url, String data, final Callback<String> callback) /*-{
+  public native void post(String url, CookieStore cs, String data, final Callback<String> callback) /*-{
       var loader  = new flash.net.URLLoader();
       var request = new flash.net.URLRequest(url);
 

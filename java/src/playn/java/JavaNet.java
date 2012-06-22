@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import playn.core.NetImpl;
+import playn.core.CookieStore;
 import playn.core.util.Callback;
 
 public class JavaNet extends NetImpl {
@@ -46,7 +47,7 @@ public class JavaNet extends NetImpl {
   }
 
   @Override
-  public void get(final String urlStr, final Callback<String> callback) {
+  public void get(final String urlStr, CookieStore cs, final Callback<String> callback) {
     new Thread("JavaNet.get(" + urlStr + ")") {
       @Override
       public void run() {
@@ -66,7 +67,7 @@ public class JavaNet extends NetImpl {
   }
 
   @Override
-  public void post(final String urlStr, final String data, final Callback<String> callback) {
+  public void post(final String urlStr, CookieStore cs, final String data, final Callback<String> callback) {
     new Thread("JavaNet.post(" + urlStr + ")") {
       public void run() {
         try {

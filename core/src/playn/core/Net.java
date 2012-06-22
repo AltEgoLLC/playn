@@ -66,10 +66,20 @@ public interface Net {
   /**
    * Performs an HTTP GET request to the specified URL.
    */
-  void get(String url, Callback<String> callback);
+  //void get(String url, Callback<String> callback);
+  
+  /**
+   * Performs an HTTP GET request to the specified URL.
+   */
+  void get(String url, CookieStore cs, Callback<String> callback);
 
   /**
    * Performs an HTTP POST request to the specified URL.
    */
-  void post(String url, String data, Callback<String> callback);
+  //void post(String url, String data, Callback<String> callback);
+  
+  /**
+   * Performs an HTTP POST request to the specified URL.
+   */
+  void post(String url, CookieStore cs, String data, Callback<String> callback);
 }

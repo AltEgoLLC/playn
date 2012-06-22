@@ -27,28 +27,34 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import playn.core.NetImpl;
+import playn.core.CookieStore;
 import playn.core.util.Callback;
 
 class AndroidNet extends NetImpl {
 
   @Override
-  public void get(String url, Callback<String> callback) {
-    doHttp(false, url, null, callback);
+  public void get(String url, CookieStore cs, Callback<String> callback) {
+    doHttp(false, url, cs, null, callback);
   }
 
   @Override
-  public void post(String url, String data, Callback<String> callback) {
-    doHttp(true, url, data, callback);
+  public void post(String url, CookieStore cs, String data, Callback<String> callback) {
+    doHttp(true, url, cs, data, callback);
   }
 
   AndroidNet(AndroidPlatform platform) {
     super(platform);
   }
 
-  private void doHttp(final boolean isPost, final String url, final String data,
-                      final Callback<String> callback) {
+  private void doHttp(final boolean isPost, final String url, final CookieStore cs, 
+          final String data, final Callback<String> callback) {
     new Thread("AndroidNet.doHttp") {
       public void run() {
+        AndroidCookieStore acs = (AndroidCookieStore) cs;
+	if (acs != null) {
+            acs.getCookies();
+        }
+        
         HttpClient httpclient = new DefaultHttpClient();
         HttpRequestBase req = null;
         if (isPost) {
