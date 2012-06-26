@@ -27,7 +27,7 @@ import playn.core.util.Callback;
 public interface Net {
 
   /** Encapsulates a web socket. */
-  interface WebSocket {
+  public interface WebSocket {
     /** Notifies game of web socket events. */
     interface Listener {
       /** Reports that a requested web socket is now open and ready for use. */

@@ -29,6 +29,7 @@ import java.util.List;
 import playn.core.NetImpl;
 import playn.core.CookieStore;
 import playn.core.util.Callback;
+import playn.core.Net.WebSocket;
 
 public class JavaNet extends NetImpl {
 
