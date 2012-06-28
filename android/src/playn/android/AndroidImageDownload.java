@@ -21,6 +21,11 @@ import playn.core.gl.Scale;
 public class AndroidImageDownload implements ImageDownload {
     
     private File m_fileCacheDirectory = null;
+    private final AndroidPlatform mPlatform;
+    
+    public AndroidImageDownload(AndroidPlatform platform) {
+        mPlatform = platform;
+    }
 
     public void downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException
     {
@@ -139,7 +144,7 @@ public class AndroidImageDownload implements ImageDownload {
             }
         }
 
-        callback.done(new AndroidImage(, bitmapDownloaded.getBitmap(), Scale.ONE));
+        callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));
         //return bitmapDownloaded;
     }
     

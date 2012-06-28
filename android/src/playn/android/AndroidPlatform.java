@@ -50,6 +50,7 @@ public class AndroidPlatform implements Platform {
   private final AndroidNet net;
   private final AndroidPointer pointer;
   private final AndroidStorage storage;
+  private final AndroidImageDownload imageDownload;
   private final TouchImpl touch;
   private final AndroidTouchEventHandler touchHandler;
   private final Json json;
@@ -71,6 +72,8 @@ public class AndroidPlatform implements Platform {
     touch = new TouchImpl();
     touchHandler = new AndroidTouchEventHandler(graphics, activity.gameView());
     runQueue = new RunQueue(log);
+    
+    imageDownload = new AndroidImageDownload(this);
   }
 
   @Override
