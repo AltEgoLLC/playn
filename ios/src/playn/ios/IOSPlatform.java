@@ -30,13 +30,8 @@ import cli.MonoTouch.UIKit.UIInterfaceOrientation;
 import cli.MonoTouch.UIKit.UIScreen;
 import cli.MonoTouch.UIKit.UIWindow;
 
-import playn.core.Game;
-import playn.core.Json;
-import playn.core.Mouse;
-import playn.core.MouseStub;
-import playn.core.Platform;
-import playn.core.PlayN;
-import playn.core.RegularExpression;
+import java.net.MalformedURLException;
+import playn.core.*;
 import playn.core.json.JsonImpl;
 import playn.core.util.RunQueue;
 
@@ -143,6 +138,7 @@ public class IOSPlatform implements Platform {
   private final IOSAssets assets;
   private final IOSAnalytics analytics;
   private final RunQueue runQueue;
+  private final IOSImageDownload imageDownload;
 
   private Game game;
   private float accum, alpha;
@@ -180,6 +176,7 @@ public class IOSPlatform implements Platform {
     analytics = new IOSAnalytics();
     storage = new IOSStorage();
     runQueue = new RunQueue(log);
+    imageDownload = new IOSImageDownload();
 
     mainWindow = new UIWindow(bounds);
     mainWindow.Add(gameView = new IOSGameView(this, bounds, deviceScale));
@@ -291,6 +288,11 @@ public class IOSPlatform implements Platform {
     // make our main window visible
     mainWindow.MakeKeyAndVisible();
   }
+  
+    @Override
+    public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
+        imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
+    }
 
   void viewDidInit(int defaultFrameBuffer) {
     graphics.ctx.viewDidInit(defaultFrameBuffer);

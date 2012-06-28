@@ -16,25 +16,12 @@
 package playn.java;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 
-import playn.core.Analytics;
-import playn.core.Audio;
-import playn.core.Game;
-import playn.core.Json;
-import playn.core.Keyboard;
-import playn.core.Log;
-import playn.core.Mouse;
-import playn.core.Net;
-import playn.core.Platform;
-import playn.core.PlayN;
-import playn.core.Pointer;
-import playn.core.RegularExpression;
-import playn.core.Storage;
-import playn.core.Touch;
-import playn.core.TouchStub;
+import playn.core.*;
 import playn.core.json.JsonImpl;
 import playn.core.util.RunQueue;
 
@@ -91,6 +78,7 @@ public class JavaPlatform implements Platform {
   private final JavaMouse mouse;
   private final JavaAssets assets;
   private final RunQueue runQueue = new RunQueue(log);
+  private final JavaImageDownload imageDownload = new JavaImageDownload();
 
   private int updateRate = 0;
   private float accum = updateRate;
@@ -270,4 +258,9 @@ public class JavaPlatform implements Platform {
   protected void init() {
     storage.init();
   }
+  
+    @Override
+    public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
+        imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
+    }
 }

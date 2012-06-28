@@ -175,6 +175,10 @@ public class PlayN {
   public static void setPlatform(Platform platform) {
     PlayN.platform = platform;
   }
+  
+  public static Platform getPlatform() {
+      return platform;
+  }
 
   // Non-instantiable
   private PlayN() {

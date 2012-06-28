@@ -17,14 +17,10 @@ package playn.android;
 
 import android.content.Intent;
 import android.net.Uri;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
-import playn.core.Game;
-import playn.core.Json;
-import playn.core.Mouse;
-import playn.core.MouseStub;
-import playn.core.Platform;
-import playn.core.PlayN;
-import playn.core.TouchImpl;
+import playn.core.*;
 import playn.core.json.JsonImpl;
 import playn.core.util.RunQueue;
 
@@ -175,6 +171,11 @@ public class AndroidPlatform implements Platform {
   @Override
   public Type type() {
     return Type.ANDROID;
+  }
+  
+    @Override
+  public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
+      imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
   }
 
   void update(float delta) {

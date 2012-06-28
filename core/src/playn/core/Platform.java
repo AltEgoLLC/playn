@@ -15,6 +15,9 @@
  */
 package playn.core;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 /**
  * Generic platform interface. New platforms are defined as implementations of this interface.
  */
@@ -58,4 +61,6 @@ public interface Platform {
   Analytics analytics();
 
   RegularExpression regularExpression();
+  
+  public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException;
 }

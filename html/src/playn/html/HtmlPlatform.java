@@ -20,21 +20,10 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.user.client.Window;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
-import playn.core.Storage;
-import playn.core.Analytics;
-import playn.core.Audio;
-import playn.core.PlayN;
-import playn.core.Game;
-import playn.core.Json;
-import playn.core.Keyboard;
-import playn.core.Log;
-import playn.core.Net;
-import playn.core.Platform;
-import playn.core.Pointer;
-import playn.core.Mouse;
-import playn.core.Touch;
-import playn.core.RegularExpression;
+import playn.core.*;
 import playn.core.util.RunQueue;
 import playn.html.HtmlUrlParameters.Renderer;
 
@@ -156,6 +145,7 @@ public class HtmlPlatform implements Platform {
   private final HtmlStorage storage = new HtmlStorage();
   private final HtmlAnalytics analytics = new HtmlAnalytics();
   private final RunQueue runQueue = new RunQueue(log);
+  private final HtmlImageDownload imageDownload = new HtmlImageDownload();
 
   private Game game;
   private TimerCallback paintCallback;
@@ -330,6 +320,11 @@ public class HtmlPlatform implements Platform {
   public Type type() {
     return Type.HTML;
   }
+  
+    @Override
+    public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
+        imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
+    }
 
   private HtmlGraphics createGraphics(Mode mode) {
     try {

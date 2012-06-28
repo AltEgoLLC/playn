@@ -22,22 +22,9 @@ import flash.events.Event;
 import flash.display.Sprite;
 import flash.events.EventType;
 
-import playn.core.Analytics;
-import playn.core.Audio;
-import playn.core.Game;
-import playn.core.Graphics;
-import playn.core.Json;
-import playn.core.Keyboard;
-import playn.core.Log;
-import playn.core.Mouse;
-import playn.core.Net;
-import playn.core.Platform;
-import playn.core.PlayN;
-import playn.core.Pointer;
-import playn.core.RegularExpression;
-import playn.core.Storage;
-import playn.core.Touch;
-import playn.core.TouchStub;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import playn.core.*;
 import playn.core.json.JsonImpl;
 import playn.core.util.RunQueue;
 import playn.html.HtmlRegularExpression;
@@ -76,6 +63,7 @@ public class FlashPlatform implements Platform {
   private final FlashPointer pointer;
   private final FlashMouse mouse;
   private final RunQueue runQueue;
+  private final FlashImageDownload imageDownload;
 
   private Game game;
   private TimerCallback paintCallback;
@@ -96,6 +84,8 @@ public class FlashPlatform implements Platform {
     storage = new FlashStorage();
     analytics = new FlashAnalytics();
     runQueue = new RunQueue(log);
+    
+    imageDownload = new FlashImageDownload();
   }
 
   @Override
@@ -147,6 +137,11 @@ public class FlashPlatform implements Platform {
   public Mouse mouse() {
     return mouse;
   }
+  
+  @Override
+    public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
+        imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
+    }
 
   @Override
   public Touch touch() {
