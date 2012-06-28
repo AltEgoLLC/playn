@@ -145,7 +145,7 @@ public class HtmlPlatform implements Platform {
   private final HtmlStorage storage = new HtmlStorage();
   private final HtmlAnalytics analytics = new HtmlAnalytics();
   private final RunQueue runQueue = new RunQueue(log);
-  private final HtmlImageDownload imageDownload = new HtmlImageDownload();
+  private final HtmlImageDownload imageDownload = new HtmlImageDownload(this);
 
   private Game game;
   private TimerCallback paintCallback;
