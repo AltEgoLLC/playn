@@ -293,6 +293,9 @@ public class IOSPlatform implements Platform {
     public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
         imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
     }
+    
+    @Override
+    public void setPlatformCache(String location) {}
 
   void viewDidInit(int defaultFrameBuffer) {
     graphics.ctx.viewDidInit(defaultFrameBuffer);

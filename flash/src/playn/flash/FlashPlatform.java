@@ -142,6 +142,9 @@ public class FlashPlatform implements Platform {
     public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
         imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
     }
+  
+    @Override
+    public void setPlatformCache(String location) {}
 
   @Override
   public Touch touch() {

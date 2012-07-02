@@ -179,6 +179,10 @@ public class PlayN {
   public static Platform getPlatform() {
       return platform;
   }
+  
+  public static void setPlatformCache(String location) {
+      platform.setPlatformCache(location);
+  }
 
   // Non-instantiable
   private PlayN() {

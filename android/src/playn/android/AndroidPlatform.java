@@ -17,6 +17,8 @@ package playn.android;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -183,5 +185,21 @@ public class AndroidPlatform implements Platform {
     if (game != null) {
       game.update(delta);
     }
+  }
+  
+    @Override
+  public void setPlatformCache(String location) {
+      if (imageDownload != null) {
+          System.out.println("****************");
+          File sdDir = Environment.getExternalStorageDirectory();
+          System.out.println("SD Card Path: " + sdDir.getAbsolutePath());
+          String abs = sdDir.getAbsolutePath() + "/PlayN/" + location;
+          sdDir = new File(abs);
+          imageDownload.setCacheDirectory(sdDir);
+          System.out.println("SD Card Final: " + sdDir.getAbsolutePath());
+          System.out.println("****************");
+      }
+      else
+          System.out.println("****************\nNo SD Card\n****************");
   }
 }

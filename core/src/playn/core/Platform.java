@@ -15,6 +15,7 @@
  */
 package playn.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -63,4 +64,8 @@ public interface Platform {
   RegularExpression regularExpression();
   
   public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException;
+  
+  //public void setCacheDirectory(File file);
+  
+  public void setPlatformCache(String location);
 }

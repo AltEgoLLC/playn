@@ -144,7 +144,23 @@ public class AndroidImageDownload implements ImageDownload {
             }
         }
 
-        callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));
+        ///
+        System.out.println("callback null? " + (callback == null));
+        System.out.println("mPlatform null? " + (mPlatform == null));
+        System.out.println("graphics() null? " + (mPlatform.graphics() == null));
+        System.out.println("ctx() null? " + (mPlatform.graphics().ctx() == null));
+        System.out.println("bitmap null? " + (bitmapDownloaded == null));
+        //*/
+        //if (callback != null && bitmapDownloaded != null) 
+        try {
+            callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));
+        }
+        catch (Exception ex) {
+            callback.error(ex);
+        }
+        catch (Error err) {
+            callback.error(err);
+        }
         //return bitmapDownloaded;
     }
     

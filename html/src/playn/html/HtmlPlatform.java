@@ -20,6 +20,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.user.client.Window;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -325,6 +326,9 @@ public class HtmlPlatform implements Platform {
     public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
         imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
     }
+    
+    @Override
+    public void setPlatformCache(String location) {}
 
   private HtmlGraphics createGraphics(Mode mode) {
     try {
