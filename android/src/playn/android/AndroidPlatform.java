@@ -179,13 +179,7 @@ public class AndroidPlatform implements Platform {
   
     @Override
     public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
-        try {
-            return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
-        } catch (MalformedURLException ex) {
-            return false;
-        } catch (IOException ex) {
-            return false;
-        }
+        return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
     }
 
   void update(float delta) {
