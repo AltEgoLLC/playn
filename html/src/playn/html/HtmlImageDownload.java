@@ -22,13 +22,24 @@ public class HtmlImageDownload implements ImageDownload {
     }
 
     @Override
-    public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
+    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
         ImageElement img = Document.get().createImageElement();
         
         if (img.hasAttribute("crossOrigin"))
             img.setAttribute("crossOrigin", "anonymous");
         
         img.setSrc(strUrl);
-        callback.done(new HtmlImage(mPlatform.graphics().ctx(), img));
+        try {
+            callback.done(new HtmlImage(mPlatform.graphics().ctx(), img));
+            return true;
+        }
+        catch (Exception ex) {
+            callback.error(ex);
+            return false;
+        }
+        catch (Error err) {
+            callback.error(err);
+            return false;
+        }
     }
 }

@@ -63,7 +63,7 @@ public interface Platform {
 
   RegularExpression regularExpression();
   
-  public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException;
+  public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback);
   
   //public void setCacheDirectory(File file);
   

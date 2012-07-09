@@ -323,8 +323,8 @@ public class HtmlPlatform implements Platform {
   }
   
     @Override
-    public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
-        imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
+    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
+        return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
     }
     
     @Override

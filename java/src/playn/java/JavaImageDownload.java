@@ -24,7 +24,7 @@ public class JavaImageDownload implements ImageDownload {
     }
     
     @Override
-    public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
+    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
         BufferedImage img = null;
         try {
             URL url = new URL(strUrl);
@@ -35,9 +35,11 @@ public class JavaImageDownload implements ImageDownload {
             };
             
             callback.done(jImg);
+            return true;
             
         } catch (IOException e) {
             callback.error(e);
+            return false;
         }
     } // end downloadImage
 }

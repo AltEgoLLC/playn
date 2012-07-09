@@ -9,5 +9,5 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 public interface ImageDownload {
-    public void downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException;
+    public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, ResourceCallback<Image> callback);
 }

@@ -18,7 +18,7 @@ public class IOSImageDownload implements ImageDownload {
     }
 
     @Override
-    public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
-        
+    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
+        return false;
     }
 }

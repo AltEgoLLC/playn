@@ -27,7 +27,7 @@ public class AndroidImageDownload implements ImageDownload {
         mPlatform = platform;
     }
 
-    public void downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException
+    public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException
     {
         DownloadedBitmap bitmapDownloaded = null;
 
@@ -154,12 +154,15 @@ public class AndroidImageDownload implements ImageDownload {
         //if (callback != null && bitmapDownloaded != null) 
         try {
             callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));
+            return true;
         }
         catch (Exception ex) {
             callback.error(ex);
+            return false;
         }
         catch (Error err) {
             callback.error(err);
+            return false;
         }
         //return bitmapDownloaded;
     }

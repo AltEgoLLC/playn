@@ -21,6 +21,8 @@ import android.os.Environment;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import playn.core.*;
 import playn.core.json.JsonImpl;
@@ -176,9 +178,15 @@ public class AndroidPlatform implements Platform {
   }
   
     @Override
-  public void downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException {
-      imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
-  }
+    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
+        try {
+            return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
+        } catch (MalformedURLException ex) {
+            return false;
+        } catch (IOException ex) {
+            return false;
+        }
+    }
 
   void update(float delta) {
     runQueue.execute();
