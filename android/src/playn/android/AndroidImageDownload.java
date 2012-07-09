@@ -12,6 +12,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import playn.android.altego.DownloadedBitmap;
 import playn.core.Image;
 import playn.core.ImageDownload;
@@ -27,7 +29,8 @@ public class AndroidImageDownload implements ImageDownload {
         mPlatform = platform;
     }
 
-    public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, ResourceCallback<Image> callback) throws MalformedURLException, IOException
+    @Override
+    public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, ResourceCallback<Image> callback)
     {
         DownloadedBitmap bitmapDownloaded = null;
 
@@ -103,11 +106,11 @@ public class AndroidImageDownload implements ImageDownload {
                 }
                 catch (MalformedURLException ex)
                 {
-                    throw ex;
+                    System.out.println( "downloadImage -- MalformedURLException occurred:\n" + ex.getMessage() );
                 }
                 catch (IOException ex)
                 {
-                    throw ex;
+                    System.out.println( "downloadImage -- IOException occurred:\n" + ex.getMessage() );
                 }
             }
             
@@ -133,11 +136,22 @@ public class AndroidImageDownload implements ImageDownload {
                             System.out.println( "downloadImage -- Failed to locally store bitmap: " + fileLocalImage.getAbsolutePath() );
                         }
                     }
+                    catch (FileNotFoundException ex)
+                    {
+                        System.out.println( "downloadImage -- Failed to open file: " + fileLocalImage.getAbsolutePath() );
+                    }
                     finally
                     {
                         if (streamFileOutput != null)
                         {
-                            streamFileOutput.close();
+                            try
+                            {
+                                streamFileOutput.close();
+                            }
+                            catch (IOException ex)
+                            {
+                                Logger.getLogger( AndroidImageDownload.class.getName() ).log( Level.SEVERE, null, ex );
+                            }
                         }
                     }
                 }
