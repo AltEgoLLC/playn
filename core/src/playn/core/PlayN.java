@@ -27,6 +27,7 @@ package playn.core;
 public class PlayN {
 
   private static Platform platform;
+  private static Analytics analytics;
 
   /**
    * Call this method to start your {@link Game}. It must be called only once,
@@ -165,6 +166,10 @@ public class PlayN {
    * Returns the {@link Analytics} analytics service.
    */
   public static Analytics analytics() {
+      if(analytics != null)
+      {
+          return analytics;
+      }
     return platform.analytics();
   }
 
@@ -184,6 +189,10 @@ public class PlayN {
       platform.setPlatformCache(location);
   }
 
+  public static void setAnalytics(Analytics newAnalytics)
+  {
+      analytics = newAnalytics;
+  }
   // Non-instantiable
   private PlayN() {
   }

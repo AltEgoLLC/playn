@@ -23,7 +23,6 @@ public interface Analytics {
   public static class Category {
     private final float sampleRate;
     private final String category;
-    private final String apiKey = "d164c963bde5462792ad34f0ec2bf441";// slipstream test api key
 
     /**
      * @param sampleRate likelihood that this event should be logged during this
@@ -57,28 +56,7 @@ public interface Analytics {
 
     @Override
     public void logEvent(Category category, String action, String label, int value) {
-        long timestamp = System.currentTimeMillis()/1000L;
-        String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ category.apiKey + "/" + category.category + "/?s=0000&n=" + label;
-        
-        PlayN.net().get(kontagentURLString, null, 
-            new Callback<String>(){
-
-            @Override
-            public void onSuccess(String result) {
-                PlayN.log().debug("analytics success! :" + result);
-            }
-
-            @Override
-            public void onFailure(Throwable cause) {
-                PlayN.log().debug("analytics failed:" + cause);
-            }
-
-
-
-            }
-                
-                
-        );
+       
         PlayN.log().debug(
           "Analytics#logEvent(category=" + category + ", action=" + action + ", label=" + label
               + ", value=" + value + ")");
