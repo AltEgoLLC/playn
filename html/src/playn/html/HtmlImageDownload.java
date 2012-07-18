@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import playn.core.Image;
 import playn.core.ImageDownload;
+import playn.core.PlayN;
 import playn.core.ResourceCallback;
 
 public class HtmlImageDownload implements ImageDownload {
@@ -24,13 +25,17 @@ public class HtmlImageDownload implements ImageDownload {
     @Override
     public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
         ImageElement img = Document.get().createImageElement();
-        
-        if (img.hasAttribute("crossOrigin"))
-            img.setAttribute("crossOrigin", "anonymous");
-        
+                            
+//        if (img.hasAttribute("crossOrigin"))
+        img.setAttribute("crossOrigin", "anonymous");
+
         img.setSrc(strUrl);
         try {
-            callback.done(new HtmlImage(mPlatform.graphics().ctx(), img));
+            HtmlGLContext ctx = mPlatform.graphics().ctx();
+
+            HtmlImage hi = new HtmlImage(ctx, img);
+            hi.addCallback(callback);
+//            callback.done(new HtmlImage(ctx, img));
             return true;
         }
         catch (Exception ex) {
