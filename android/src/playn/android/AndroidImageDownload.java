@@ -32,6 +32,7 @@ public class AndroidImageDownload implements ImageDownload {
     @Override
     public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, ResourceCallback<Image> callback)
     {
+        System.out.println("*******************");
         DownloadedBitmap bitmapDownloaded = null;
 
         File fileLocalImage = null;
@@ -45,6 +46,11 @@ public class AndroidImageDownload implements ImageDownload {
                 bitmapDownloaded = loadImage( fileLocalImage );
             }
         }
+        
+        System.out.println( "File Image Url: " + strUrl);
+        System.out.println( "File Image Path: " + fileLocalImage.toString());
+        System.out.println( "Image Path Is File: " + fileLocalImage.isFile() );
+        System.out.println( "Image Path Exists: " + fileLocalImage.exists());
 
         if (bitmapDownloaded == null)
         {
@@ -124,6 +130,11 @@ public class AndroidImageDownload implements ImageDownload {
                     FileOutputStream streamFileOutput = null;
                     try
                     {
+                        System.out.println( "Image Path Is File: " + fileLocalImage.isFile() );
+                        
+                        try { System.out.println( "MKDIR Image Path: " + fileLocalImage.mkdir() ); }
+                        catch (SecurityException e) { System.out.println("Exception: " + e.toString() + "\n" + e.getMessage()); }
+                        
                         streamFileOutput = new FileOutputStream( fileLocalImage );
                         if (imageBitmap.compress( Bitmap.CompressFormat.PNG, 100, streamFileOutput ))
                         {
@@ -138,7 +149,9 @@ public class AndroidImageDownload implements ImageDownload {
                     }
                     catch (FileNotFoundException ex)
                     {
-                        System.out.println( "downloadImage -- Failed to open file: " + fileLocalImage.getAbsolutePath() );
+                        System.out.println( "downloadImage -- Failed to open file: " + fileLocalImage.getAbsolutePath() + 
+                                "\n" + ex.toString() + 
+                                "\n" + ex.getMessage());
                     }
                     finally
                     {
@@ -158,13 +171,14 @@ public class AndroidImageDownload implements ImageDownload {
             }
         }
 
-        ///
+        /*//
         System.out.println("callback null? " + (callback == null));
         System.out.println("mPlatform null? " + (mPlatform == null));
         System.out.println("graphics() null? " + (mPlatform.graphics() == null));
         System.out.println("ctx() null? " + (mPlatform.graphics().ctx() == null));
         System.out.println("bitmap null? " + (bitmapDownloaded == null));
         //*/
+        System.out.println("*******************");
         //if (callback != null && bitmapDownloaded != null) 
         try {
             callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));
