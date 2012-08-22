@@ -181,8 +181,18 @@ public class PlayN {
     PlayN.platform = platform;
   }
   
+  /*//
   public static Platform getPlatform() {
       return platform;
+  }
+  //*/
+  
+  public static boolean downloadImage(String url, int intRetryCount, long longDelayMS, ResourceCallback callback) {
+      return platform.downloadImage(url, intRetryCount, longDelayMS, callback);
+  }
+  
+  public static void openUrl(String url) {
+      platform.openURL(url);
   }
   
   public static void setPlatformCache(String location) {
