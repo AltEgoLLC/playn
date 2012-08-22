@@ -19,7 +19,7 @@ public class JavaCookieStore implements playn.core.CookieStore {
     public String get(String cookie) { 
         //return mCookieStore.get(cookie);
         List<Cookie> cookiesList = mCookieStore.getCookies();
-        String value = "";
+        String value = null;
         
         for(int i = 0; i < cookiesList.size(); i++) {
             if(cookiesList.get(i).getName().equals(cookie)) {

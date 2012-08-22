@@ -79,7 +79,8 @@ public class JavaPlatform implements Platform {
   private final JavaAssets assets;
   private final RunQueue runQueue = new RunQueue(log);
   private final JavaImageDownload imageDownload = new JavaImageDownload(this);
-
+  private final JavaCookieStore cookieStore = new JavaCookieStore();
+  
   private int updateRate = 0;
   private float accum = updateRate;
   private double lastUpdateTime;
@@ -160,6 +161,11 @@ public class JavaPlatform implements Platform {
     return analytics;
   }
 
+  @Override
+  public CookieStore cookieStore() {
+    return cookieStore;
+  }
+  
   @Override
   public JavaAssets assets() {
     return assets;
