@@ -147,7 +147,8 @@ public class HtmlPlatform implements Platform {
   private final HtmlAnalytics analytics = new HtmlAnalytics();
   private final RunQueue runQueue = new RunQueue(log);
   private final HtmlImageDownload imageDownload = new HtmlImageDownload(this);
-
+  private final HtmlCookieStore cookieStore = new HtmlCookieStore();
+  
   private Game game;
   private TimerCallback paintCallback;
   private TimerCallback updateCallback;
@@ -246,6 +247,11 @@ public class HtmlPlatform implements Platform {
     return analytics;
   }
 
+  @Override
+  public CookieStore cookieStore() {
+    return cookieStore;
+  }
+  
   @Override
   public float random() {
     return (float) Math.random();

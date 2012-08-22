@@ -174,6 +174,12 @@ public class PlayN {
   }
 
   /**
+   * Returns the {@link CookieStore} cookie storage service.
+   */
+  public static CookieStore cookieStore(){
+      return platform.cookieStore();
+  }
+  /**
    * Configures the current {@link Platform}. Do not call this directly unless you're implementing
    * a new platform.
    */

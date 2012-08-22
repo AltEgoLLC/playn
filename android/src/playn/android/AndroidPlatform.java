@@ -55,7 +55,8 @@ public class AndroidPlatform implements Platform {
   private final AndroidTouchEventHandler touchHandler;
   private final Json json;
   private final RunQueue runQueue;
-
+  private final AndroidCookieStore cookieStore;
+  
   protected AndroidPlatform(GameActivity activity, AndroidGL20 gl20) {
     this.activity = activity;
 
@@ -72,6 +73,7 @@ public class AndroidPlatform implements Platform {
     touch = new TouchImpl();
     touchHandler = new AndroidTouchEventHandler(graphics, activity.gameView());
     runQueue = new RunQueue(log);
+    cookieStore = new AndroidCookieStore();
     
     imageDownload = new AndroidImageDownload(this);
   }
@@ -167,6 +169,11 @@ public class AndroidPlatform implements Platform {
     return storage;
   }
 
+  @Override
+  public CookieStore cookieStore() {
+    return cookieStore;
+  }
+  
   @Override
   public double time() {
     return System.currentTimeMillis();

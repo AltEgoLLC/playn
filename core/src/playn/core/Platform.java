@@ -60,7 +60,9 @@ public interface Platform {
   Storage storage();
 
   Analytics analytics();
-
+  
+  CookieStore cookieStore();
+  
   RegularExpression regularExpression();
   
   public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback);
