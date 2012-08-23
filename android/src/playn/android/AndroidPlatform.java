@@ -73,7 +73,7 @@ public class AndroidPlatform implements Platform {
     touch = new TouchImpl();
     touchHandler = new AndroidTouchEventHandler(graphics, activity.gameView());
     runQueue = new RunQueue(log);
-    cookieStore = new AndroidCookieStore();
+    cookieStore = new AndroidCookieStore(storage);
     
     imageDownload = new AndroidImageDownload(this);
   }

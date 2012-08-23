@@ -79,7 +79,7 @@ public class JavaPlatform implements Platform {
   private final JavaAssets assets;
   private final RunQueue runQueue = new RunQueue(log);
   private final JavaImageDownload imageDownload = new JavaImageDownload(this);
-  private final JavaCookieStore cookieStore = new JavaCookieStore();
+  private final JavaCookieStore cookieStore = new JavaCookieStore(storage);
   
   private int updateRate = 0;
   private float accum = updateRate;

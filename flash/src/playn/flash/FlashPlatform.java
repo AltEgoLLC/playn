@@ -64,6 +64,7 @@ public class FlashPlatform implements Platform {
   private final FlashMouse mouse;
   private final RunQueue runQueue;
   private final FlashImageDownload imageDownload;
+  private final FlashCookieStore cookieStore;
 
   private Game game;
   private TimerCallback paintCallback;
@@ -84,6 +85,7 @@ public class FlashPlatform implements Platform {
     storage = new FlashStorage();
     analytics = new FlashAnalytics();
     runQueue = new RunQueue(log);
+    cookieStore = new FlashCookieStore((FlashStorage) storage);
     
     imageDownload = new FlashImageDownload();
   }
@@ -266,4 +268,9 @@ public class FlashPlatform implements Platform {
       eventHandler.@playn.flash.EventHandler::handleEvent(Lflash/events/Event;)(arg);
     });
   }-*/;
+
+    @Override
+    public CookieStore cookieStore() {
+        return cookieStore;
+    }
 }
