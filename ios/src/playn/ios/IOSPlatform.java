@@ -139,6 +139,7 @@ public class IOSPlatform implements Platform {
   private final IOSAnalytics analytics;
   private final RunQueue runQueue;
   private final IOSImageDownload imageDownload;
+  private final IOSCookieStore cookieStore;
 
   private Game game;
   private float accum, alpha;
@@ -177,6 +178,7 @@ public class IOSPlatform implements Platform {
     storage = new IOSStorage();
     runQueue = new RunQueue(log);
     imageDownload = new IOSImageDownload();
+    cookieStore = new IOSCookieStore(storage);
 
     mainWindow = new UIWindow(bounds);
     mainWindow.Add(gameView = new IOSGameView(this, bounds, deviceScale));
@@ -339,6 +341,11 @@ public class IOSPlatform implements Platform {
     // save the alpha, we'll get a call to paint later
     alpha = (updateRate == 0) ? 0 : accum / updateRate;
   }
+  
+    @Override
+    public CookieStore cookieStore() {
+        return cookieStore;
+    }
 
   void paint() {
     // log.debug("Paint " + alpha);

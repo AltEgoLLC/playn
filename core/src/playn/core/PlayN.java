@@ -178,11 +178,23 @@ public class PlayN {
   }
 
   /**
-   * Returns the {@link CookieStore} cookie storage service.
+   * Adds new cookie to the cookieStore
+   * @param cookie the key
+   * @param value the value to add
    */
-  public static CookieStore cookieStore(){
-      return platform.cookieStore();
+  public static void addCookie(String cookie, String value){
+      platform.cookieStore().put(cookie, value);
   }
+  
+  /**
+   * Gets a cookie to the cookieStore
+   * @param cookie the key of what to get
+   * @return the value of that cookie (null if it doesn't exist)
+   */
+  public static String getCookie(String cookie) {
+      return platform.cookieStore().get(cookie);
+  }
+  
   /**
    * Configures the current {@link Platform}. Do not call this directly unless you're implementing
    * a new platform.
@@ -191,8 +203,18 @@ public class PlayN {
     PlayN.platform = platform;
   }
   
+  /*//
   public static Platform getPlatform() {
       return platform;
+  }
+  //*/
+  
+  public static boolean downloadImage(String url, int intRetryCount, long longDelayMS, ResourceCallback callback) {
+      return platform.downloadImage(url, intRetryCount, longDelayMS, callback);
+  }
+  
+  public static void openUrl(String url) {
+      platform.openURL(url);
   }
   
   public static void setPlatformCache(String location) {

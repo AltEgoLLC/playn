@@ -13,6 +13,11 @@ public class AndroidCookieStore implements playn.core.CookieStore {
 
     final private CookieStore mCookieStore = new BasicCookieStore();
     final private HttpContext m_context = new BasicHttpContext();
+    final private AndroidStorage mStorage;
+    
+    public AndroidCookieStore(AndroidStorage storage) {
+        mStorage = storage;
+    }
     
     @Override
     public String get(String cookie) { 
@@ -25,6 +30,9 @@ public class AndroidCookieStore implements playn.core.CookieStore {
                 value = cookiesList.get(i).getValue();
             }
         }
+        if (value == null) {
+            value = mStorage.getItem(cookie);
+        }
         return value; 
     }
 
@@ -32,6 +40,7 @@ public class AndroidCookieStore implements playn.core.CookieStore {
     public void put(String cookie, String value) {
         mCookieStore.addCookie(new BasicClientCookie(cookie, value));
         m_context.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
+        mStorage.setItem(cookie, value);
         //return "unimplemented"; 
     }
 
