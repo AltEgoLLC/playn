@@ -15,9 +15,14 @@
  */
 package playn.android;
 
+import android.R;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -122,6 +127,30 @@ public class AndroidPlatform implements Platform {
   public void openURL(String url) {
     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
     activity.startActivity(browserIntent);
+  }
+  
+  @Override
+  public void openUrlWithCallback(String url){
+      
+      System.out.println("Entering openUrlWithCallback");
+      
+      LinearLayout layout = activity.viewLayout();
+      WebView webView = new WebView(activity);
+      
+      webView.getSettings().setJavaScriptEnabled(true);
+      webView.setVisibility(View.VISIBLE);
+      webView.loadUrl(url); 
+      layout.addView(webView);
+      
+      webView.setWebViewClient(new WebViewClient() {            
+
+          @Override 
+          public void onPageFinished(WebView view, String url) {
+              view.setVisibility(View.GONE);
+          }
+      });
+      
+      System.out.println("Leaving openUrlWithCallback");
   }
 
   @Override

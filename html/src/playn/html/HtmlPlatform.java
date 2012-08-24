@@ -317,6 +317,11 @@ public class HtmlPlatform implements Platform {
   public void openURL(String url) {
     Window.open(url, "_blank", "");
   }
+  
+  @Override
+  public void openUrlWithCallback(String url){
+      this.openURL(url);
+  }
 
   @Override
   public void invokeLater(Runnable runnable) {

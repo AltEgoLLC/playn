@@ -34,6 +34,8 @@ public interface Platform {
   float random();
 
   void openURL(String url);
+  
+  void openUrlWithCallback(String url);
 
   void invokeLater(Runnable runnable);
 

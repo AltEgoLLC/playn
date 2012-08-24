@@ -199,6 +199,11 @@ public class JavaPlatform implements Platform {
   }
 
   @Override
+  public void openUrlWithCallback(String url){
+      this.openURL(url);
+  }
+  
+  @Override
   public void invokeLater(Runnable runnable) {
     runQueue.add(runnable);
   }

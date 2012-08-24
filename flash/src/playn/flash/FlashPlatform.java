@@ -171,6 +171,11 @@ public class FlashPlatform implements Platform {
   public void openURL(String url) {
       //TODO: implement
   }
+  
+  @Override
+  public void openUrlWithCallback(String url){
+      this.openURL(url);
+  }
 
   @Override
   public void invokeLater(Runnable runnable) {

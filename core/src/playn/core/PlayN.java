@@ -69,6 +69,10 @@ public class PlayN {
   public static void openURL(String url) {
     platform.openURL(url);
   }
+  
+  public static void openUrlWithCallback(String url) {
+    platform.openUrlWithCallback(url);  
+  }
 
   /**
    * Queues the supplied runnable for invocation on the game thread prior to the next call to
