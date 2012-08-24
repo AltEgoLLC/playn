@@ -134,6 +134,7 @@ public class AndroidPlatform implements Platform {
       
       System.out.println("Entering openUrlWithCallback");
       
+      /*
       LinearLayout layout = activity.viewLayout();
       WebView webView = new WebView(activity);
       
@@ -149,7 +150,8 @@ public class AndroidPlatform implements Platform {
               view.setVisibility(View.GONE);
           }
       });
-      
+      */
+      activity.showWebView(url);
       System.out.println("Leaving openUrlWithCallback");
   }
 

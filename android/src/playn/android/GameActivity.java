@@ -33,6 +33,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
 /**
@@ -45,6 +47,9 @@ public abstract class GameActivity extends Activity {
   private GameViewGL gameView;
   private AndroidLayoutView viewLayout;
   private Context context;
+  
+  //so we can display and remove a webview for authentication with social networks
+  private WebView webView;
 
   /**
    * The entry-point into a PlayN game. Developers should implement main() to call
@@ -106,6 +111,15 @@ public abstract class GameActivity extends Activity {
     } catch (NameNotFoundException e) {
       Log.w("playn", "Cannot access game AndroidManifest.xml file.");
     }
+    
+    //set up our webview
+      //LinearLayout layout = viewLayout();
+      webView = new WebView(this);
+      
+      webView.getSettings().setJavaScriptEnabled(true);
+      webView.setVisibility(View.GONE);
+      //webView.loadUrl(url); 
+      viewLayout.addView(webView);
   }
 
   /**
@@ -213,6 +227,22 @@ public abstract class GameActivity extends Activity {
     return platform().touchEventHandler().onMotionEvent(event);
   }
 
+  public void showWebView(String url) {
+      if(webView != null)
+      {
+          webView.setVisibility(View.VISIBLE);
+          webView.loadUrl(url);
+          
+          webView.setWebViewClient(new WebViewClient() {            
+
+          @Override 
+          public void onPageFinished(WebView view, String url) {
+              view.setVisibility(View.GONE);
+          }
+      });
+      }
+  }    
+  
   // TODO: uncomment the remaining key codes when we upgrade to latest Android jars
   private static Key keyForCode(int keyCode) {
     switch (keyCode) {
