@@ -276,7 +276,7 @@ public class IOSPlatform implements Platform {
   }
 
   @Override
-  public void openUrlWithCallback(String url){
+  public void openWebView(String url){
       this.openURL(url);
   }
   
@@ -303,6 +303,11 @@ public class IOSPlatform implements Platform {
     
     @Override
     public void setPlatformCache(String location) {}
+    
+    @Override
+    public void closeWebView() {
+        // unimplemented
+    }
 
   void viewDidInit(int defaultFrameBuffer) {
     graphics.ctx.viewDidInit(defaultFrameBuffer);

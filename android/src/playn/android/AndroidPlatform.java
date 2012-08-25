@@ -130,10 +130,9 @@ public class AndroidPlatform implements Platform {
   }
   
   @Override
-  public void openUrlWithCallback(String url){
+  public void openWebView(String url){
       
-      System.out.println("Entering openUrlWithCallback");
-      
+      PlayN.log().debug("Entering openUrlWithCallback");
       /*
       LinearLayout layout = activity.viewLayout();
       WebView webView = new WebView(activity);
@@ -152,8 +151,13 @@ public class AndroidPlatform implements Platform {
       });
       */
       activity.showWebView(url);
-      System.out.println("Leaving openUrlWithCallback");
+      PlayN.log().debug("Leaving openUrlWithCallback");
   }
+  
+    @Override
+    public void closeWebView() {
+        activity.hideWebView();
+    }
 
   @Override
   public void invokeLater(Runnable runnable) {

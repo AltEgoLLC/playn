@@ -319,7 +319,7 @@ public class HtmlPlatform implements Platform {
   }
   
   @Override
-  public void openUrlWithCallback(String url){
+  public void openWebView(String url){
       this.openURL(url);
   }
 
@@ -435,4 +435,9 @@ public class HtmlPlatform implements Platform {
       return false;
     };
   }-*/;
+  
+  @Override
+    public void closeWebView() {
+        // unimplemented
+    }
 }

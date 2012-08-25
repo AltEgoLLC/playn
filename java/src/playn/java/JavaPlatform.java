@@ -199,9 +199,14 @@ public class JavaPlatform implements Platform {
   }
 
   @Override
-  public void openUrlWithCallback(String url){
+  public void openWebView(String url){
       this.openURL(url);
   }
+  
+  @Override
+    public void closeWebView() {
+        // unimplemented
+    }
   
   @Override
   public void invokeLater(Runnable runnable) {

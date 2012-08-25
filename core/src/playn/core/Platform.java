@@ -35,7 +35,9 @@ public interface Platform {
 
   void openURL(String url);
   
-  void openUrlWithCallback(String url);
+  void openWebView(String url);
+  
+  void closeWebView();
 
   void invokeLater(Runnable runnable);
 

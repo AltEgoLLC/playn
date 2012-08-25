@@ -27,15 +27,15 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * TODO: save/restore state
@@ -50,6 +50,11 @@ public abstract class GameActivity extends Activity {
   
   //so we can display and remove a webview for authentication with social networks
   private WebView webView;
+  
+  private AtomicBoolean showWebView = new AtomicBoolean(false);
+  private String urlWebView = null;
+  
+  private Handler updateHandler = new Handler();
 
   /**
    * The entry-point into a PlayN game. Developers should implement main() to call
@@ -77,6 +82,12 @@ public abstract class GameActivity extends Activity {
     viewLayout = new AndroidLayoutView(this);
     gameView = new GameViewGL(gl20, this, context);
     viewLayout.addView(gameView);
+    
+    RelativeLayout relativeLayout = new RelativeLayout(this);
+    RelativeLayout.LayoutParams relParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+    Log.i("GameActivity", "R-PARAM 1");
+    relativeLayout.setLayoutParams(relParams);
+    relativeLayout.addView(viewLayout);
 
     // Build the Window and View
     if (isHoneycombOrLater()) {
@@ -89,7 +100,13 @@ public abstract class GameActivity extends Activity {
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
     LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-    getWindow().setContentView(viewLayout, params);
+    //getWindow().setContentView(viewLayout, params);
+    
+    Log.i("GameActivity", "R-PARAM 2");
+    //viewLayout.setLayoutParams(params);
+    viewLayout.setLayoutParams(relParams);
+    Log.i("GameActivity", "R-PARAM 3");
+    getWindow().setContentView(relativeLayout, relParams);
 
     // Default to landscape orientation.
     if (usePortraitOrientation()) {
@@ -119,7 +136,15 @@ public abstract class GameActivity extends Activity {
       webView.getSettings().setJavaScriptEnabled(true);
       webView.setVisibility(View.GONE);
       //webView.loadUrl(url); 
-      viewLayout.addView(webView);
+      Log.i("GameActivity", "R-PARAM 4");
+      ViewGroup.LayoutParams webParams = new ViewGroup.LayoutParams(
+              LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+      webView.setLayoutParams(relParams);
+      Log.i("GameActivity", "R-PARAM 5");
+      relativeLayout.addView(webView);
+      Log.i("GameActivity", "R-PARAM 6");
+      
+      updateHandler.postDelayed(mUpdateTime, 1000);
   }
 
   /**
@@ -228,6 +253,7 @@ public abstract class GameActivity extends Activity {
   }
 
   public void showWebView(String url) {
+      /*//
       if(webView != null)
       {
           webView.setVisibility(View.VISIBLE);
@@ -237,11 +263,41 @@ public abstract class GameActivity extends Activity {
 
           @Override 
           public void onPageFinished(WebView view, String url) {
-              view.setVisibility(View.GONE);
+              //view.setVisibility(View.GONE);
           }
       });
       }
+      //*/
+      urlWebView = url;
+      showWebView.set(true);
   }    
+  
+  public void hideWebView() {
+      showWebView.set(false);
+  }
+  
+    public void updateWebView() {
+        /*//
+        Log.i("GameActivity", "WebView Booleans: " 
+                + (webView != null) + ", "
+                + (webView != null) + ", "
+                + (urlWebView != null));
+        //*/
+        if(webView != null && showWebView.get() && urlWebView != null) {
+            Log.i("GameActivity", "Updating WebView -- " + urlWebView);
+            showWebView.set(false);
+            webView.setVisibility(View.VISIBLE);
+            webView.loadUrl(urlWebView);
+          
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    Log.i("GameActivity", "Completed WebView");
+                    //view.setVisibility(View.GONE);
+                }
+            });
+        }
+    } // end updateWebView()
   
   // TODO: uncomment the remaining key codes when we upgrade to latest Android jars
   private static Key keyForCode(int keyCode) {
@@ -453,4 +509,11 @@ public abstract class GameActivity extends Activity {
     default: return Key.UNKNOWN;
     }
   }
+  
+  private Runnable mUpdateTime = new Runnable() {
+        public void run() {
+            updateWebView();
+            updateHandler.postDelayed(this, 1000);
+        }
+    }; // end Runnable
 }
