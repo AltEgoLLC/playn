@@ -130,7 +130,7 @@ public class AndroidPlatform implements Platform {
   }
   
   @Override
-  public void openWebView(String url){
+  public void openWebView(String url, String callback_url){
       
       PlayN.log().debug("Entering openUrlWithCallback");
       /*
@@ -150,7 +150,7 @@ public class AndroidPlatform implements Platform {
           }
       });
       */
-      activity.showWebView(url);
+      activity.showWebView(url, callback_url);
       PlayN.log().debug("Leaving openUrlWithCallback");
   }
   

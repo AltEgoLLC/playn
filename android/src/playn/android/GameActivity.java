@@ -54,6 +54,7 @@ public abstract class GameActivity extends Activity {
   private AtomicBoolean showWebView = new AtomicBoolean(false);
   private AtomicBoolean hideWebView = new AtomicBoolean(false);
   private String urlWebView = null;
+  private String callbackURL = null;
   
   private Handler updateHandler = new Handler();
 
@@ -253,7 +254,7 @@ public abstract class GameActivity extends Activity {
     return platform().touchEventHandler().onMotionEvent(event);
   }
 
-  public void showWebView(String url) {
+  public void showWebView(String url, String callback_url) {
       /*//
       if(webView != null)
       {
@@ -270,6 +271,7 @@ public abstract class GameActivity extends Activity {
       }
       //*/
       urlWebView = url;
+      callbackURL = callback_url;
       showWebView.set(true);
   }    
   
@@ -294,7 +296,11 @@ public abstract class GameActivity extends Activity {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     Log.i("GameActivity", "Completed WebView");
-                    //view.setVisibility(View.GONE);
+                    
+                    //HACK -- this can't be hard coded
+                     if (url.startsWith(/*"http://rps-stage.altego.com/"*/callbackURL)) {
+                            view.setVisibility(View.GONE);
+                     }
                 }
             });
         }

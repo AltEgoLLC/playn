@@ -70,8 +70,8 @@ public class PlayN {
     platform.openURL(url);
   }
   
-  public static void openWebView(String url) {
-    platform.openWebView(url);  
+  public static void openWebView(String url, String callback_url) {
+    platform.openWebView(url, callback_url);  
   }
   
     public static void closeWebView() {
