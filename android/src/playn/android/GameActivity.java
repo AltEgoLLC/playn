@@ -52,6 +52,7 @@ public abstract class GameActivity extends Activity {
   private WebView webView;
   
   private AtomicBoolean showWebView = new AtomicBoolean(false);
+  private AtomicBoolean hideWebView = new AtomicBoolean(false);
   private String urlWebView = null;
   
   private Handler updateHandler = new Handler();
@@ -273,7 +274,7 @@ public abstract class GameActivity extends Activity {
   }    
   
   public void hideWebView() {
-      showWebView.set(false);
+      hideWebView.set(true);
   }
   
     public void updateWebView() {
@@ -296,6 +297,11 @@ public abstract class GameActivity extends Activity {
                     //view.setVisibility(View.GONE);
                 }
             });
+        }
+        
+        if (hideWebView.get()) {
+            hideWebView.set(false);
+            webView.setVisibility(View.GONE);
         }
     } // end updateWebView()
   
@@ -511,9 +517,10 @@ public abstract class GameActivity extends Activity {
   }
   
   private Runnable mUpdateTime = new Runnable() {
+        @Override
         public void run() {
             updateWebView();
-            updateHandler.postDelayed(this, 1000);
+            updateHandler.postDelayed(this, 500);
         }
     }; // end Runnable
 }
