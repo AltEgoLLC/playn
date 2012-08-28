@@ -26,6 +26,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -35,6 +36,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -522,11 +524,21 @@ public abstract class GameActivity extends Activity {
     }
   }
   
-  private Runnable mUpdateTime = new Runnable() {
+    private Runnable mUpdateTime = new Runnable() {
         @Override
         public void run() {
             updateWebView();
             updateHandler.postDelayed(this, 500);
         }
     }; // end Runnable
+  
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
