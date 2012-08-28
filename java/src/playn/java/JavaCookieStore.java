@@ -32,7 +32,7 @@ public class JavaCookieStore implements playn.core.CookieStore {
             }
         }
         if (value == null) {
-            mStorage.getItem(cookie);
+            value = mStorage.getItem(cookie);
         }
         
         return value; 

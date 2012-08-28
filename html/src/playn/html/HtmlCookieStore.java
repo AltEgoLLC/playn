@@ -23,7 +23,7 @@ public class HtmlCookieStore implements CookieStore {
         //returns cookie or null
         String result = mCookies.get(cookie);
         if (result == null) {
-            mStorage.getItem(cookie);
+            result = mStorage.getItem(cookie);
         }
         return result;
     }
