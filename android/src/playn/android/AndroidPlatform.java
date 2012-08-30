@@ -223,6 +223,11 @@ public class AndroidPlatform implements Platform {
     public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
         return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
     }
+    
+    @Override
+    public void showAlertDialog(String message, String accept) {
+        activity.showAlertDialog(message, accept);
+    }
 
   void update(float delta) {
     runQueue.execute();

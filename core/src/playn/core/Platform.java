@@ -74,4 +74,6 @@ public interface Platform {
   //public void setCacheDirectory(File file);
   
   public void setPlatformCache(String location);
+  
+  public void showAlertDialog(String message, String accept);
 }

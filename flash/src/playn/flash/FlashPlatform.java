@@ -283,4 +283,9 @@ public class FlashPlatform implements Platform {
     public void closeWebView() {
         // unimplemented
     }
+    
+    @Override
+    public void showAlertDialog(String message, String accept) {
+        // unimplemented
+    }
 }

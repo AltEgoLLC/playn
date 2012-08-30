@@ -77,6 +77,10 @@ public class PlayN {
     public static void closeWebView() {
         platform.closeWebView();
     }
+    
+    public static void showAlertDialog(String message, String accept) {
+        platform.showAlertDialog(message, accept);
+    }
 
   /**
    * Queues the supplied runnable for invocation on the game thread prior to the next call to

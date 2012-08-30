@@ -22,8 +22,10 @@ import playn.core.Keyboard;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
@@ -45,6 +47,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class GameActivity extends Activity {
   private final int REQUIRED_CONFIG_CHANGES = ActivityInfo.CONFIG_ORIENTATION
       | ActivityInfo.CONFIG_KEYBOARD_HIDDEN;
+  
 
   private GameViewGL gameView;
   private AndroidLayoutView viewLayout;
@@ -53,10 +56,13 @@ public abstract class GameActivity extends Activity {
   //so we can display and remove a webview for authentication with social networks
   private WebView webView;
   
+  private AtomicBoolean showAlertDialog = new AtomicBoolean(false);
   private AtomicBoolean showWebView = new AtomicBoolean(false);
   private AtomicBoolean hideWebView = new AtomicBoolean(false);
   private String urlWebView = null;
   private String callbackURL = null;
+  private String alertMessage = null;
+  private String alertAccept = null;
   
   private Handler updateHandler = new Handler();
 
@@ -312,6 +318,30 @@ public abstract class GameActivity extends Activity {
             webView.setVisibility(View.GONE);
         }
     } // end updateWebView()
+    
+    public void showAlertDialog(String message, String accept) {
+        alertMessage = message;
+        alertAccept = accept;
+        showAlertDialog.set(true);
+    }
+    
+    private void showAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (alertMessage != null && alertAccept != null && !alertMessage.equals("") && !alertAccept.equals("")) {
+            builder.setTitle(alertMessage);
+        }
+        else {
+            builder.setTitle("Kevin broke something!");
+            alertAccept = "OK";
+        }
+        builder.setNeutralButton(alertAccept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {}
+        });
+        
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
   
   // TODO: uncomment the remaining key codes when we upgrade to latest Android jars
   private static Key keyForCode(int keyCode) {
@@ -528,6 +558,11 @@ public abstract class GameActivity extends Activity {
         @Override
         public void run() {
             updateWebView();
+            
+            if (showAlertDialog.get()) {
+                showAlertDialog.set(false);
+                showAlertDialog();
+            }
             updateHandler.postDelayed(this, 500);
         }
     }; // end Runnable

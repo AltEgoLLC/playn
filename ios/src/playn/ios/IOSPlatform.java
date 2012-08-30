@@ -370,4 +370,9 @@ public class IOSPlatform implements Platform {
     ORIENT_MAP.put(UIDeviceOrientation.wrap(UIDeviceOrientation.LandscapeRight),
                    UIInterfaceOrientation.wrap(UIInterfaceOrientation.LandscapeLeft));
   }
+  
+  @Override
+    public void showAlertDialog(String message, String accept) {
+        // unimplemented
+    }
 }

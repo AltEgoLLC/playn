@@ -282,4 +282,9 @@ public class JavaPlatform implements Platform {
     
     @Override
     public void setPlatformCache(String location) {}
+
+    @Override
+    public void showAlertDialog(String message, String accept) {
+        // unimplemented
+    }
 }

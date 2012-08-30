@@ -440,4 +440,9 @@ public class HtmlPlatform implements Platform {
     public void closeWebView() {
         // unimplemented
     }
+  
+  @Override
+    public void showAlertDialog(String message, String accept) {
+        // unimplemented
+    }
 }
