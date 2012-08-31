@@ -19,6 +19,7 @@ package playn.flash;
 import com.google.gwt.core.client.JavaScriptObject;
 
 import flash.net.SharedObject;
+import java.util.ArrayList;
 
 import playn.core.Storage;
 
@@ -71,4 +72,11 @@ public class FlashStorage implements Storage {
   private native void remove(JavaScriptObject data, String key) /*-{
     delete data[key];
   }-*/;
+  
+    public void clear() {
+        ArrayList<String> keys = (ArrayList<String>) keys();
+        for (int ii = 0; ii < keys.size(); ii++) {
+            removeItem(keys.get(ii));
+        }
+    }
 }

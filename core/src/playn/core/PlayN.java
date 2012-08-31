@@ -184,6 +184,10 @@ public class PlayN {
       }
     return platform.analytics();
   }
+  
+  public static void clearCookies() {
+      platform.cookieStore().clear();
+  }
 
   /**
    * Adds new cookie to the cookieStore
@@ -201,6 +205,10 @@ public class PlayN {
    */
   public static String getCookie(String cookie) {
       return platform.cookieStore().get(cookie);
+  }
+  
+  public static void clearStorage() {
+      platform.storage().clear();
   }
   
   /**

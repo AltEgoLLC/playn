@@ -5,6 +5,7 @@
 
 package playn.html;
 
+import java.util.Set;
 import playn.core.CookieStore;
 import java.util.TreeMap;
 
@@ -32,6 +33,15 @@ public class HtmlCookieStore implements CookieStore {
     public void put(String cookie, String value) { 
         mCookies.put( cookie, value);
         mStorage.setItem(cookie, value);
+    }
+    
+    @Override
+    public void clear() {
+        Set<String> keyset = mCookies.keySet();
+        for (String key : keyset) {
+            mCookies.remove(key);
+            mStorage.removeItem(key);
+        }
     }
 
 }

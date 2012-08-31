@@ -4,11 +4,10 @@ import java.util.List;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.cookie.Cookie;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.protocol.BasicHttpContext;
-
+import org.apache.http.protocol.HttpContext;
 
 public class JavaCookieStore implements playn.core.CookieStore {
 
@@ -48,5 +47,14 @@ public class JavaCookieStore implements playn.core.CookieStore {
 
     public CookieStore getCookies() {
         return mCookieStore;
+    }
+    
+    @Override
+    public void clear() {
+        List<Cookie> keyset = mCookieStore.getCookies();
+        for (Cookie key : keyset) {
+            mStorage.removeItem(key.getName());
+        }
+        mCookieStore.clear();
     }
 }

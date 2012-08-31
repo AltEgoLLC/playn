@@ -52,4 +52,12 @@ public class AndroidStorage implements Storage {
   public boolean isPersisted() {
     return true;
   }
+  
+    @Override
+  public void clear() {
+      ArrayList<String> keys = (ArrayList<String>) keys();
+      for (int ii = 0; ii < keys.size(); ii++) {
+          removeItem(keys.get(ii));
+      }
+  }
 }

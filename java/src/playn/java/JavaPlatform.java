@@ -17,6 +17,9 @@ package playn.java;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -285,6 +288,44 @@ public class JavaPlatform implements Platform {
 
     @Override
     public void showAlertDialog(String message, String accept) {
-        // unimplemented
+        /*//
+        JPopupMenu popup = new JPopupMenu();
+        popup.add(message);
+        
+        JFrame frame = new JFrame("Popup Menu Example");
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(popup);
+        frame.setSize(300, 300);
+        frame.setVisible(true);
+        //*/
+        JFrame frame = new JFrame("Alert");
+        //frame.setSize(300, 300);
+        //frame.setVisible(true);
+        JOptionPane.showMessageDialog(frame, message);
+    
+        /*//
+        ActionListener menuListener = new ActionListener() {
+        public void actionPerformed(ActionEvent event) {
+            System.out.println("Popup menu item ["
+                + event.getActionCommand() + "] was pressed.");
+        }
+        };
+        JMenuItem item;
+        popup.add(item = new JMenuItem("Left", new ImageIcon("1.gif")));
+        item.setHorizontalTextPosition(JMenuItem.RIGHT);
+        item.addActionListener(menuListener);
+        popup.add(item = new JMenuItem("Center", new ImageIcon("2.gif")));
+        item.setHorizontalTextPosition(JMenuItem.RIGHT);
+        item.addActionListener(menuListener);
+        popup.add(item = new JMenuItem("Right", new ImageIcon("3.gif")));
+        item.setHorizontalTextPosition(JMenuItem.RIGHT);
+        item.addActionListener(menuListener);
+        popup.add(item = new JMenuItem("Full", new ImageIcon("4.gif")));
+        item.setHorizontalTextPosition(JMenuItem.RIGHT);
+        item.addActionListener(menuListener);
+        popup.addSeparator();
+        popup.add(item = new JMenuItem("Settings . . ."));
+        item.addActionListener(menuListener)
+        //*/
     }
 }

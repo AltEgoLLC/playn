@@ -47,5 +47,14 @@ public class AndroidCookieStore implements playn.core.CookieStore {
     public CookieStore getCookies() {
         return mCookieStore;
     }
+    
+    @Override
+    public void clear() {
+        List<Cookie> keyset = mCookieStore.getCookies();
+        for (Cookie key : keyset) {
+            mStorage.removeItem(key.getName());
+        }
+        mCookieStore.clear();
+    }
 
 }

@@ -59,4 +59,6 @@ public interface Storage {
    * Returns true if the Storage data will be persistent across restarts.
    */
   public boolean isPersisted();
+  
+  public void clear();
 }

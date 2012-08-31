@@ -11,4 +11,5 @@ package playn.core;
 public interface CookieStore {
     public String get(String cookie);
     public void put(String cookie, String value);
+    public void clear();
 }

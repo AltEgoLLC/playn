@@ -4,6 +4,7 @@
  */
 package playn.flash;
 
+import java.util.Set;
 import playn.core.CookieStore;
 
 /**
@@ -32,6 +33,17 @@ public class FlashCookieStore implements CookieStore {
     public void put(String cookie, String value) {
         // Unimplemented
         mStorage.setItem(cookie, value);
+    }
+    
+    @Override
+    public void clear() {
+        /*//
+        Set<String> keyset = mCookies.keySet();
+        for (String key : keyset) {
+            mCookies.remove(key);
+            mStorage.removeItem(key);
+        }
+        //*/
     }
     
 }

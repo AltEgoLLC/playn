@@ -79,4 +79,12 @@ class HtmlStorage implements Storage {
   public boolean isPersisted() {
     return isPersisted;
   }
+  
+    @Override
+    public void clear() {
+        ArrayList<String> keys = (ArrayList<String>) keys();
+        for (int ii = 0; ii < keys.size(); ii++) {
+            removeItem(keys.get(ii));
+        }
+    }
 }

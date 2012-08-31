@@ -444,5 +444,6 @@ public class HtmlPlatform implements Platform {
   @Override
     public void showAlertDialog(String message, String accept) {
         // unimplemented
+      Window.alert(message);
     }
 }
