@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import playn.core.*;
 import playn.core.json.JsonImpl;
+import playn.core.util.Callback;
 import playn.core.util.RunQueue;
 import playn.html.HtmlRegularExpression;
 
@@ -286,6 +287,11 @@ public class FlashPlatform implements Platform {
     
     @Override
     public void showAlertDialog(String message, String accept) {
+        // unimplemented
+    }
+    
+    @Override
+    public void showAlertDialog(String message, String accept, Callback callback) {
         // unimplemented
     }
 }

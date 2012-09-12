@@ -26,6 +26,7 @@ import org.lwjgl.opengl.Display;
 
 import playn.core.*;
 import playn.core.json.JsonImpl;
+import playn.core.util.Callback;
 import playn.core.util.RunQueue;
 
 public class JavaPlatform implements Platform {
@@ -288,44 +289,53 @@ public class JavaPlatform implements Platform {
 
     @Override
     public void showAlertDialog(String message, String accept) {
-        /*//
-        JPopupMenu popup = new JPopupMenu();
-        popup.add(message);
+        //JFrame frame = new JFrame("Alert");
+        //JOptionPane.showMessageDialog(frame, message);
         
-        JFrame frame = new JFrame("Popup Menu Example");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(popup);
-        frame.setSize(300, 300);
-        frame.setVisible(true);
-        //*/
-        JFrame frame = new JFrame("Alert");
-        //frame.setSize(300, 300);
-        //frame.setVisible(true);
-        JOptionPane.showMessageDialog(frame, message);
+        String[] choices = { accept };
+        
+        JOptionPane.showOptionDialog(
+                null                       // Center in window.
+                , message        // Message
+                , "Alert"               // Title in titlebar
+                , JOptionPane.YES_NO_OPTION  // Option type
+                , JOptionPane.PLAIN_MESSAGE  // messageType
+                , null                       // Icon (none)
+                , choices                    // Button text as above.
+                , accept    // Default button's label
+            );
+    }
     
+    @Override
+    public void showAlertDialog(String message, String accept, Callback callback) {
         /*//
-        ActionListener menuListener = new ActionListener() {
-        public void actionPerformed(ActionEvent event) {
-            System.out.println("Popup menu item ["
-                + event.getActionCommand() + "] was pressed.");
+        JFrame frame = new JFrame("Alert");
+        //JOptionPane.showMessageDialog(frame, message);
+        int j = JOptionPane.YES_NO_CANCEL_OPTION;
+        int k = JOptionPane.YES_OPTION;
+        int l = JOptionPane.NO_OPTION;
+        int m = JOptionPane.YES_NO_OPTION;
+        int n = 0;
+        int i = JOptionPane.showConfirmDialog(null, message, "Alert", 1);
+        if (i > 0 || i <= 0) {
+            callback.onSuccess("success");
         }
-        };
-        JMenuItem item;
-        popup.add(item = new JMenuItem("Left", new ImageIcon("1.gif")));
-        item.setHorizontalTextPosition(JMenuItem.RIGHT);
-        item.addActionListener(menuListener);
-        popup.add(item = new JMenuItem("Center", new ImageIcon("2.gif")));
-        item.setHorizontalTextPosition(JMenuItem.RIGHT);
-        item.addActionListener(menuListener);
-        popup.add(item = new JMenuItem("Right", new ImageIcon("3.gif")));
-        item.setHorizontalTextPosition(JMenuItem.RIGHT);
-        item.addActionListener(menuListener);
-        popup.add(item = new JMenuItem("Full", new ImageIcon("4.gif")));
-        item.setHorizontalTextPosition(JMenuItem.RIGHT);
-        item.addActionListener(menuListener);
-        popup.addSeparator();
-        popup.add(item = new JMenuItem("Settings . . ."));
-        item.addActionListener(menuListener)
         //*/
+        
+        String[] choices = { accept };
+        
+        int response = JOptionPane.showOptionDialog(
+            null                       // Center in window.
+            , message        // Message
+            , "Alert"               // Title in titlebar
+            , JOptionPane.YES_NO_OPTION  // Option type
+            , JOptionPane.PLAIN_MESSAGE  // messageType
+            , null                       // Icon (none)
+            , choices                    // Button text as above.
+            , accept    // Default button's label
+        );
+        if (response > 0 || response <= 0) {
+            callback.onSuccess("success");
+        }
     }
 }

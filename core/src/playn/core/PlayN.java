@@ -15,6 +15,8 @@
  */
 package playn.core;
 
+import playn.core.util.Callback;
+
 /**
  * The main PlayN interface. The static methods in this class provide access to
  * the various available subsystems.
@@ -80,6 +82,10 @@ public class PlayN {
     
     public static void showAlertDialog(String message, String accept) {
         platform.showAlertDialog(message, accept);
+    }
+    
+    public static void showAlertDialog(String message, String accept, Callback callback) {
+        platform.showAlertDialog(message, accept, callback);
     }
 
   /**

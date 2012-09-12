@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import playn.core.*;
+import playn.core.util.Callback;
 import playn.core.util.RunQueue;
 import playn.html.HtmlUrlParameters.Renderer;
 
@@ -445,5 +446,12 @@ public class HtmlPlatform implements Platform {
     public void showAlertDialog(String message, String accept) {
         // unimplemented
       Window.alert(message);
+    }
+  
+    @Override
+    public void showAlertDialog(String message, String accept, Callback callback) {
+        boolean success = Window.confirm(message);
+        if (success)    { callback.onSuccess("success"); }
+        else            { callback.onSuccess("success"); }
     }
 }

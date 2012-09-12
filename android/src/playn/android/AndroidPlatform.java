@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 import playn.core.*;
 import playn.core.json.JsonImpl;
+import playn.core.util.Callback;
 import playn.core.util.RunQueue;
 
 public class AndroidPlatform implements Platform {
@@ -226,6 +227,11 @@ public class AndroidPlatform implements Platform {
     
     @Override
     public void showAlertDialog(String message, String accept) {
+        activity.showAlertDialog(message, accept);
+    }
+    
+    @Override
+    public void showAlertDialog(String message, String accept, Callback callback) {
         activity.showAlertDialog(message, accept);
     }
 
