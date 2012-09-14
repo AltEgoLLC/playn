@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import java.util.concurrent.atomic.AtomicBoolean;
+import playn.core.util.Callback;
 
 /**
  * TODO: save/restore state
@@ -63,6 +64,8 @@ public abstract class GameActivity extends Activity {
   private String callbackURL = null;
   private String alertMessage = null;
   private String alertAccept = null;
+  
+  private Callback mCallback = null;
   
   private Handler updateHandler = new Handler();
 
@@ -322,6 +325,14 @@ public abstract class GameActivity extends Activity {
     public void showAlertDialog(String message, String accept) {
         alertMessage = message;
         alertAccept = accept;
+        mCallback = null;
+        showAlertDialog.set(true);
+    }
+    
+    public void showAlertDialog(String message, String accept, Callback callback) {
+        alertMessage = message;
+        alertAccept = accept;
+        mCallback = callback;
         showAlertDialog.set(true);
     }
     
@@ -336,7 +347,11 @@ public abstract class GameActivity extends Activity {
         }
         builder.setNeutralButton(alertAccept, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int item) {}
+            public void onClick(DialogInterface dialog, int item) {
+                if (mCallback != null) {
+                    mCallback.onSuccess("success");
+                }
+            }
         });
         
         AlertDialog alert = builder.create();

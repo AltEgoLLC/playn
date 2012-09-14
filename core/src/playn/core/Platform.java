@@ -18,6 +18,7 @@ package playn.core;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import playn.core.util.Callback;
 
 /**
  * Generic platform interface. New platforms are defined as implementations of this interface.
@@ -76,4 +77,6 @@ public interface Platform {
   public void setPlatformCache(String location);
   
   public void showAlertDialog(String message, String accept);
+  
+  public void showAlertDialog(String message, String accept, Callback callback);
 }
