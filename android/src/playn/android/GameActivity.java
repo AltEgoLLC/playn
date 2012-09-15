@@ -329,11 +329,17 @@ public abstract class GameActivity extends Activity {
         showAlertDialog.set(true);
     }
     
-    public void showAlertDialog(String message, String accept, Callback callback) {
+    public void showAlertDialog(String message, String accept, final Callback callback) {
         alertMessage = message;
         alertAccept = accept;
         mCallback = callback;
         showAlertDialog.set(true);
+        Log.i("GameActivity", "*********************");
+        if (callback != null) {
+            Log.i("GameActivity", "Show Alert Dialog");
+            //callback.onSuccess("success");
+        }
+        Log.i("GameActivity", "*********************");
     }
     
     private void showAlertDialog() {
@@ -349,8 +355,12 @@ public abstract class GameActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (mCallback != null) {
+                    Log.i("GameActivity", "*********************\nCallback not null");
                     mCallback.onSuccess("success");
                 }
+                else
+                    Log.i("GameActivity", "*********************\nCallback not null");
+                Log.i("GameActivity", "*********************");
             }
         });
         
