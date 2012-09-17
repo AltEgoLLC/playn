@@ -48,9 +48,11 @@ public class AndroidImageDownload implements ImageDownload {
         }
         
         System.out.println( "File Image Url: " + strUrl);
-        System.out.println( "File Image Path: " + fileLocalImage.toString());
-        System.out.println( "Image Path Is File: " + fileLocalImage.isFile() );
-        System.out.println( "Image Path Exists: " + fileLocalImage.exists());
+        if (fileLocalImage != null) {
+            System.out.println( "File Image Path: " + fileLocalImage.toString());
+            System.out.println( "Image Path Is File: " + fileLocalImage.isFile() );
+            System.out.println( "Image Path Exists: " + fileLocalImage.exists());
+        }
 
         if (bitmapDownloaded == null)
         {
