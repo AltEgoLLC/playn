@@ -69,6 +69,7 @@ public class AndroidImageDownload implements ImageDownload {
                     {
                         connection = (HttpURLConnection) url.openConnection();
                         connection.setDoInput( true );
+                        connection.setUseCaches(true);
                         connection.setConnectTimeout( 2000 );
                         connection.connect();
 
