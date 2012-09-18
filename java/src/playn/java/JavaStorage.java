@@ -18,8 +18,7 @@ package playn.java;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.util.*;
 
 import playn.core.PlayN;
 import playn.core.Storage;
@@ -95,9 +94,16 @@ class JavaStorage implements Storage {
   
     @Override
     public void clear() {
+        /*//
         ArrayList<String> keys = (ArrayList<String>) keys();
         for (int ii = 0; ii < keys.size(); ii++) {
             removeItem(keys.get(ii));
+        }
+        //*/
+        Set<String> keys = Collections.synchronizedSet((Set<String>) keys());
+        Iterator<String> iter = keys.iterator();
+        while (iter.hasNext()) {
+            removeItem(iter.next());
         }
     }
 }
