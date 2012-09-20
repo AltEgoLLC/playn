@@ -18,9 +18,9 @@ import playn.core.util.Callback;
  */
 public class Kontagent implements Analytics {
     private final String apiKey;
-    private String userID;
+    private int userID;
     
-    public Kontagent(String apiKeyInput, String userIDInput)
+    public Kontagent(String apiKeyInput, int userIDInput)
     {
         this.apiKey = apiKeyInput;
         this.userID = userIDInput;
