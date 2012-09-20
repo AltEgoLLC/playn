@@ -306,10 +306,10 @@ public abstract class GameActivity extends Activity {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageFinished(WebView view, String url) {
-                    Log.i("GameActivity", "Completed WebView");
+                    Log.i("GameActivity", "Completed WebView at url " + url);
                     
                     //HACK -- this can't be hard coded
-                     if (url.startsWith(/*"http://rps-stage.altego.com/"*/callbackURL)) {
+                     if (url.contains(callbackURL)) {
                             view.setVisibility(View.GONE);
                      }
                 }
