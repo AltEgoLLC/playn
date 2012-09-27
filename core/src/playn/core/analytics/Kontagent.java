@@ -28,13 +28,14 @@ public class Kontagent implements Analytics {
     
     @Override
     public void logEvent(Category category, String action) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
     public void logEvent(Category category, String action, String label, int value) {
         long timestamp = System.currentTimeMillis()/1000L;
         String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&n=" + label + "&ts=" + timestamp;
+        kontagentURLString = kontagentURLString.replace(" ", "%20");
         
         PlayN.net().get(kontagentURLString, null, 
             new Callback<String>(){

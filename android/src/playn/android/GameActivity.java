@@ -348,7 +348,7 @@ public abstract class GameActivity extends Activity {
             builder.setTitle(alertMessage);
         }
         else {
-            builder.setTitle("Kevin broke something!");
+            builder.setTitle("AltEgo broke something!");
             alertAccept = "OK";
         }
         builder.setNeutralButton(alertAccept, new DialogInterface.OnClickListener() {
