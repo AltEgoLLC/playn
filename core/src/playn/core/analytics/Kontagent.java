@@ -37,12 +37,12 @@ public class Kontagent implements Analytics {
 
             @Override
             public void onSuccess(String result) {
-                //PlayN.log().debug("analytics success! :" + result);
+                PlayN.log().debug("analytics success! :" + result);
             }
 
             @Override
             public void onFailure(Throwable cause) {
-                //PlayN.log().debug("analytics failed:" + cause);
+                PlayN.log().debug("analytics failed:" + cause);
             }
 
 
