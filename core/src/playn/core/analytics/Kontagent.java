@@ -6,6 +6,7 @@ package playn.core.analytics;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import playn.core.Analytics;
@@ -19,6 +20,7 @@ import playn.core.util.Callback;
 public class Kontagent implements Analytics {
     private final String apiKey;
     private int userID;
+    private long timestamp;
     
     public Kontagent(String apiKeyInput, int userIDInput)
     {
@@ -29,7 +31,9 @@ public class Kontagent implements Analytics {
     @Override
     public void logEvent(Category category, String action) {
         
-        long timestamp = System.currentTimeMillis()/1000L;
+        //timestamp = System.currentTimeMillis()/1000L;
+        timestamp = System.currentTimeMillis();
+        //timestamp = new Timestamp(System.currentTimeMillis());
         String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&ts=" + timestamp;
         
         PlayN.net().get(kontagentURLString, null, 
@@ -53,7 +57,8 @@ public class Kontagent implements Analytics {
 
     @Override
     public void logEvent(Category category, String action, String label, int value) {
-        long timestamp = System.currentTimeMillis()/1000L;
+//        long timestamp = System.currentTimeMillis()/1000L;
+        timestamp = System.currentTimeMillis();
         String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&n=" + label + "&ts=" + timestamp;
         
         PlayN.net().get(kontagentURLString, null, 
