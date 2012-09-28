@@ -79,7 +79,10 @@ public class Kontagent implements Analytics {
             }
         );
     }
-                
-                
-        
+    
+    public void setUserID(int id)
+    {
+        this.userID = id;
+    }
+    
 }
