@@ -49,9 +49,6 @@ public class Kontagent implements Analytics {
             public void onFailure(Throwable cause) {
                 PlayN.log().debug("analytics failed:" + cause);
             }
-
-
-
             }
         );
     }
@@ -76,15 +73,60 @@ public class Kontagent implements Analytics {
                 PlayN.log().debug("analytics failed:" + cause);
             }
 
-
-
             }
         );
     }
-    
-    public void setUserID(int id)
+    //For Kontagent custom events, here's parameter contrains
+    // n < 32 chars
+    // l = 0 to 255
+    // st1, st2, st3 < 32 chars
+    //Example1 : Ahri&st1=Pax&st2=Android&st3=Champion_Save
+    //Example2 :    ViewerScreen_sess_Ahri&st1=PAX&st2=Android&v=46&l=10
+    private static String trimParamters(String label)
     {
-        this.userID = id;
+        StringBuilder sb = new StringBuilder();
+        String[] params = label.split("&");
+        String output = "";
+        if (params[0].length() > 32)
+        {
+           sb.append(params[0]); 
+           output += sb.substring(0,31);
+           //clear StringBuilder
+           sb.delete(0,sb.length()-1);
+        }
+        else
+            output+=params[0];
+        String[] values = params[1].split("=");
+        if (values[0].equals("st1") && values[1].length() > 32)
+        {
+           sb.append(params[1]); 
+           output += "&" + sb.substring(0,31);
+           sb.delete(0,sb.length()-1);
+        }
+        else
+            output+="&" + params[1];
+        values = params[2].split("=");
+        if (values[0].equals("st2") && values[1].length() > 32)
+        {
+           sb.append(params[2]); 
+           output += "&" + sb.substring(0,31);
+        }
+        else
+            output+= "&" + params[2];
+//        for (String x : params)
+//        {
+//            output+=x + "\n";
+//        }
+        return output;
     }
+    
+public static void main(String[] args)
+    {
+//        System.out.println(Kontagent.trimParamters("Ahri&st1=Pax&st2=Android&st3=Champion_Save"));
+        System.out.println(Kontagent.trimParamters("ViewerScreen_sess_Ahri_reallyLongStringTooLong&st1=PAX&st2=Android&v=46&l=10"));
+//        ViewerScreen_sess_Ahri&st1=PAX&st2=Android&v=46&l=10
+        
+    }
+    
     
 }
