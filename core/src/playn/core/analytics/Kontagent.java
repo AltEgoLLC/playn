@@ -29,13 +29,13 @@ public class Kontagent implements Analytics {
     }
     
     @Override
-    public void logEvent(Category category, String action) {
+    public void logEvent(Category category, String label) {
         
         //timestamp = System.currentTimeMillis()/1000L;
         timestamp = System.currentTimeMillis();
         //timestamp = new Timestamp(System.currentTimeMillis());
         String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&ts=" + timestamp;
-        kontagentURLString = kontagentURLString.replace(" ", "%20");
+        kontagentURLString = kontagentURLString.replace(" ", "_");
         
         PlayN.net().get(kontagentURLString, null, 
             new Callback<String>(){
@@ -61,7 +61,7 @@ public class Kontagent implements Analytics {
 //        long timestamp = System.currentTimeMillis()/1000L;
         timestamp = System.currentTimeMillis();
         String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&n=" + label + "&ts=" + timestamp;
-        kontagentURLString = kontagentURLString.replace(" ", "%20");
+        kontagentURLString = kontagentURLString.replace(" ", "_");
         
         PlayN.net().get(kontagentURLString, null, 
             new Callback<String>(){
