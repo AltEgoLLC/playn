@@ -222,11 +222,13 @@ public class AndroidPlatform implements Platform {
   
     @Override
     public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
+        /*//
         PlayN.log().debug("Url: " + strUrl);
         PlayN.log().debug("Retries: " + intRetryCount);
         PlayN.log().debug("Delay (ms): " + longDelayMS);
         PlayN.log().debug("Callback null: " + (callback == null));
         PlayN.log().debug("imageDownload null: " + (imageDownload == null));
+        //*/
         return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
     }
     
