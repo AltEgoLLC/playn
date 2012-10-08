@@ -213,6 +213,11 @@ public class JavaPlatform implements Platform {
     }
   
   @Override
+    public boolean isWebViewVisible() {
+        return false;
+    }
+  
+  @Override
   public void invokeLater(Runnable runnable) {
     runQueue.add(runnable);
   }
@@ -337,5 +342,15 @@ public class JavaPlatform implements Platform {
         if (response > 0 || response <= 0) {
             callback.onSuccess("success");
         }
+    }
+    
+    @Override
+    public void showSoftKeyboard() {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    @Override
+    public void hideSoftKeyboard() {
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 }

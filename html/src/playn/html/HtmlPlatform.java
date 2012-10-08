@@ -442,6 +442,11 @@ public class HtmlPlatform implements Platform {
         // unimplemented
     }
   
+    @Override
+    public boolean isWebViewVisible() {
+        return false;
+    }
+  
   @Override
     public void showAlertDialog(String message, String accept) {
         // unimplemented
@@ -453,5 +458,15 @@ public class HtmlPlatform implements Platform {
         boolean success = Window.confirm(message);
         if (success)    { callback.onSuccess("success"); }
         else            { callback.onSuccess("success"); }
+    }
+    
+    @Override
+    public void showSoftKeyboard() {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    @Override
+    public void hideSoftKeyboard() {
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 }
