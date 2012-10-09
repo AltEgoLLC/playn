@@ -81,7 +81,7 @@ public abstract class GameActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
+    
     context = getApplicationContext();
 
     // Build the AndroidPlatform and register this activity.
