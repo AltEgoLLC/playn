@@ -309,6 +309,11 @@ public class IOSPlatform implements Platform {
     public void closeWebView() {
         // unimplemented
     }
+    
+    @Override
+    public boolean isWebViewVisible() {
+        return false;
+    }
 
   void viewDidInit(int defaultFrameBuffer) {
     graphics.ctx.viewDidInit(defaultFrameBuffer);
@@ -380,5 +385,15 @@ public class IOSPlatform implements Platform {
     @Override
     public void showAlertDialog(String message, String accept, Callback callback) {
         // unimplemented
+    }
+    
+    @Override
+    public void showSoftKeyboard() {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    @Override
+    public void hideSoftKeyboard() {
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 }

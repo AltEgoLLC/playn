@@ -31,11 +31,13 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.*;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -56,6 +58,7 @@ public abstract class GameActivity extends Activity {
   
   //so we can display and remove a webview for authentication with social networks
   private WebView webView;
+  private EditText editText;
   
   private AtomicBoolean showAlertDialog = new AtomicBoolean(false);
   private AtomicBoolean showWebView = new AtomicBoolean(false);
@@ -158,7 +161,16 @@ public abstract class GameActivity extends Activity {
       relativeLayout.addView(webView);
       Log.i("GameActivity", "R-PARAM 6");
       
+      editText = new EditText(this);
+      editText.setVisibility(View.INVISIBLE);
+      editText.setLayoutParams(relParams);
+      relativeLayout.addView(editText);
+      
       updateHandler.postDelayed(mUpdateTime, 1000);
+  }
+  
+  public IBinder getApplicationWindowToken() {
+      return viewLayout.getApplicationWindowToken();
   }
 
   /**
@@ -233,6 +245,8 @@ public abstract class GameActivity extends Activity {
    */
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent nativeEvent) {
+      Log.i("GameActivity", "Keycode: " + keyCode);
+      
     long time = nativeEvent.getEventTime();
     Keyboard.Event event = new Keyboard.Event.Impl(time, keyForCode(keyCode));
     gameView.onKeyDown(event);
@@ -288,9 +302,29 @@ public abstract class GameActivity extends Activity {
       showWebView.set(true);
   }    
   
+  public boolean isWebViewVisible() {
+        return (webView.getVisibility() == View.VISIBLE);
+    }
+  
   public void hideWebView() {
       hideWebView.set(true);
   }
+  
+    public void showEditText(int inputType, String initVal) {
+        editText.setInputType(inputType);
+        editText.setText(initVal);
+        editText.requestFocus();
+        //editText.setVisibility(View.VISIBLE);
+    }
+    
+    public void hideEditText() {
+        //editText.setVisibility(View.GONE);
+        gameView.requestFocus();
+    }
+    
+    public String getEditText() {
+        return editText.getEditableText().toString();
+    }
   
     public void updateWebView() {
         /*//

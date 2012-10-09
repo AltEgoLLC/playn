@@ -39,6 +39,8 @@ public interface Platform {
   void openWebView(String url, String callback_url);
   
   void closeWebView();
+  
+  boolean isWebViewVisible();
 
   void invokeLater(Runnable runnable);
 
@@ -79,4 +81,8 @@ public interface Platform {
   public void showAlertDialog(String message, String accept);
   
   public void showAlertDialog(String message, String accept, Callback callback);
+  
+  public void showSoftKeyboard();
+  
+  public void hideSoftKeyboard();
 }

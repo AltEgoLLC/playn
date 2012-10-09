@@ -80,6 +80,10 @@ public class PlayN {
         platform.closeWebView();
     }
     
+    public static boolean webViewIsVisible() {
+        return platform.isWebViewVisible();
+    }
+    
     public static void showAlertDialog(String message, String accept) {
         platform.showAlertDialog(message, accept);
     }
@@ -247,6 +251,15 @@ public class PlayN {
   {
       analytics = newAnalytics;
   }
+  
+  public static void showSoftKeyboard() {
+      platform.showSoftKeyboard();
+  }
+  
+  public static void hideSoftKeyboard() {
+      platform.hideSoftKeyboard();
+  }
+  
   // Non-instantiable
   private PlayN() {
   }
