@@ -151,6 +151,7 @@ public abstract class GameActivity extends Activity {
       
       webView.getSettings().setJavaScriptEnabled(true);
       webView.setVisibility(View.GONE);
+      webView.setFocusableInTouchMode(true);
       //webView.loadUrl(url); 
       Log.i("GameActivity", "R-PARAM 4");
       ViewGroup.LayoutParams webParams = new ViewGroup.LayoutParams(
@@ -297,6 +298,7 @@ public abstract class GameActivity extends Activity {
       //*/
       urlWebView = url;
       callbackURL = callback_url;
+      webView.requestFocus();
       showWebView.set(true);
   }    
   
