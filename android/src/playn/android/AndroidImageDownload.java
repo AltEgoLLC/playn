@@ -32,7 +32,7 @@ public class AndroidImageDownload implements ImageDownload {
     @Override
     public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, ResourceCallback<Image> callback)
     {
-        System.out.println("*******************");
+        //System.out.println("*******************");
         DownloadedBitmap bitmapDownloaded = null;
 
         File fileLocalImage = null;
@@ -47,12 +47,14 @@ public class AndroidImageDownload implements ImageDownload {
             }
         }
         
+        /*//
         System.out.println( "File Image Url: " + strUrl);
         if (fileLocalImage != null) {
             System.out.println( "File Image Path: " + fileLocalImage.toString());
             System.out.println( "Image Path Is File: " + fileLocalImage.isFile() );
             System.out.println( "Image Path Exists: " + fileLocalImage.exists());
         }
+        //*/
 
         if (bitmapDownloaded == null)
         {
@@ -133,7 +135,7 @@ public class AndroidImageDownload implements ImageDownload {
                     FileOutputStream streamFileOutput = null;
                     try
                     {
-                        System.out.println( "Image Path Is File: " + fileLocalImage.isFile() );
+                        //System.out.println( "Image Path Is File: " + fileLocalImage.isFile() );
                         
                         try { System.out.println( "MKDIR Image Path: " + fileLocalImage.mkdir() ); }
                         catch (SecurityException e) { System.out.println("Exception: " + e.toString() + "\n" + e.getMessage()); }
@@ -142,7 +144,7 @@ public class AndroidImageDownload implements ImageDownload {
                         if (imageBitmap.compress( Bitmap.CompressFormat.PNG, 100, streamFileOutput ))
                         {
                             //AltEgo.LogInfo( "downloadImage", "Stored downloaded bitmap as: " + fileLocalImage.getAbsolutePath() );
-                            System.out.println( "downloadImage -- Stored downloaded bitmap as: " + fileLocalImage.getAbsolutePath() );
+                            //System.out.println( "downloadImage -- Stored downloaded bitmap as: " + fileLocalImage.getAbsolutePath() );
                         }
                         else
                         {
@@ -181,7 +183,7 @@ public class AndroidImageDownload implements ImageDownload {
         System.out.println("ctx() null? " + (mPlatform.graphics().ctx() == null));
         System.out.println("bitmap null? " + (bitmapDownloaded == null));
         //*/
-        System.out.println("*******************");
+        //System.out.println("*******************");
         //if (callback != null && bitmapDownloaded != null) 
         try {
             callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));

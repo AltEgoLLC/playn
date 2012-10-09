@@ -37,7 +37,9 @@ public class Kontagent implements Analytics {
         String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&ts=" + timestamp;
         kontagentURLString = kontagentURLString.replace(" ", "_");
         
-        PlayN.net().get(kontagentURLString, null, 
+        if (this.userID != 9999)
+        {
+            PlayN.net().get(kontagentURLString, null, 
             new Callback<String>(){
 
             @Override
@@ -50,7 +52,9 @@ public class Kontagent implements Analytics {
                 PlayN.log().debug("analytics failed:" + cause);
             }
             }
-        );
+        ); 
+        }
+        
     }
 
     @Override
@@ -60,71 +64,151 @@ public class Kontagent implements Analytics {
         String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&n=" + label + "&ts=" + timestamp;
         kontagentURLString = kontagentURLString.replace(" ", "_");
         
-        PlayN.net().get(kontagentURLString, null, 
-            new Callback<String>(){
+        if (this.userID != 9999)
+        {
+            PlayN.net().get(kontagentURLString, null, 
+                new Callback<String>(){
 
-            @Override
-            public void onSuccess(String result) {
-                PlayN.log().debug("analytics success! :" + result);
-            }
+                @Override
+                public void onSuccess(String result) {
+                    PlayN.log().debug("analytics success! :" + result);
+                }
 
-            @Override
-            public void onFailure(Throwable cause) {
-                PlayN.log().debug("analytics failed:" + cause);
-            }
+                @Override
+                public void onFailure(Throwable cause) {
+                    PlayN.log().debug("analytics failed:" + cause);
+                }
 
-            }
-        );
+                }
+            );
+        }
     }
+    
     //For Kontagent custom events, here's parameter contrains
     // n < 32 chars
     // l = 0 to 255
     // st1, st2, st3 < 32 chars
     //Example1 : Ahri&st1=Pax&st2=Android&st3=Champion_Save
-    //Example2 :    ViewerScreen_sess_Ahri&st1=PAX&st2=Android&v=46&l=10
+    //Example2 :    ViewerScreen_sess_Ahri&st1=PAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXWERWERSDFSDFWEDFGDSFGAERDSFGDHF&st2=Android&v=46&l=10
     private static String trimParamters(String label)
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(label);
         String[] params = label.split("&");
         String output = "";
-        if (params[0].length() > 32)
+        String eventName = "";
+        String st1 = "";
+        String st2 = "";
+        String st3 = "";
+        String v = "";
+        String l = "";
+        String tmp;
+        int index;
+        
+        index = sb.indexOf("&");
+        
+        if (index>30)
         {
-           sb.append(params[0]); 
-           output += sb.substring(0,31);
-           //clear StringBuilder
-           sb.delete(0,sb.length()-1);
+            eventName = params[0];
+            eventName = eventName.substring(0, 30);
+            sb.delete(0,index);
+            output = eventName+sb.toString();
         }
-        else
-            output+=params[0];
-        String[] values = params[1].split("=");
-        if (values[0].equals("st1") && values[1].length() > 32)
-        {
-           sb.append(params[1]); 
-           output += "&" + sb.substring(0,31);
-           sb.delete(0,sb.length()-1);
-        }
-        else
-            output+="&" + params[1];
-        values = params[2].split("=");
-        if (values[0].equals("st2") && values[1].length() > 32)
-        {
-           sb.append(params[2]); 
-           output += "&" + sb.substring(0,31);
-        }
-        else
-            output+= "&" + params[2];
-//        for (String x : params)
+        else 
+            output = label;
+        
+        //TODO - validate other optional parameters
+        
+        
+//        eventName = params[0];
+//        if (eventName.length() > 30)
 //        {
-//            output+=x + "\n";
+//            eventName = eventName.substring(0, 30);
+//        }  
+        
+        
+//        index = label.lastIndexOf("&st1");
+//        if (index != -1)
+//        {
+//            tmp = label.substring(index);
+//            String[] tmpStrings = tmp.split("&");
+//            st1 = tmpStrings[1];
+//            tmpStrings = st1.split("=");
+//            st1 = tmpStrings[1];
+//        
+//            if (st1.length() > 30)
+//            {
+//                st1 = st1.substring(0, 30);
+//                st1 = "&st1=" + st1;
+//            }  
+//            else
+//                st1 = "&st1=" + st1;
 //        }
+//        
+//        index = label.lastIndexOf("&st2");
+//        if (index != -1)
+//        {
+//            tmp = label.substring(index);
+//            String[] tmpStrings = tmp.split("&");
+//            st2 = tmpStrings[1];
+//            tmpStrings = st2.split("=");
+//            st2 = tmpStrings[1];
+//        
+//            if (st2.length() > 30)
+//            {
+//                st2 = st2.substring(0, 30);
+//                st2 = "&st2=" + st2;
+//            }  
+//            else
+//                st2 = "&st2=" + st2;
+//        }
+//        
+//        index = label.lastIndexOf("&st3");
+//        if (index != -1)
+//        {
+//            tmp = label.substring(index);
+//            String[] tmpStrings = tmp.split("&");
+//            st3 = tmpStrings[1];
+//            tmpStrings = st3.split("=");
+//            st3 = tmpStrings[1];
+//        
+//            if (st3.length() > 30)
+//            {
+//                st3 = st3.substring(0, 30);
+//                st3 = "&st3=" + st3;
+//            }  
+//            else
+//                st3 = "&st3=" + st3;
+//        }
+//        //not currently validated here.....v must be a signed int
+//        index = label.lastIndexOf("&v");
+//        if (index != -1)
+//        {
+//            tmp = label.substring(index);
+//            String[] tmpStrings = tmp.split("&");
+//            v = tmpStrings[1];
+//            tmpStrings = v.split("=");
+//            v = "&v=" + tmpStrings[1];
+//        }
+//        //not currently validated here....l must be 
+//        index = label.lastIndexOf("&l");
+//        if (index != -1)
+//        {
+//            tmp = label.substring(index);
+//            String[] tmpStrings = tmp.split("&");
+//            l = tmpStrings[1];
+//            tmpStrings = l.split("=");
+//            l = "&l=" + tmpStrings[1];
+//        }
+        
+        
+//        output = eventName+params[1];
         return output;
     }
     
 public static void main(String[] args)
     {
-//        System.out.println(Kontagent.trimParamters("Ahri&st1=Pax&st2=Android&st3=Champion_Save"));
-        System.out.println(Kontagent.trimParamters("ViewerScreen_sess_Ahri_reallyLongStringTooLong&st1=PAX&st2=Android&v=46&l=10"));
-//        ViewerScreen_sess_Ahri&st1=PAX&st2=Android&v=46&l=10
+        System.out.println(Kontagent.trimParamters("Ahri&st1=Pax&st2=Android&st3=Champion_Save&v=14&l=3"));
+        System.out.println(Kontagent.trimParamters("PAXXXXXXXXXXXXXXWERWERWERWERWEXUSDFLKJSDF&st1=PAXXXXXXXXXXXXXXWERWERWERWERWERWERXXWERWERSDFSDFWEDFGDSFGAERDSFGDHF&st2=PAXXXXXXXXXXXXXXWERWERWERWERWERWERXXWERWERSDFSDFWEDFGDSFGAERDSFGDHF&st3=PAXXXXXXXXXXXXXXWERWERWERWERWERWERXXWERWERSDFSDFWEDFGDSFGAERDSFGDHF&v=46&l=10"));
         
     }
     

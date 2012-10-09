@@ -18,6 +18,7 @@ package playn.android;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.text.InputType;
+import android.util.Log;
 import android.widget.EditText;
 
 import playn.core.Keyboard;
@@ -42,61 +43,86 @@ public class AndroidKeyboard implements Keyboard {
     return false; // TODO: return true for devices that have a hardware keyboard
   }
 
-  @Override
-  public void getText(final TextType textType, final String label, final String initVal,
+    @Override
+    public void getText(final TextType textType, final String label, final String initVal,
       final Callback<String> callback) {
-    platform.activity.runOnUiThread(new Runnable() {
-      public void run () {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(platform.activity);
+        platform.activity.runOnUiThread(new Runnable() {
+            public void run () {
+                // Alert Dialog
+                //*//
+                final AlertDialog.Builder alert = new AlertDialog.Builder(platform.activity);
 
-        alert.setMessage(label);
+                alert.setMessage(label);
 
-        // Set an EditText view to get user input
-        final EditText input = new EditText(platform.activity);
-        final int inputType;
-        switch (textType) {
-        case NUMBER:
-            inputType = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED;
-            break;
-        case EMAIL:
-            inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS;
-            break;
-        case URL:
-            inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI;
-            break;
-        case DEFAULT:
-        default:
-            inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL;
-            break;
-        }
-        input.setInputType(inputType);
-        input.setText(initVal);
-        alert.setView(input);
+                // Set an EditText view to get user input
+                final EditText input = new EditText(platform.activity);
+                final int inputType;
+                switch (textType) {
+                case NUMBER:
+                    inputType = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED;
+                    break;
+                case EMAIL:
+                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS;
+                    break;
+                case URL:
+                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI;
+                    break;
+                case DEFAULT:
+                default:
+                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL;
+                    break;
+                }
+                input.setInputType(inputType);
+                input.setText(initVal);
+                alert.setView(input);
 
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            final String value = input.getText().toString();
-            platform.invokeLater(new Runnable() {
-              public void run() {
-                callback.onSuccess(value);
-              }
-            });
-          }
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    final String value = input.getText().toString();
+                    platform.invokeLater(new Runnable() {
+                    public void run() {
+                        callback.onSuccess(value);
+                    }
+                    });
+                }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    platform.invokeLater(new Runnable() {
+                    public void run() {
+                        callback.onSuccess(null);
+                    }
+                    });
+                }
+                });
+                alert.show();
+                /*/
+                
+                // EditText
+                final int inputType;
+                switch (textType) {
+                case NUMBER:
+                    inputType = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED;
+                    break;
+                case EMAIL:
+                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS;
+                    break;
+                case URL:
+                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI;
+                    break;
+                case DEFAULT:
+                default:
+                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL;
+                    break;
+                }
+                platform.activity.showEditText(inputType, initVal);
+                Log.i("AndroidKeyboard: ", "Callback Test");
+                callback.onSuccess(platform.activity.getEditText());
+                //*/
+            }
         });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            platform.invokeLater(new Runnable() {
-              public void run() {
-                callback.onSuccess(null);
-              }
-            });
-          }
-        });
-        alert.show();
-      }
-    });
-  }
+    }
 
   /*
    * The methods below are called from the GL render thread

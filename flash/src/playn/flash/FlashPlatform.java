@@ -286,6 +286,11 @@ public class FlashPlatform implements Platform {
     }
     
     @Override
+    public boolean isWebViewVisible() {
+        return false;
+    }
+    
+    @Override
     public void showAlertDialog(String message, String accept) {
         // unimplemented
     }
@@ -293,5 +298,15 @@ public class FlashPlatform implements Platform {
     @Override
     public void showAlertDialog(String message, String accept, Callback callback) {
         // unimplemented
+    }
+    
+    @Override
+    public void showSoftKeyboard() {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    @Override
+    public void hideSoftKeyboard() {
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 }

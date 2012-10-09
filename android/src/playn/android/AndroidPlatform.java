@@ -16,10 +16,12 @@
 package playn.android;
 
 import android.R;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
@@ -159,6 +161,11 @@ public class AndroidPlatform implements Platform {
     public void closeWebView() {
         activity.hideWebView();
     }
+    
+    @Override
+    public boolean isWebViewVisible() {
+        return activity.isWebViewVisible();
+    }
 
   @Override
   public void invokeLater(Runnable runnable) {
@@ -222,11 +229,13 @@ public class AndroidPlatform implements Platform {
   
     @Override
     public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
+        /*//
         PlayN.log().debug("Url: " + strUrl);
         PlayN.log().debug("Retries: " + intRetryCount);
         PlayN.log().debug("Delay (ms): " + longDelayMS);
         PlayN.log().debug("Callback null: " + (callback == null));
         PlayN.log().debug("imageDownload null: " + (imageDownload == null));
+        //*/
         return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
     }
     
@@ -262,4 +271,25 @@ public class AndroidPlatform implements Platform {
       else
           System.out.println("****************\nNo SD Card\n****************");
   }
+    
+    @Override
+    public void showSoftKeyboard() {
+        activity.runOnUiThread(new Runnable() {
+            public void run () {
+                InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInputFromWindow(activity.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+            }
+        });
+    }
+    
+    @Override
+    public void hideSoftKeyboard() {
+        activity.runOnUiThread(new Runnable() {
+            public void run () {
+                InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInputFromWindow(activity.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS, 0);
+                activity.hideEditText();
+            }
+        });
+    }
 }
