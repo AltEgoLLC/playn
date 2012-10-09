@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 package playn.html;
-
-import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.*;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.user.client.Window;
+
+import com.google.gwt.user.client.ui.TextBox;
+import playn.core.Layer;
+import com.google.gwt.user.client.ui.HTML;
+
+import com.google.gwt.user.client.DOM;
+//import com.google.gwt.user.client.Element;
+import playn.html.HtmlGroupLayerDom;
 
 import playn.core.Key;
 import playn.core.Keyboard;
@@ -85,7 +92,31 @@ class HtmlKeyboard implements Keyboard {
   @Override
   public void getText(TextType textType, String label, String initVal, Callback<String> callback) {
     //callback.onFailure(new UnsupportedOperationException("Not yet implemented."));
-      callback.onSuccess(Window.prompt(label, initVal));
+ //     callback.onSuccess(Window.prompt(label, initVal));
+
+
+    // Create a TextBox, giving it a name so that it will be submitted.
+    final TextBox tb = new TextBox();
+    tb.setName("textBoxFormElement");
+    
+
+    Document doc = Document.get();
+    
+    Element    rootElement = doc.getElementById("playn-root");
+    
+    if (rootElement == null) 
+    {
+      rootElement = doc.getBody();
+    }
+    tb.getElement().getStyle().setVisibility(Style.Visibility.VISIBLE);
+    tb.getElement().getStyle().setPosition(Style.Position.ABSOLUTE);
+    tb.getElement().getStyle().setTop(500, Style.Unit.PX);
+    tb.getElement().getStyle().setOverflow(Style.Overflow.VISIBLE);   
+    
+    rootElement.appendChild(tb.getElement());
+//    PlayN.graphics().rootLayer().add(gld);
+    callback.onSuccess(tb.getText());
+
   }
 
   private static Key keyForCode(int keyCode) {
