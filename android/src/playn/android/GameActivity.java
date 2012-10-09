@@ -298,7 +298,7 @@ public abstract class GameActivity extends Activity {
       //*/
       urlWebView = url;
       callbackURL = callback_url;
-      webView.setFocusableInTouchMode(true);
+      webView.requestFocus();
       showWebView.set(true);
   }    
   
