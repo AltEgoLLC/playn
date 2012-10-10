@@ -307,7 +307,7 @@ class HtmlKeyboard implements Keyboard {
         {
             if(mbTextBoxInitialized == false)
             {
-                PlayN.log().debug("INIT TEXT BOX");
+                //PlayN.log().debug("INIT TEXT BOX");
                 initTextBox(text, fontSize, xPos, yPos, width, height);
             }
         }
@@ -315,7 +315,7 @@ class HtmlKeyboard implements Keyboard {
         {
             if(mbTextAreaInitialized ==  false)
             {
-                PlayN.log().debug("INIT TEXT AREA");
+                //PlayN.log().debug("INIT TEXT AREA");
                 initTextArea(text, fontSize, xPos, yPos, width, height);
             }            
         }        
@@ -382,10 +382,6 @@ class HtmlKeyboard implements Keyboard {
     @Override
     public void hideText()
     {
-        if(mbTextBoxInitialized == false)
-        {
-            return;
-        }
         Document doc = Document.get();
         Element    rootElement = doc.getElementById("playn-root");
         if (rootElement == null) 
@@ -402,6 +398,7 @@ class HtmlKeyboard implements Keyboard {
             else if(mbTextAreaInitialized == true)
             {
                 rootElement.removeChild(mTextArea.getElement());
+                
                 mbTextAreaInitialized = false;
             }            
         }
@@ -411,6 +408,16 @@ class HtmlKeyboard implements Keyboard {
     
     @Override
     public String getText() {
-        return mTextBox.getText();
+            if(mbTextBoxInitialized == true)
+            {
+                return mTextBox.getText();
+            }
+            else if(mbTextAreaInitialized == true)
+            {
+                return mTextArea.getText();
+            }     
+            else
+                return null;
+        
     }
 }
