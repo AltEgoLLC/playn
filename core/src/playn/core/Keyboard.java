@@ -160,4 +160,8 @@ public interface Keyboard {
    * the text entry process, null will be supplied. Otherwise the entered text will be supplied.
    */
   void getText(TextType textType, String label, String initialValue, Callback<String> callback);
+  void setupText(String text, int fontSize, int xPos, int yPos, int width, int height, Boolean initialize, int textType);
+  String getText();
+  void hideText();
+  
 }

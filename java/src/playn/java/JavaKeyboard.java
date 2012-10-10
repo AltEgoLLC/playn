@@ -183,4 +183,20 @@ class JavaKeyboard implements playn.core.Keyboard {
 
     return null;
   }
+
+    @Override
+    public String getText() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void hideText() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void setupText(String text, int fontSize, int xPos, int yPos, int width, int height, Boolean initialize, int textType) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }
