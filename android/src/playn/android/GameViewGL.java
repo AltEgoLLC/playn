@@ -39,42 +39,50 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
   AndroidPlatform platform;
 
   private class AndroidRendererGL implements Renderer {
-    @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-      contextId++;
-      // EGLContext lost, so surfaces need to be rebuilt and redrawn.
-      if (platform != null) {
-        platform.graphics().ctx.onSurfaceCreated();
-      }
-    }
+        @Override
+        public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+            contextId++;
+            // EGLContext lost, so surfaces need to be rebuilt and redrawn.
+            if (platform != null) {
+                platform.graphics().ctx.onSurfaceCreated();
+            }
+        }
 
-    @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
-      gl20.glViewport(0, 0, width, height);
-      if (AndroidPlatform.DEBUG_LOGS)
-        Log.d("playn", "Surface dimensions changed to ( " + width + " , " + height + ")");
-    }
+        @Override
+        public void onSurfaceChanged(GL10 gl, int width, int height) {
+            gl20.glViewport(0, 0, width, height);
+            if (AndroidPlatform.DEBUG_LOGS)
+                Log.d("playn", "Surface dimensions changed to ( " + width + " , " + height + ")");
+        }
 
-    @Override
-    public void onDrawFrame(GL10 gl) {
-      // Wait until onDrawFrame to make sure all the metrics are in place at this point.
-      if (platform == null) {
-        platform = AndroidPlatform.register(gl20, activity);
-        activity.main();
-        loop = new GameLoop(platform);
-        loop.start();
-      }
-      // Handle updating, clearing the screen, and drawing
-      if (loop.running())
-        loop.run();
-    }
+        @Override
+        public void onDrawFrame(GL10 gl) {
+            // Wait until onDrawFrame to make sure all the metrics are in place at this point.
+            if (platform == null) {
+                platform = AndroidPlatform.register(gl20, activity);
+                activity.main();
+                loop = new GameLoop(platform);
+                loop.start();
+            }
+            // Handle updating, clearing the screen, and drawing
+            if (loop.running())
+                loop.run();
+        }
 
-    void onPause() {
-      if (platform != null) {
-        platform.graphics().ctx.onSurfaceLost();
-      }
+        void onPause() {
+            Log.d("PlayN_Android", "*****************************\nGameView GL Pause\n*****************************");
+            if (platform != null) {
+                platform.graphics().ctx.onSurfaceLost();
+            }
+
+            if (platform.graphics().ctx().quadShader(null) != null) {
+                platform.graphics().ctx().quadShader(null).clearProgram();
+            }
+            if (platform.graphics().ctx().trisShader(null) != null) {
+                platform.graphics().ctx().trisShader(null).clearProgram();
+            }
+        }
     }
-  }
 
   public GameViewGL(AndroidGL20 _gl20, GameActivity activity, Context context) {
     super(context);
@@ -128,6 +136,8 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
    */
   public void notifyVisibilityChanged(int visibility) {
     Log.i("playn", "notifyVisibilityChanged: " + visibility);
+    Log.d("PlayN_Android", "*****************************\n" + "notifyVisibilityChanged: " 
+            + visibility + "\n*****************************");
     if (visibility == INVISIBLE) {
       if (loop != null)
         loop.pause();
@@ -138,6 +148,14 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
       onResume();
     }
   }
+  
+  //*//
+    @Override
+  public void onResume() {
+      super.onResume();
+      if (platform != null) { platform.graphics().ctx.onSurfaceCreated(); }
+  }
+    //*/
 
   @Override
   public void onPause() {
@@ -145,6 +163,7 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
       // This method will be called on the rendering thread:
       @Override
       public void run() {
+          Log.d("PlayN_GameViewGL", "###########################\nRenderer Paused\n###########################");
         renderer.onPause();
       }
     });

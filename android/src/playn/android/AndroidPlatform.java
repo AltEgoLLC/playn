@@ -133,9 +133,9 @@ public class AndroidPlatform implements Platform {
   }
   
   @Override
-  public void openWebView(String url, String callback_url){
+  public void openWebView(final String url, final String callback_url){
       
-      PlayN.log().debug("Entering openUrlWithCallback");
+      //PlayN.log().debug("Entering openUrlWithCallback");
       /*
       LinearLayout layout = activity.viewLayout();
       WebView webView = new WebView(activity);
@@ -153,13 +153,23 @@ public class AndroidPlatform implements Platform {
           }
       });
       */
-      activity.showWebView(url, callback_url);
-      PlayN.log().debug("Leaving openUrlWithCallback");
+      //activity.showWebView(url, callback_url);
+      //PlayN.log().debug("Leaving openUrlWithCallback");
+      activity.runOnUiThread(new Runnable() {
+            public void run () {
+                activity.showWebView(url, callback_url);
+            }
+        });
   }
   
     @Override
     public void closeWebView() {
-        activity.hideWebView();
+        //activity.hideWebView();
+        activity.runOnUiThread(new Runnable() {
+            public void run () {
+                activity.hideWebView();
+            }
+        });
     }
     
     @Override
