@@ -23,6 +23,8 @@ import playn.core.Layer;
 import com.google.gwt.user.client.ui.HTML;
 
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.ValueBoxBase;
 //import com.google.gwt.user.client.Element;
 import playn.html.HtmlGroupLayerDom;
 
@@ -34,7 +36,11 @@ import playn.core.util.Callback;
 class HtmlKeyboard implements Keyboard {
 
   private Listener listener;
-
+  private Boolean mbTextBoxInitialized = false;
+  private Boolean mbTextAreaInitialized = false;
+  
+  private TextBox mTextBox = new TextBox();
+  private TextArea mTextArea = new TextArea();
   public void init() {
     // Key handlers.
     HtmlPlatform.captureEvent("keydown", new EventHandler() {
@@ -96,26 +102,9 @@ class HtmlKeyboard implements Keyboard {
 
 
     // Create a TextBox, giving it a name so that it will be submitted.
-    final TextBox tb = new TextBox();
-    tb.setName("textBoxFormElement");
-    
-
-    Document doc = Document.get();
-    
-    Element    rootElement = doc.getElementById("playn-root");
-    
-    if (rootElement == null) 
-    {
-      rootElement = doc.getBody();
-    }
-    tb.getElement().getStyle().setVisibility(Style.Visibility.VISIBLE);
-    tb.getElement().getStyle().setPosition(Style.Position.ABSOLUTE);
-    tb.getElement().getStyle().setTop(500, Style.Unit.PX);
-    tb.getElement().getStyle().setOverflow(Style.Overflow.VISIBLE);   
-    
-    rootElement.appendChild(tb.getElement());
+  
 //    PlayN.graphics().rootLayer().add(gld);
-    callback.onSuccess(tb.getText());
+    callback.onSuccess(mTextBox.getText());
 
   }
 
@@ -309,4 +298,126 @@ class HtmlKeyboard implements Keyboard {
   private static final int KEY_BACKSLASH = 220;
   private static final int KEY_CLOSE_BRACKET = 221;
   private static final int KEY_SINGLE_QUOTE = 222;
+
+    @Override
+    public void setupText(String text, int fontSize, int xPos, int yPos, int width, int height, Boolean initialize, int textType) {
+    if(initialize ==  true)
+      {
+        if(textType == 0)
+        {
+            if(mbTextBoxInitialized == false)
+            {
+                //PlayN.log().debug("INIT TEXT BOX");
+                initTextBox(text, fontSize, xPos, yPos, width, height);
+            }
+        }
+        else if(textType == 1)
+        {
+            if(mbTextAreaInitialized ==  false)
+            {
+                //PlayN.log().debug("INIT TEXT AREA");
+                initTextArea(text, fontSize, xPos, yPos, width, height);
+            }            
+        }        
+      }
+    }
+
+    public void initTextBox(String text, int fontSize, int xPos, int yPos, int width, int height)
+    {
+        mTextBox.setName("textBoxFormElement");
+
+
+        Document doc = Document.get();
+
+        Element    rootElement = doc.getElementById("playn-root");
+
+        if (rootElement == null) 
+        {
+        rootElement = doc.getBody();
+        }
+        
+        mTextBox.getElement().getStyle().setVisibility(Style.Visibility.VISIBLE);
+        mTextBox.getElement().getStyle().setPosition(Style.Position.ABSOLUTE);
+        mTextBox.getElement().getStyle().setFontSize(fontSize, Style.Unit.PX);
+        mTextBox.getElement().getStyle().setWidth(width, Style.Unit.PX);
+        mTextBox.getElement().getStyle().setHeight(height, Style.Unit.PX);
+        mTextBox.getElement().getStyle().setTop(yPos, Style.Unit.PX);
+        mTextBox.getElement().getStyle().setLeft(xPos, Style.Unit.PX);
+        mTextBox.getElement().getStyle().setVerticalAlign(Style.VerticalAlign.TOP);
+        //mTextBox.set
+        mTextBox.getElement().getStyle().setOverflow(Style.Overflow.AUTO);   
+        mTextBox.setText(text);
+        rootElement.appendChild(mTextBox.getElement());
+        //mTextBox.getElement().getStyle().setVisibility(Style.Visibility.HIDDEN);
+        mbTextBoxInitialized = true;        
+    }
+    
+    public void initTextArea(String text, int fontSize, int xPos, int yPos, int width, int height)
+    {
+        mTextArea.setName("textAreaFormElement");
+
+
+        Document doc = Document.get();
+
+        Element    rootElement = doc.getElementById("playn-root");
+
+        if (rootElement == null) 
+        {
+        rootElement = doc.getBody();
+        }
+        
+        mTextArea.getElement().getStyle().setVisibility(Style.Visibility.VISIBLE);
+        mTextArea.getElement().getStyle().setPosition(Style.Position.ABSOLUTE);
+        mTextArea.getElement().getStyle().setFontSize(fontSize, Style.Unit.PX);
+        mTextArea.getElement().getStyle().setWidth(width, Style.Unit.PX);
+        mTextArea.getElement().getStyle().setHeight(height, Style.Unit.PX);
+        mTextArea.getElement().getStyle().setTop(yPos, Style.Unit.PX);
+        mTextArea.getElement().getStyle().setLeft(xPos, Style.Unit.PX);
+        mTextArea.getElement().getStyle().setVerticalAlign(Style.VerticalAlign.TOP);
+        mTextArea.getElement().getStyle().setOverflow(Style.Overflow.AUTO);   
+        mTextArea.setText(text);
+        rootElement.appendChild(mTextArea.getElement());
+        mbTextAreaInitialized = true;          
+    }
+    @Override
+    public void hideText()
+    {
+        Document doc = Document.get();
+        Element    rootElement = doc.getElementById("playn-root");
+        if (rootElement == null) 
+        {
+            rootElement = doc.getBody();
+        }
+        if(rootElement.getChildCount() > 0)
+        {
+            if(mbTextBoxInitialized == true)
+            {
+                rootElement.removeChild(mTextBox.getElement());
+                mbTextBoxInitialized = false;
+            }
+            else if(mbTextAreaInitialized == true)
+            {
+                rootElement.removeChild(mTextArea.getElement());
+                
+                mbTextAreaInitialized = false;
+            }            
+        }
+                
+        
+    }
+    
+    @Override
+    public String getText() {
+            if(mbTextBoxInitialized == true)
+            {
+                return mTextBox.getText();
+            }
+            else if(mbTextAreaInitialized == true)
+            {
+                return mTextArea.getText();
+            }     
+            else
+                return null;
+        
+    }
 }
