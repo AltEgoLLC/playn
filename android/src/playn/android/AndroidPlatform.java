@@ -16,7 +16,9 @@
 package playn.android;
 
 import android.R;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -251,12 +253,35 @@ public class AndroidPlatform implements Platform {
     
     @Override
     public void showAlertDialog(String message, String accept) {
-        activity.showAlertDialog(message, accept);
+        showAlertDialog(message, accept, null);
     }
     
     @Override
-    public void showAlertDialog(String message, String accept, Callback callback) {
-        activity.showAlertDialog(message, accept, callback);
+    public void showAlertDialog(final String message, final String accept, final Callback callback) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run () {
+                String alertAccept = accept;
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                if (message != null && !message.equals("")) {
+                    builder.setTitle(message);
+                }
+                else {
+                    builder.setTitle("AltEgo broke something!");
+                    alertAccept = "OK";
+                }
+                builder.setNeutralButton(alertAccept, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (callback != null) {
+                            callback.onSuccess("success");
+                        }
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 
   void update(float delta) {

@@ -153,7 +153,7 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
     @Override
   public void onResume() {
       super.onResume();
-      if (platform != null) { platform.graphics().ctx.onSurfaceCreated(); }
+      //if (platform != null) { platform.graphics().ctx.onSurfaceCreated(); }
   }
     //*/
 
