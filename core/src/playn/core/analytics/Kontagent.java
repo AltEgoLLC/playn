@@ -37,7 +37,7 @@ public class Kontagent implements Analytics {
         String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&ts=" + timestamp;
         kontagentURLString = kontagentURLString.replace(" ", "_");
         
-        if (this.userID != 9999)
+        if (this.userID != 9999 && this.userID != 0)
         {
             PlayN.net().get(kontagentURLString, null, 
             new Callback<String>(){
@@ -64,7 +64,7 @@ public class Kontagent implements Analytics {
         String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&n=" + label + "&ts=" + timestamp;
         kontagentURLString = kontagentURLString.replace(" ", "_");
         
-        if (this.userID != 9999)
+        if (this.userID != 9999 && this.userID != 0)
         {
             PlayN.net().get(kontagentURLString, null, 
                 new Callback<String>(){
