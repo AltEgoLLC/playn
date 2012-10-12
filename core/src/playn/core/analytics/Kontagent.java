@@ -33,11 +33,18 @@ public class Kontagent implements Analytics {
         
         //timestamp = System.currentTimeMillis()/1000L;
         timestamp = System.currentTimeMillis();
+        String kontagentURLString;
         //timestamp = new Timestamp(System.currentTimeMillis());
-        String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&ts=" + timestamp;
+        if (label == null)
+        {
+            kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&ts=" + timestamp;
+        }
+        else
+            kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + label + "&ts=" + timestamp;
+            
         kontagentURLString = kontagentURLString.replace(" ", "_");
         
-        if (this.userID != 9999 && this.userID != 0)
+        if (this.userID != 9999 && this.userID != 0 && kontagentURLString != null)
         {
             PlayN.net().get(kontagentURLString, null, 
             new Callback<String>(){

@@ -91,6 +91,10 @@ public class PlayN {
     public static void showAlertDialog(String message, String accept, Callback callback) {
         platform.showAlertDialog(message, accept, callback);
     }
+    
+    public static String[] getPlatformInfo() {
+        return platform.getPlatformInfo();
+    }
 
   /**
    * Queues the supplied runnable for invocation on the game thread prior to the next call to

@@ -75,11 +75,16 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
                 platform.graphics().ctx.onSurfaceLost();
             }
 
-            if (platform.graphics().ctx().quadShader(null) != null) {
-                platform.graphics().ctx().quadShader(null).clearProgram();
+            try {
+                if (platform.graphics().ctx().quadShader(null) != null) {
+                    platform.graphics().ctx().quadShader(null).clearProgram();
+                }
+                if (platform.graphics().ctx().trisShader(null) != null) {
+                    platform.graphics().ctx().trisShader(null).clearProgram();
+                }
             }
-            if (platform.graphics().ctx().trisShader(null) != null) {
-                platform.graphics().ctx().trisShader(null).clearProgram();
+            catch (NullPointerException ex) {
+                Log.d("GameViewGL", "Null Exception: ", ex);
             }
         }
     }
