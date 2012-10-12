@@ -70,7 +70,7 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
         }
 
         void onPause() {
-            Log.d("PlayN_Android", "*****************************\nGameView GL Pause\n*****************************");
+            //Log.d("PlayN_Android", "*****************************\nGameView GL Pause\n*****************************");
             if (platform != null) {
                 platform.graphics().ctx.onSurfaceLost();
             }
@@ -135,9 +135,9 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
    * Input and lifecycle functions called by the UI thread.
    */
   public void notifyVisibilityChanged(int visibility) {
-    Log.i("playn", "notifyVisibilityChanged: " + visibility);
-    Log.d("PlayN_Android", "*****************************\n" + "notifyVisibilityChanged: " 
-            + visibility + "\n*****************************");
+    //Log.i("playn", "notifyVisibilityChanged: " + visibility);
+    //Log.d("PlayN_Android", "*****************************\n" + "notifyVisibilityChanged: " 
+         //   + visibility + "\n*****************************");
     if (visibility == INVISIBLE) {
       if (loop != null)
         loop.pause();
@@ -163,7 +163,7 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
       // This method will be called on the rendering thread:
       @Override
       public void run() {
-          Log.d("PlayN_GameViewGL", "###########################\nRenderer Paused\n###########################");
+          //Log.d("PlayN_GameViewGL", "###########################\nRenderer Paused\n###########################");
         renderer.onPause();
       }
     });
