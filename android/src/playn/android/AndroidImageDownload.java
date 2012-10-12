@@ -107,6 +107,11 @@ public class AndroidImageDownload implements ImageDownload {
                         //AltEgo.LogError( "downloadImage", "Exception occurred: ", ex.getMessage() );
                         System.out.println( "downloadImage -- Exception Occurred:\n" + ex.getMessage() );
                     }
+                    catch (Throwable e)
+                    {
+                        //AltEgo.LogError( "downloadImage", "Exception occurred: ", ex.getMessage() );
+                        System.out.println( "downloadImage -- Error/Exception Occurred:\n" + e.getMessage() );
+                    }
                     finally
                     {
                         if (connection != null)
@@ -251,7 +256,7 @@ public class AndroidImageDownload implements ImageDownload {
             }
         }
     }
-    
+     
     public File getCacheDirectory() {
         return m_fileCacheDirectory;
     }

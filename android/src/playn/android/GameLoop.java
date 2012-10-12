@@ -15,9 +15,9 @@
  */
 package playn.android;
 
-import static playn.core.PlayN.log;
-
+import android.util.Log;
 import java.util.concurrent.atomic.AtomicBoolean;
+import static playn.core.PlayN.log;
 
 public class GameLoop implements Runnable {
   private static final boolean LOG_FPS = false;
@@ -41,6 +41,7 @@ public class GameLoop implements Runnable {
 
   public void start() {
     if (!running.get()) {
+        Log.d("PlayN_Android", "*****************************\nGameLoop Start\n*****************************");
       if (AndroidPlatform.DEBUG_LOGS)
         log().debug("Starting game loop");
       this.updateRate = platform.game.updateRate();
@@ -49,6 +50,7 @@ public class GameLoop implements Runnable {
   }
 
   public void pause() {
+    Log.d("PlayN_Android", "*****************************\nGameLoop Pause\n*****************************");
     if (AndroidPlatform.DEBUG_LOGS)
       log().debug("Pausing game loop");
     running.set(false);

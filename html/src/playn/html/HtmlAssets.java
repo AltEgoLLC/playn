@@ -61,6 +61,7 @@ public class HtmlAssets extends AbstractCachingAssets {
     this.platform = platform;
   }
 
+
   public void addClientBundle(String regExp, AutoClientBundleWithLookup clientBundle) {
     clientBundles.put(regExp, clientBundle);
   }
@@ -275,4 +276,13 @@ public class HtmlAssets extends AbstractCachingAssets {
       elem.setAttribute('crossOrigin', state);
     }
   }-*/;
+
+    @Override
+    public String getPlatform() {
+        if (Window.Navigator.getUserAgent().indexOf("MSIE") != -1) 
+        {
+            return "MSIE";
+        }
+        return "";
+    }
 }

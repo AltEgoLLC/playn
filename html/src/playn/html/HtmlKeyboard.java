@@ -344,6 +344,10 @@ class HtmlKeyboard implements Keyboard {
         mTextBox.getElement().getStyle().setTop(yPos, Style.Unit.PX);
         mTextBox.getElement().getStyle().setLeft(xPos, Style.Unit.PX);
         mTextBox.getElement().getStyle().setVerticalAlign(Style.VerticalAlign.TOP);
+        
+        mTextBox.setFocus(true);
+        mTextBox.getElement().focus();
+        
         //mTextBox.set
         mTextBox.getElement().getStyle().setOverflow(Style.Overflow.AUTO);   
         mTextBox.setText(text);
@@ -376,6 +380,10 @@ class HtmlKeyboard implements Keyboard {
         mTextArea.getElement().getStyle().setVerticalAlign(Style.VerticalAlign.TOP);
         mTextArea.getElement().getStyle().setOverflow(Style.Overflow.AUTO);   
         mTextArea.setText(text);
+        
+        mTextArea.setFocus(true);
+        mTextArea.getElement().focus();
+        
         rootElement.appendChild(mTextArea.getElement());
         mbTextAreaInitialized = true;          
     }
