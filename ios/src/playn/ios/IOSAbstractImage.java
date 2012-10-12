@@ -130,7 +130,15 @@ public abstract class IOSAbstractImage extends ImageGL implements Image, IOSCanv
     bctx.DrawImage(new RectangleF(0, 0, iw*scaleX, ih*scaleY), cgImage);
     bctx.RestoreState();
   }
-
+  
+  @Override
+  protected void finalize() {
+  if (tex > 0)
+      ctx.queueDestroyTexture(tex);
+  if (reptex > 0)
+      ctx.queueDeleteFramebuffer(reptex);
+  }
+    
   @Override
   public Image transform(BitmapTransformer xform) {
     UIImage ximage = new UIImage(((IOSBitmapTransformer) xform).transform(cgImage()));
