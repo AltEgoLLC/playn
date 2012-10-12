@@ -135,4 +135,9 @@ public class JavaAssets extends AbstractAssets {
     }
     return url;
   }
+
+    @Override
+    public String getPlatform() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
