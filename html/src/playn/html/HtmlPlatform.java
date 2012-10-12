@@ -457,7 +457,7 @@ public class HtmlPlatform implements Platform {
     public void showAlertDialog(String message, String accept, Callback callback) {
         boolean success = Window.confirm(message);
         if (success)    { callback.onSuccess("success"); }
-        else            { callback.onSuccess("success"); }
+        else            { callback.onFailure(new Throwable("cancelled")); }
     }
     
     @Override
@@ -469,4 +469,10 @@ public class HtmlPlatform implements Platform {
     public void hideSoftKeyboard() {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    @Override
+    public String[] getPlatformInfo() {
+        return null;
+    }
+    
 }

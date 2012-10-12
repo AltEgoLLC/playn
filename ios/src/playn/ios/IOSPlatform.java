@@ -396,4 +396,9 @@ public class IOSPlatform implements Platform {
     public void hideSoftKeyboard() {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    @Override
+    public String[] getPlatformInfo() {
+        return null;
+    }
 }

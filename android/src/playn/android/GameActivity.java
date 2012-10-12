@@ -247,7 +247,7 @@ public abstract class GameActivity extends Activity {
    */
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent nativeEvent) {
-      Log.i("GameActivity", "Keycode: " + keyCode);
+      //Log.i("GameActivity", "Keycode: " + keyCode);
       
     long time = nativeEvent.getEventTime();
     Keyboard.Event event = new Keyboard.Event.Impl(time, keyForCode(keyCode));
@@ -338,7 +338,7 @@ public abstract class GameActivity extends Activity {
                 + (urlWebView != null));
         //*/
         if(webView != null && showWebView.get() && urlWebView != null) {
-            Log.i("GameActivity", "Updating WebView -- " + urlWebView);
+            //Log.i("GameActivity", "Updating WebView -- " + urlWebView);
             showWebView.set(false);
             webView.setVisibility(View.VISIBLE);
             webView.loadUrl(urlWebView);
@@ -346,7 +346,7 @@ public abstract class GameActivity extends Activity {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageFinished(WebView view, String url) {
-                    Log.i("GameActivity", "Completed WebView at url " + url);
+                    //Log.i("GameActivity", "Completed WebView at url " + url);
                     
                     //HACK -- this can't be hard coded
                      if (url.contains(callbackURL)) {
@@ -635,14 +635,14 @@ public abstract class GameActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.d("GameActivity", "##########################\nonConfigurationChanged");
+        //Log.d("GameActivity", "##########################\nonConfigurationChanged");
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             //Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
-            Log.d("GameActivity", "Landscape");
+            //Log.d("GameActivity", "Landscape");
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
             //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
-            Log.d("GameActivity", "Portrait");
+            //Log.d("GameActivity", "Portrait");
         }
-        Log.d("GameActivity", "##########################");
+        //Log.d("GameActivity", "##########################");
     }
 }
