@@ -353,4 +353,9 @@ public class JavaPlatform implements Platform {
     public void hideSoftKeyboard() {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    @Override
+    public String[] getPlatformInfo() {
+        return null;
+    }
 }

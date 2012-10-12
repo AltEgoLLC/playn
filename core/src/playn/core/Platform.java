@@ -85,4 +85,6 @@ public interface Platform {
   public void showSoftKeyboard();
   
   public void hideSoftKeyboard();
+  
+  public String[] getPlatformInfo();
 }

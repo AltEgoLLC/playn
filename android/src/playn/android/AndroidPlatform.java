@@ -327,4 +327,18 @@ public class AndroidPlatform implements Platform {
             }
         });
     }
+    
+    @Override
+    public String[] getPlatformInfo() {
+        String[] info = {
+            System.getProperty("os.version"),
+            android.os.Build.VERSION.INCREMENTAL,
+            android.os.Build.VERSION.SDK,
+            android.os.Build.DEVICE,
+            android.os.Build.MODEL,
+            android.os.Build.PRODUCT,
+            android.os.Build.MANUFACTURER
+        };
+        return info;
+    }
 }
