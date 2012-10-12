@@ -54,4 +54,6 @@ public interface Assets {
    * Return how many assets have not yet been loaded or errored out
    */
   int getPendingRequestCount();
+  
+  String getPlatform();
 }

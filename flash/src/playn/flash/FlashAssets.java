@@ -146,4 +146,9 @@ public class FlashAssets extends AbstractCachingAssets {
        flash.external.ExternalInterface.call("window.console.log", "Can't load " + path + " because " + error);
      }
   }-*/;
+
+    @Override
+    public String getPlatform() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

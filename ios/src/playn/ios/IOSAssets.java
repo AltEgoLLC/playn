@@ -118,4 +118,9 @@ public class IOSAssets implements Assets {
   public int getPendingRequestCount() {
     return 0; // nothing is async
   }
+
+    @Override
+    public String getPlatform() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

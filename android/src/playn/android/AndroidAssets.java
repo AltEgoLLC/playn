@@ -207,6 +207,11 @@ public class AndroidAssets extends AbstractAssets {
     }
   }
 
+    @Override
+    public String getPlatform() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
   public abstract static class DownloaderTask<T> extends AsyncTask<String, Void, T> {
     private ResourceCallback<T> callback;
 
