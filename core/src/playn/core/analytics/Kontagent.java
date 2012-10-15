@@ -99,9 +99,13 @@ public class Kontagent implements Analytics {
     //Example2 :    ViewerScreen_sess_Ahri&st1=PAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXWERWERSDFSDFWEDFGDSFGAERDSFGDHF&st2=Android&v=46&l=10
     private static String trimParamters(String label)
     {
+        
+        String output = ""; 
+        if (label != null)
+        {
+            
         StringBuilder sb = new StringBuilder(label);
         String[] params = label.split("&");
-        String output = "";
         String eventName = "";
         String st1 = "";
         String st2 = "";
@@ -209,6 +213,8 @@ public class Kontagent implements Analytics {
         
         
 //        output = eventName+params[1];
+        
+        }
         return output;
     }
     
