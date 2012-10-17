@@ -29,7 +29,9 @@ import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -340,5 +342,18 @@ public class AndroidPlatform implements Platform {
             android.os.Build.MANUFACTURER
         };
         return info;
+    }
+    
+    @Override
+    public String urlEncode(String str) {
+        String url = str;
+        try {
+            url = URLEncoder.encode(url, "UTF-8");
+            //URL
+        } catch (UnsupportedEncodingException ex) {
+            PlayN.log().error("Url Encoding Exception: ", ex);
+            url = URLEncoder.encode(str);
+        }
+        return url;
     }
 }

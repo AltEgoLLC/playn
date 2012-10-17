@@ -95,6 +95,10 @@ public class PlayN {
     public static String[] getPlatformInfo() {
         return platform.getPlatformInfo();
     }
+    
+    public static String urlEncode(String str) {
+        return platform.urlEncode(str);
+    }
 
   /**
    * Queues the supplied runnable for invocation on the game thread prior to the next call to

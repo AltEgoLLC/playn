@@ -19,6 +19,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import java.io.File;
 import java.io.IOException;
@@ -473,6 +474,13 @@ public class HtmlPlatform implements Platform {
     @Override
     public String[] getPlatformInfo() {
         return null;
+    }
+    
+    @Override
+    public String urlEncode(String str) {
+        String url = str;
+        url = URL.encode(url);
+        return url;
     }
     
 }

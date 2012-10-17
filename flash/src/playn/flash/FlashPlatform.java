@@ -314,4 +314,11 @@ public class FlashPlatform implements Platform {
     public String[] getPlatformInfo() {
         return null;
     }
+    
+    @Override
+    public String urlEncode(String str) {
+        String url = str;
+        
+        return url;
+    }
 }

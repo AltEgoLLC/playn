@@ -16,7 +16,9 @@
 package playn.java;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -357,5 +359,18 @@ public class JavaPlatform implements Platform {
     @Override
     public String[] getPlatformInfo() {
         return null;
+    }
+    
+    @Override
+    public String urlEncode(String str) {
+        String url = str;
+        try {
+            url = URLEncoder.encode(url, "UTF-8");
+            //URL
+        } catch (UnsupportedEncodingException ex) {
+            PlayN.log().error("Url Encoding Exception: ", ex);
+            url = URLEncoder.encode(str);
+        }
+        return url;
     }
 }
