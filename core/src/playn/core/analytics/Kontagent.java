@@ -21,11 +21,19 @@ public class Kontagent implements Analytics {
     private final String apiKey;
     private int userID;
     private long timestamp;
+    private final String testServerURL = "test-server.kontagent.com/api/v1/";
+    private final String prodServerURL = "api.geo.kontagent.net/api/v1/";
+    private String kontagentURL;
     
-    public Kontagent(String apiKeyInput, int userIDInput)
+    public Kontagent(String apiKeyInput, int userIDInput, boolean sendToTestServer)
     {
         this.apiKey = apiKeyInput;
         this.userID = userIDInput;
+        
+        if (sendToTestServer)
+            kontagentURL = testServerURL;
+        else
+            kontagentURL = prodServerURL;
     }
     
     @Override
@@ -37,10 +45,10 @@ public class Kontagent implements Analytics {
         //timestamp = new Timestamp(System.currentTimeMillis());
         if (label == null)
         {
-            kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&ts=" + timestamp;
+            kontagentURLString = "http://" + kontagentURL + this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&ts=" + timestamp;
         }
         else
-            kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + label + "&ts=" + timestamp;
+            kontagentURLString = "http://" + kontagentURL + this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + label + "&ts=" + timestamp;
             
         kontagentURLString = kontagentURLString.replace(" ", "_");
         
@@ -68,7 +76,7 @@ public class Kontagent implements Analytics {
     public void logEvent(Category category, String action, String label, int value) {
 //        long timestamp = System.currentTimeMillis()/1000L;
         timestamp = System.currentTimeMillis();
-        String kontagentURLString = "http://api.geo.kontagent.net/api/v1/"+ this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&n=" + label + "&ts=" + timestamp;
+        String kontagentURLString = "http://" + kontagentURL + this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&n=" + label + "&ts=" + timestamp;
         kontagentURLString = kontagentURLString.replace(" ", "_");
         
         if (this.userID != 9999 && this.userID != 0)
