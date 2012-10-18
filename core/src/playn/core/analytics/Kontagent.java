@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import playn.core.Analytics;
+import playn.core.Platform;
 import playn.core.PlayN;
 import playn.core.util.Callback;
 
@@ -42,18 +43,30 @@ public class Kontagent implements Analytics {
         //timestamp = System.currentTimeMillis()/1000L;
         timestamp = System.currentTimeMillis();
         String kontagentURLString;
+        String parameterURLString;
         //timestamp = new Timestamp(System.currentTimeMillis());
         if (label == null)
         {
-            kontagentURLString = "http://" + kontagentURL + this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&ts=" + timestamp;
+            parameterURLString = this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&ts=" + timestamp;
+            kontagentURLString = "http://" + kontagentURL + parameterURLString;//this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&ts=" + timestamp;
         }
         else
-            kontagentURLString = "http://" + kontagentURL + this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + label + "&ts=" + timestamp;
-            
+        {
+            parameterURLString = this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + label + "&ts=" + timestamp;
+            kontagentURLString = "http://" + kontagentURL + parameterURLString;//this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + label + "&ts=" + timestamp;
+        }
         kontagentURLString = kontagentURLString.replace(" ", "_");
         
+        if (PlayN.platformType().equals(Platform.Type.HTML)) 
+        {   
+            if (PlayN.assets().getPlatform().contains("MSIE"))
+            {        
+                kontagentURLString = "http://slipstream-dev.altego.com/analytics.php?url="+kontagentURL+parameterURLString;//"http://rps-stage.altego.com/killswitch.php";//http://slipstream-dev.altego.com/test.php";
+            }
+        }
         if (this.userID != 9999 && this.userID != 0 && kontagentURLString != null)
         {
+            
             PlayN.net().get(kontagentURLString, null, 
             new Callback<String>(){
 
@@ -76,9 +89,17 @@ public class Kontagent implements Analytics {
     public void logEvent(Category category, String action, String label, int value) {
 //        long timestamp = System.currentTimeMillis()/1000L;
         timestamp = System.currentTimeMillis();
-        String kontagentURLString = "http://" + kontagentURL + this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&n=" + label + "&ts=" + timestamp;
+        String parameterURLString = this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&n=" + label + "&ts=" + timestamp;
+        String kontagentURLString = "http://" + kontagentURL + parameterURLString;//this.apiKey + "/" + category.getCategory().toString() + "/?s=" + this.userID + "&n=" + label + "&ts=" + timestamp;
         kontagentURLString = kontagentURLString.replace(" ", "_");
-        
+
+        if (PlayN.platformType().equals(Platform.Type.HTML)) 
+        {   
+            if (PlayN.assets().getPlatform().contains("MSIE"))
+            {
+                kontagentURLString = "http://slipstream-dev.altego.com/analytics.php?url=" + kontagentURL + parameterURLString;
+            }
+        }
         if (this.userID != 9999 && this.userID != 0)
         {
             PlayN.net().get(kontagentURLString, null, 
