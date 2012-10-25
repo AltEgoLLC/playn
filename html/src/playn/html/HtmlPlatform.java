@@ -473,7 +473,17 @@ public class HtmlPlatform implements Platform {
     
     @Override
     public String[] getPlatformInfo() {
+        //String array[] = { Window.Location.getParameter("foo") };
         return null;
+    }
+    
+    @Override
+    public String[] getPlatformInfo(String[] ra) {
+        String array[] = new String[ra.length];
+        for (int ii = 0; ii < ra.length; ii++) {
+            array[ii] = Window.Location.getParameter(ra[ii]);
+        }
+        return array;
     }
     
     @Override

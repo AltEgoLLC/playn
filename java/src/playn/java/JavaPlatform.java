@@ -362,6 +362,11 @@ public class JavaPlatform implements Platform {
     }
     
     @Override
+    public String[] getPlatformInfo(String[] ra) {
+        return null;
+    }
+    
+    @Override
     public String urlEncode(String str) {
         String url = str;
         try {

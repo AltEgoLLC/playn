@@ -88,5 +88,7 @@ public interface Platform {
   
   public String[] getPlatformInfo();
   
+  public String[] getPlatformInfo(String[] ra);
+  
   public String urlEncode(String str);
 }

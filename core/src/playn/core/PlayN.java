@@ -96,6 +96,10 @@ public class PlayN {
         return platform.getPlatformInfo();
     }
     
+    public static String[] getPlatformInfo(String[] ra) {
+        return platform.getPlatformInfo(ra);
+    }
+    
     public static String urlEncode(String str) {
         return platform.urlEncode(str);
     }

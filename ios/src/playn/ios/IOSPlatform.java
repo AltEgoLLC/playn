@@ -401,4 +401,9 @@ public class IOSPlatform implements Platform {
     public String[] getPlatformInfo() {
         return null;
     }
+    
+    @Override
+    public String[] getPlatformInfo(String[] ra) {
+        return null;
+    }
 }
