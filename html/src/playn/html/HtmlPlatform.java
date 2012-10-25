@@ -20,7 +20,13 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -316,12 +322,29 @@ public class HtmlPlatform implements Platform {
    * @see playn.core.Platform#openURL(java.lang.String)
    */
   @Override
-  public void openURL(String url) {
-    Window.open(url, "_blank", "");
+  public void openURL(final String url) {  
+/*
+    ClickListener testclick = new ClickListener() {
+
+            @Override
+            public void onClick(Widget sender) {
+                PlayN.log().debug("ON CLICK!");
+                Window.open(url, "_blank", "");  
+            }
+        };
+    testclick.onClick(null);
+    */
+    Window.open(url, "_self", "");   
+    //PlayN.log().debug("height: " + Window.getClientHeight());
+    
   }
   
   @Override
   public void openWebView(String url, String callback_url){
+      //PlayN.log().debug("WEBVIEW URL: " + url);
+
+      //String redirectURL = "http://slipstream-dev.altego.com/redirect.php?url="+url;
+      //PlayN.log().debug("REDIRECT URL: " + redirectURL);
       this.openURL(url);
   }
 
