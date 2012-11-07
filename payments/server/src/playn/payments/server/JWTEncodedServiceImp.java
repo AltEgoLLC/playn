@@ -28,6 +28,8 @@ import playn.payments.core.InAppPayments.PurchaseRequest;
 
 import com.google.gson.JsonObject;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @SuppressWarnings("serial")
 public class JWTEncodedServiceImp extends RemoteServiceServlet implements JWTEncodedService {
@@ -114,21 +116,28 @@ public class JWTEncodedServiceImp extends RemoteServiceServlet implements JWTEnc
   public String encodeJWT(String iat, String exp, PurchaseRequest.Serialized request)
       throws IllegalArgumentException, NullPurchaseMetaDataException {
     if (aud == null)
-      aud = getServletConfig().getInitParameter("aud");
-    checkMetaData(aud);
+//      aud = getServletConfig().getInitParameter("aud");
+      aud = "Google";
+    
+//    checkMetaData(aud);
     
     if (iss == null)
-      iss = getServletConfig().getInitParameter("iss");
-    checkMetaData(iss);
+//      iss = getServletConfig().getInitParameter("iss");
+      iss = "05953764402516333917";
+    
+//    checkMetaData(iss);
     
     if (typ == null)
-      typ = getServletConfig().getInitParameter("typ");
-    checkMetaData(typ);
+//      typ = getServletConfig().getInitParameter("typ");
+      typ = "google/payments/inapp/item/v1";
+    
+//    checkMetaData(typ);
     
     if (secret == null) 
-      secret = getServletConfig().getInitParameter("secret");
-    checkMetaData(secret);
-    
+      //secret = getServletConfig().getInitParameter("secret");
+      secret = "yMETnIRg3x2NrKY3UDY6cw";
+//    checkMetaData(secret);
+    Logger.getLogger( JWTEncodedServiceImp.class.getName() ).log( Level.INFO, "In JWTEncodedServiceImp" );
     String jwt = null;
     PurchaseRequest req = new PurchaseRequest.Impl(request);
     try {
