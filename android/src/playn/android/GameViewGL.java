@@ -73,8 +73,16 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
             //Log.d("PlayN_Android", "*****************************\nGameView GL Pause\n*****************************");
             if (platform != null) {
                 platform.graphics().ctx.onSurfaceLost();
+                
+                if (platform.graphics().ctx().quadShader(null) != null) {
+                    platform.graphics().ctx().quadShader(null).clearProgram();
+                }
+                if (platform.graphics().ctx().trisShader(null) != null) {
+                    platform.graphics().ctx().trisShader(null).clearProgram();
+                }
             }
 
+            /*//
             try {
                 if (platform.graphics().ctx().quadShader(null) != null) {
                     platform.graphics().ctx().quadShader(null).clearProgram();
@@ -86,6 +94,7 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
             catch (NullPointerException ex) {
                 Log.d("GameViewGL", "Null Exception: ", ex);
             }
+            //*/
         }
     }
 

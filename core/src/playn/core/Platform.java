@@ -87,4 +87,8 @@ public interface Platform {
   public void hideSoftKeyboard();
   
   public String[] getPlatformInfo();
+  
+  public String[] getPlatformInfo(String[] ra);
+  
+  public String urlEncode(String str);
 }

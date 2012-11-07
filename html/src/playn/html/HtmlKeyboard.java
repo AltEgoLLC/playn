@@ -23,8 +23,7 @@ import playn.core.Layer;
 import com.google.gwt.user.client.ui.HTML;
 
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.ValueBoxBase;
+import com.google.gwt.user.client.ui.*;
 //import com.google.gwt.user.client.Element;
 import playn.html.HtmlGroupLayerDom;
 
@@ -358,8 +357,16 @@ class HtmlKeyboard implements Keyboard {
     
     public void initTextArea(String text, int fontSize, int xPos, int yPos, int width, int height)
     {
+        /*
+        // Make a new frame, and point it at Google.
+        Frame frame = new Frame("http://www.google.com/");
+
+        // Add it to the root panel.
+        RootPanel.get().add(frame);
+        */
         mTextArea.setName("textAreaFormElement");
 
+        
 
         Document doc = Document.get();
 
