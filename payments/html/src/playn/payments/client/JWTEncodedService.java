@@ -17,6 +17,7 @@ package playn.payments.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import playn.core.PlayN;
 import playn.payments.core.InAppPayments.PurchaseRequest;
 
 @RemoteServiceRelativePath("encodejwt")

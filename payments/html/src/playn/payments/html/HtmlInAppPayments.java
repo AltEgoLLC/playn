@@ -18,6 +18,7 @@ package playn.payments.html;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import playn.core.PlayN;
 
 import playn.payments.client.JWTEncodedService;
 import playn.payments.client.JWTEncodedServiceAsync;
@@ -49,7 +50,7 @@ public class HtmlInAppPayments implements InAppPayments {
 
       @Override
       public void onSuccess(String result) {
-        encodeJWTCallback.successHandler(result);
+          encodeJWTCallback.successHandler(result);
       }
       
     });
@@ -65,13 +66,14 @@ public class HtmlInAppPayments implements InAppPayments {
     invokeGoogleIAPService(this, purchaseInformation);
   }
 
-  private native void invokeGoogleIAPService(HtmlInAppPayments payments, String purchaseInformation) /*-{
+  private native void invokeGoogleIAPService(HtmlInAppPayments pay1, String purchaseInformation) 
+      /*-{
 		onSuccess = function(result) {
-			payments.@playn.payments.html.HtmlInAppPayments::onSuccess(Lplayn/payments/html/HtmlInAppPayments$PurchaseResponseJSObject;)(result);
+			pay1.@playn.payments.html.HtmlInAppPayments::onSuccess(Lplayn/payments/html/HtmlInAppPayments$PurchaseResponseJSObject;)(result);
 		};
 
 		onFailure = function(result) {
-			payments.@playn.payments.html.HtmlInAppPayments::onFailure(Lplayn/payments/html/HtmlInAppPayments$PurchaseResponseJSObject;)(result);
+			pay1.@playn.payments.html.HtmlInAppPayments::onFailure(Lplayn/payments/html/HtmlInAppPayments$PurchaseResponseJSObject;)(result);
 		};
 
 		$wnd.goog.payments.inapp.buy({
@@ -79,7 +81,8 @@ public class HtmlInAppPayments implements InAppPayments {
 			'success' : onSuccess,
 			'failure' : onFailure
 		});
-  }-*/;
+  }-*/
+          ;
 
   @Override
   public void setCallback(PurchaseCallback callback) {
