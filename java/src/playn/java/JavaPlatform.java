@@ -378,4 +378,9 @@ public class JavaPlatform implements Platform {
         }
         return url;
     }
+    
+    @Override
+    public void doPayment(String externalTransID, int uid, String paymentSystem, int[] items, Callback callback)
+    {
+    }    
 }
