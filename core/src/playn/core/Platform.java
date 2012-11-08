@@ -91,4 +91,7 @@ public interface Platform {
   public String[] getPlatformInfo(String[] ra);
   
   public String urlEncode(String str);
+  
+  public void doPayment(String externalTransID, int uid, String paymentSystem, int[] items, Callback callback);
+
 }
