@@ -30,11 +30,14 @@ import com.google.gwt.user.client.ui.Widget;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Date;
 
 import playn.core.*;
 import playn.core.util.Callback;
 import playn.core.util.RunQueue;
 import playn.html.HtmlUrlParameters.Renderer;
+import playn.payments.core.InAppPayments;
+import playn.payments.core.InAppPaymentsFactory;
 
 public class HtmlPlatform implements Platform {
 
@@ -163,6 +166,9 @@ public class HtmlPlatform implements Platform {
 
   private static AgentInfo agentInfo = computeAgentInfo();
 
+  private static String purchaseJWT = null;
+  private InAppPayments inappPayments = null;
+  
   protected HtmlPlatform(Mode mode) {
     if (!GWT.isProdMode()) {
       log.info("You are running in GWT Development Mode. "
@@ -193,6 +199,7 @@ public class HtmlPlatform implements Platform {
     analytics.init();
     audio.init();
     keyboard.init();
+    inappPayments = InAppPaymentsFactory.payments();    
   }
 
   @Override
@@ -516,4 +523,56 @@ public class HtmlPlatform implements Platform {
         return url;
     }
     
+    @Override
+    public void doPayment(String externalTransID, int uid, String paymentSystem, int[] items, final Callback callback)
+    {
+
+        Date cal = new Date();
+        String iat = String.valueOf(cal.getTime());
+        long oneday = 3600000L;
+        String exp = String.valueOf(cal.getTime() + oneday);
+        String extraInfo = "userid:" + Integer.toString(uid) + ",paymentsystem:" + paymentSystem + ",objectid:56";
+        InAppPayments.PurchaseRequest request = new InAppPayments.PurchaseRequest.Impl("itemName", "itemDescription", "itemPrice", "itemCurrency", extraInfo);
+
+        inappPayments.encodeJWT(iat, exp, request, new InAppPayments.EncodeJWTCallback() {
+        @Override
+        public void successHandler(String JWT) {
+            purchaseJWT = JWT;
+            PlayN.log().info("Product is JWT encoded");
+            inappPayments.setCallback(new InAppPayments.Adapter() {
+                @Override
+                public void successHandler(InAppPayments.PurchaseResponse result) {
+                PlayN.log().info("Big Congratulation: you get your products!!!");
+                PlayN.log().info("jwt:" + result.jwt());
+                PlayN.log().info("orderId:" + result.orderId());
+                PlayN.log().info("request.name:" + result.request().name());
+                PlayN.log().info("request.description:" + result.request().description());
+                PlayN.log().info("request.currencycode:" + result.request().currencyCode());
+                PlayN.log().info("request.price:" + result.request().price());
+                PlayN.log().info("request.sellerData:" + result.request().sellerData());
+                if (callback != null)
+                    callback.onSuccess(result);
+                }
+
+                @Override
+                public void failureHandler(InAppPayments.PurchaseResponse result) {
+                PlayN.log().warn("It is bad: you could not get your products!!!");
+                PlayN.log().warn("jwt:" + result.jwt());
+                PlayN.log().warn("request.name:" + result.request().name());
+                PlayN.log().warn("request.description:" + result.request().description());
+                PlayN.log().warn("request.currencycode:" + result.request().currencyCode());
+                PlayN.log().warn("request.price:" + result.request().price());
+                PlayN.log().warn("request.sellerData:" + result.request().sellerData());
+                }
+            });
+            inappPayments.buy(purchaseJWT);        
+        }
+
+        @Override
+        public void failureHandler(String error) {
+            PlayN.log().error(error);
+        }
+        });
+
+    }    
 }
