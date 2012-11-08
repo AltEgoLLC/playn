@@ -26,9 +26,11 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -37,11 +39,16 @@ import android.view.*;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import playn.android.billing.BillingService;
+import playn.android.billing.Consts;
+import playn.android.billing.Consts.PurchaseState;
+import playn.android.billing.Consts.ResponseCode;
+import playn.android.billing.PurchaseDatabase;
+import playn.android.billing.PurchaseObserver;
 import playn.core.util.Callback;
 
 /**
@@ -645,4 +652,159 @@ public abstract class GameActivity extends Activity {
         }
         //Log.d("GameActivity", "##########################");
     }
+    
+    
+    /// Purchasing ///
+    /*/
+    private static final String TAG = "Dungeons";
+
+    /**
+     * Used for storing the log text.
+     * /
+    private static final String LOG_TEXT_KEY = "DUNGEONS_LOG_TEXT";
+
+    /**
+     * The SharedPreferences key for recording whether we initialized the
+     * database.  If false, then we perform a RestoreTransactions request
+     * to get all the purchases for this user.
+     * /
+    private static final String DB_INITIALIZED = "db_initialized";
+
+    private DungeonsPurchaseObserver mDungeonsPurchaseObserver;
+    private Handler mHandler;
+
+    private BillingService mBillingService;
+    private Button mBuyButton;
+    private Button mEditPayloadButton;
+    private Button mEditSubscriptionsButton;
+    private TextView mLogTextView;
+    //private Spinner mSelectItemSpinner;
+    private ListView mOwnedItemsTable;
+    private SimpleCursorAdapter mOwnedItemsAdapter;
+    private PurchaseDatabase mPurchaseDatabase;
+    private Cursor mOwnedItemsCursor;
+    private Set<String> mOwnedItems = new HashSet<String>();
+
+    /**
+     * The developer payload that is sent with subsequent
+     * purchase requests.
+     * /
+    private String mPayloadContents = null;
+
+    private static final int DIALOG_CANNOT_CONNECT_ID = 1;
+    private static final int DIALOG_BILLING_NOT_SUPPORTED_ID = 2;
+    private static final int DIALOG_SUBSCRIPTIONS_NOT_SUPPORTED_ID = 3;
+
+    /**
+     * Each product in the catalog can be MANAGED, UNMANAGED, or SUBSCRIPTION.  MANAGED
+     * means that the product can be purchased only once per user (such as a new
+     * level in a game). The purchase is remembered by Android Market and
+     * can be restored if this application is uninstalled and then
+     * re-installed. UNMANAGED is used for products that can be used up and
+     * purchased multiple times (such as poker chips). It is up to the
+     * application to keep track of UNMANAGED products for the user.
+     * SUBSCRIPTION is just like MANAGED except that the user gets charged monthly
+     * or yearly.
+     * /
+    private enum Managed { MANAGED, UNMANAGED, SUBSCRIPTION };
+    
+    private class DungeonsPurchaseObserver extends PurchaseObserver {
+        public DungeonsPurchaseObserver(Handler handler) {
+            super(GameActivity.this, handler);
+        }
+
+        @Override
+        public void onBillingSupported(boolean supported, String type) {
+            if (Consts.DEBUG) {
+                Log.i(TAG, "supported: " + supported);
+            }
+            if (type == null || type.equals(Consts.ITEM_TYPE_INAPP)) {
+                if (supported) {
+                    restoreDatabase();
+                    mBuyButton.setEnabled(true);
+                    mEditPayloadButton.setEnabled(true);
+                } else {
+                    showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
+                }
+            } else if (type.equals(Consts.ITEM_TYPE_SUBSCRIPTION)) {
+                mCatalogAdapter.setSubscriptionsSupported(supported);
+            } else {
+                showDialog(DIALOG_SUBSCRIPTIONS_NOT_SUPPORTED_ID);
+            }
+        }
+
+        @Override
+        public void onPurchaseStateChange(PurchaseState purchaseState, String itemId,
+                int quantity, long purchaseTime, String developerPayload) {
+            if (Consts.DEBUG) {
+                Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
+            }
+
+            if (developerPayload == null) {
+                logProductActivity(itemId, purchaseState.toString());
+            } else {
+                logProductActivity(itemId, purchaseState + "\n\t" + developerPayload);
+            }
+            
+            if (purchaseState == PurchaseState.PURCHASED) {
+                mOwnedItems.add(itemId);
+                
+                // If this is a subscription, then enable the "Edit
+                // Subscriptions" button.
+                for (CatalogEntry e : CATALOG) {
+                    if (e.sku.equals(itemId) &&
+                            e.managed.equals(Managed.SUBSCRIPTION)) {
+                        mEditSubscriptionsButton.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+            mCatalogAdapter.setOwnedItems(mOwnedItems);
+            mOwnedItemsCursor.requery();
+        }
+
+        @Override
+        public void onRequestPurchaseResponse(RequestPurchase request,
+                ResponseCode responseCode) {
+            if (Consts.DEBUG) {
+                Log.d(TAG, request.mProductId + ": " + responseCode);
+            }
+            if (responseCode == ResponseCode.RESULT_OK) {
+                if (Consts.DEBUG) {
+                    Log.i(TAG, "purchase was successfully sent to server");
+                }
+                logProductActivity(request.mProductId, "sending purchase request");
+            } else if (responseCode == ResponseCode.RESULT_USER_CANCELED) {
+                if (Consts.DEBUG) {
+                    Log.i(TAG, "user canceled purchase");
+                }
+                logProductActivity(request.mProductId, "dismissed purchase dialog");
+            } else {
+                if (Consts.DEBUG) {
+                    Log.i(TAG, "purchase failed");
+                }
+                logProductActivity(request.mProductId, "request purchase returned " + responseCode);
+            }
+        }
+
+        @Override
+        public void onRestoreTransactionsResponse(RestoreTransactions request,
+                ResponseCode responseCode) {
+            if (responseCode == ResponseCode.RESULT_OK) {
+                if (Consts.DEBUG) {
+                    Log.d(TAG, "completed RestoreTransactions request");
+                }
+                // Update the shared preferences so that we don't perform
+                // a RestoreTransactions again.
+                SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.putBoolean(DB_INITIALIZED, true);
+                edit.commit();
+            } else {
+                if (Consts.DEBUG) {
+                    Log.d(TAG, "RestoreTransactions error: " + responseCode);
+                }
+            }
+        }
+    }
+    //*/
 }
