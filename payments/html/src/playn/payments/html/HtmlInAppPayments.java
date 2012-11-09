@@ -28,7 +28,7 @@ public class HtmlInAppPayments implements InAppPayments {
 
   private PurchaseCallback purchaseCallback;
   
-  private final JWTEncodedServiceAsync encodeJWTService = GWT.create(JWTEncodedService.class);
+  private JWTEncodedServiceAsync encodeJWTService = null;
   
   /**
    * 
@@ -41,6 +41,8 @@ public class HtmlInAppPayments implements InAppPayments {
    */
   @Override
   public void encodeJWT(String iat, String exp, PurchaseRequest request, final EncodeJWTCallback encodeJWTCallback) {
+    if (encodeJWTService == null)  
+        encodeJWTService = GWT.create(JWTEncodedService.class);  
     PurchaseRequest.Serialized ser = new PurchaseRequest.Serialized(request);
     encodeJWTService.encodeJWT(iat, exp, ser, new AsyncCallback<String>() {
       @Override
