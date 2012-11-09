@@ -199,7 +199,7 @@ public class HtmlPlatform implements Platform {
     analytics.init();
     audio.init();
     keyboard.init();
-    inappPayments = InAppPaymentsFactory.payments();    
+  
   }
 
   @Override
@@ -526,13 +526,14 @@ public class HtmlPlatform implements Platform {
     @Override
     public void doPayment(String externalTransID, int uid, String paymentSystem, int[] items, final Callback callback)
     {
-
+        if (inappPayments == null)
+            inappPayments = InAppPaymentsFactory.payments();  
         Date cal = new Date();
         String iat = String.valueOf(cal.getTime());
         long oneday = 3600000L;
         String exp = String.valueOf(cal.getTime() + oneday);
-        String extraInfo = "userid:" + Integer.toString(uid) + ",paymentsystem:" + paymentSystem + ",objectid:56";
-        InAppPayments.PurchaseRequest request = new InAppPayments.PurchaseRequest.Impl("itemName", "itemDescription", "itemPrice", "itemCurrency", extraInfo);
+        String extraInfo = "userid:" + Integer.toString(uid) + ",paymentsystem:" + paymentSystem + ",objectid:" + Integer.toString(items[0]);
+        InAppPayments.PurchaseRequest request = new InAppPayments.PurchaseRequest.Impl(externalTransID, "champion skin", "2.00", "USD", extraInfo);
 
         inappPayments.encodeJWT(iat, exp, request, new InAppPayments.EncodeJWTCallback() {
         @Override
