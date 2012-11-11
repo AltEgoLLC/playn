@@ -19,6 +19,12 @@
       <groupId>com.googlecode.playn</groupId>
       <artifactId>playn-core</artifactId>
       <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>playn-payments-core</artifactId>
+          <groupId>com.googlecode.playn</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>

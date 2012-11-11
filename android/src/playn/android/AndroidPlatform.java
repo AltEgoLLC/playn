@@ -365,5 +365,6 @@ public class AndroidPlatform implements Platform {
     @Override  
     public void doPayment(String externalTransID, int uid, String paymentSystem, int[] items, Callback callback)
     {
+        activity.getBilling().buyObject();
     }    
 }

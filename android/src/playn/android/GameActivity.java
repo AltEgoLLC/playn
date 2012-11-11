@@ -50,6 +50,7 @@ import playn.android.billing.Consts.ResponseCode;
 import playn.android.billing.PurchaseDatabase;
 import playn.android.billing.PurchaseObserver;
 import playn.core.util.Callback;
+import playn.android.billing.AndroidBilling;
 
 /**
  * TODO: save/restore state
@@ -78,7 +79,7 @@ public abstract class GameActivity extends Activity {
   private Callback mCallback = null;
   
   private Handler updateHandler = new Handler();
-
+  private AndroidBilling androidBilling = null;
   /**
    * The entry-point into a PlayN game. Developers should implement main() to call
    * platform().assets().setPathPrefix() and PlayN.run().
@@ -172,7 +173,8 @@ public abstract class GameActivity extends Activity {
       editText.setVisibility(View.INVISIBLE);
       editText.setLayoutParams(relParams);
       relativeLayout.addView(editText);
-      
+      androidBilling = new AndroidBilling();
+      androidBilling.onCreate(savedInstanceState, context, this);
       //updateHandler.postDelayed(mUpdateTime, 1000);
   }
   
@@ -336,7 +338,9 @@ public abstract class GameActivity extends Activity {
     public String getEditText() {
         return editText.getEditableText().toString();
     }
-  
+    public AndroidBilling getBilling() {
+        return androidBilling;
+    }
     public void updateWebView() {
         /*//
         Log.i("GameActivity", "WebView Booleans: " 
