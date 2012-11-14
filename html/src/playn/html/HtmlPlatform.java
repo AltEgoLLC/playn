@@ -524,7 +524,7 @@ public class HtmlPlatform implements Platform {
     }
     
     @Override
-    public void doPayment(String externalTransID, int uid, String paymentSystem, int[] items, final Callback callback)
+    public void doPayment(String externalTransID, int uid, String paymentSystem, String description, String price, int[] items, final Callback callback)
     {
         if (inappPayments == null)
             inappPayments = InAppPaymentsFactory.payments();  
@@ -533,7 +533,7 @@ public class HtmlPlatform implements Platform {
         long oneday = 3600000L;
         String exp = String.valueOf(cal.getTime() + oneday);
         String extraInfo = "userid:" + Integer.toString(uid) + ",paymentsystem:" + paymentSystem + ",objectid:" + Integer.toString(items[0]);
-        InAppPayments.PurchaseRequest request = new InAppPayments.PurchaseRequest.Impl(externalTransID, "champion skin", "2.00", "USD", extraInfo);
+        InAppPayments.PurchaseRequest request = new InAppPayments.PurchaseRequest.Impl(externalTransID, description, price, "USD", extraInfo);
 
         inappPayments.encodeJWT(iat, exp, request, new InAppPayments.EncodeJWTCallback() {
         @Override
