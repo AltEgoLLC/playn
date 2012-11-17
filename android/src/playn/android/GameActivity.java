@@ -159,6 +159,7 @@ public abstract class GameActivity extends Activity {
       
       webView.getSettings().setJavaScriptEnabled(true);
       webView.setVisibility(View.GONE);
+      webView.setFocusable(true);
       webView.setFocusableInTouchMode(true);
       //webView.loadUrl(url); 
       Log.i("GameActivity", "R-PARAM 4");
