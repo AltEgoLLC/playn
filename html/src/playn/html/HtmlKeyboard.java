@@ -364,6 +364,10 @@ class HtmlKeyboard implements Keyboard {
         // Add it to the root panel.
         RootPanel.get().add(frame);
         */
+        if(mbTextAreaInitialized==true)
+        {
+            return;
+        }
         mTextArea.setName("textAreaFormElement");
 
         
@@ -403,21 +407,26 @@ class HtmlKeyboard implements Keyboard {
         {
             rootElement = doc.getBody();
         }
+        //PlayN.log().debug("HIDE TEXTBOX ATTEMPT2");
         if(rootElement.getChildCount() > 0)
         {
+            //PlayN.log().debug("HIDE TEXTBOX ATTEMPT3");
             if(mbTextBoxInitialized == true)
             {
+                //PlayN.log().debug("HIDE TEXTBOX ATTEMPT4");
                 rootElement.removeChild(mTextBox.getElement());
                 mbTextBoxInitialized = false;
             }
             else if(mbTextAreaInitialized == true)
             {
+                //PlayN.log().debug("HIDE TEXTBOX ATTEMPT5");
                 rootElement.removeChild(mTextArea.getElement());
                 
                 mbTextAreaInitialized = false;
-            }            
+            }  
+            //PlayN.log().debug("HIDE TEXTBOX ATTEMPT6");
         }
-                
+         //PlayN.log().debug("HIDE TEXTBOX ATTEMPT7");       
         
     }
     
