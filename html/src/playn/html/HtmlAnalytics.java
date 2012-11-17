@@ -39,7 +39,7 @@ public class HtmlAnalytics implements Analytics {
         "Analytics#logEvent(sampleRate=" + sampleRate + ", category=" + category + ", action="
             + action + ") => " + (shouldLog ? "Logging" : "NOT logging"));
     if (shouldLog) {
-      logEventImpl(category.getCategory(), action);
+    //  logEventImpl(category.getCategory(), action);
     }
   }
 
@@ -52,7 +52,7 @@ public class HtmlAnalytics implements Analytics {
             + action + ", label=" + label + ", value=" + value + ") => "
             + (shouldLog ? "Logging" : "NOT logging"));
     if (shouldLog) {
-      logEventImpl(category.getCategory(), action, label, value);
+     // logEventImpl(category.getCategory(), action, label, value);
     }
   }
 
