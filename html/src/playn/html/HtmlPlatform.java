@@ -524,7 +524,7 @@ public class HtmlPlatform implements Platform {
     }
     
     @Override
-    public void doPayment(String externalTransID, int uid, String paymentSystem, String description, String price, int[] items, final Callback callback)
+    public void doPayment(String externalTransID, int uid, String paymentSystem, String description, String price, int[] items, String productNumber, String SERVER_URL, final Callback callback)
     {
         if (inappPayments == null)
             inappPayments = InAppPaymentsFactory.payments();  
