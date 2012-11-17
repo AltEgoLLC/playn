@@ -169,7 +169,7 @@ public abstract class GameActivity extends Activity {
       Log.i("GameActivity", "R-PARAM 5");
       relativeLayout.addView(webView);
       Log.i("GameActivity", "R-PARAM 6");
-      
+            
       editText = new EditText(this);
       editText.setVisibility(View.INVISIBLE);
       editText.setLayoutParams(relParams);
@@ -297,11 +297,12 @@ public abstract class GameActivity extends Activity {
         if (webView != null) {
             webView.setVisibility(View.VISIBLE);
             webView.loadUrl(url);
-
+            
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     Log.i("GameActivity", "Completed WebView at url " + url);
+                    view.requestFocus();
                     //HACK -- this can't be hard coded
                     if (url.contains(callback_url)) { view.setVisibility(View.GONE); }
                 }
