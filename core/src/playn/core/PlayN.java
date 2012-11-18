@@ -272,9 +272,9 @@ public class PlayN {
       platform.hideSoftKeyboard();
   }
   
-  public static void doPayment(String externalTransID, int uid, String paymentSystem, String description, String price, int[] items, Callback callback)
+  public static void doPayment(String externalTransID, int uid, String paymentSystem, String description, String price, int[] items, String productNumber, String SERVER_URL, Callback callback)
   {
-      platform.doPayment(externalTransID, uid, paymentSystem, description, price, items, callback);
+      platform.doPayment(externalTransID, uid, paymentSystem, description, price, items, productNumber, SERVER_URL, callback);
   }
   // Non-instantiable
   private PlayN() {
