@@ -13,6 +13,7 @@ import playn.android.billing.BillingService.RestoreTransactions;
 import playn.android.billing.Consts.PurchaseState;
 import playn.android.billing.Consts.ResponseCode;
 import playn.android.billing.Consts;
+import playn.core.PlayN;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -47,6 +48,7 @@ import android.widget.Toast;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import playn.core.util.Callback;
 /**
  *
  * @author joey
@@ -144,14 +146,14 @@ public class AndroidBilling  {
             }
             if (type == null || type.equals(Consts.ITEM_TYPE_INAPP)) {
                 if (supported) {
-                    restoreDatabase();
-                    mBuyButton.setEnabled(true);
-                    mEditPayloadButton.setEnabled(true);
+//                    restoreDatabase();
+//                    mBuyButton.setEnabled(true);
+//                    mEditPayloadButton.setEnabled(true);
                 } else {
                     mGameActivity.showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
                 }
             } else if (type.equals(Consts.ITEM_TYPE_SUBSCRIPTION)) {
-                mCatalogAdapter.setSubscriptionsSupported(supported);
+//                mCatalogAdapter.setSubscriptionsSupported(supported);
             } else {
                 mGameActivity.showDialog(DIALOG_SUBSCRIPTIONS_NOT_SUPPORTED_ID);
             }
@@ -171,19 +173,35 @@ public class AndroidBilling  {
             }
             
             if (purchaseState == PurchaseState.PURCHASED) {
-                mOwnedItems.add(itemId);
-                
-                // If this is a subscription, then enable the "Edit
-                // Subscriptions" button.
-                for (CatalogEntry e : CATALOG) {
-                    if (e.sku.equals(itemId) &&
-                            e.managed.equals(Managed.SUBSCRIPTION)) {
-                        mEditSubscriptionsButton.setVisibility(View.VISIBLE);
-                    }
+                String purchasedObject = mSERVER_URL + "?userid=" + mUID + "&productid=" + itemId;
+                PlayN.net().get(purchasedObject, null, 
+                new Callback<String>(){
+
+                @Override
+                public void onSuccess(String result) {
+                    PlayN.log().debug("purchase success! :" + result);
                 }
+
+                @Override
+                public void onFailure(Throwable cause) {
+                    PlayN.log().debug("purchase failed:" + cause);
+                }
+                }
+            ); 
+                
+//                mOwnedItems.add(itemId);
+//                
+//                // If this is a subscription, then enable the "Edit
+//                // Subscriptions" button.
+//                for (CatalogEntry e : CATALOG) {
+//                    if (e.sku.equals(itemId) &&
+//                            e.managed.equals(Managed.SUBSCRIPTION)) {
+//                        mEditSubscriptionsButton.setVisibility(View.VISIBLE);
+//                    }
+//                }
             }
-            mCatalogAdapter.setOwnedItems(mOwnedItems);
-            mOwnedItemsCursor.requery();
+//            mCatalogAdapter.setOwnedItems(mOwnedItems);
+//            mOwnedItemsCursor.requery();
         }
 
         @Override
@@ -262,16 +280,24 @@ public class AndroidBilling  {
     };
 
     private String mItemName;
-    private String mSku = "champion";
+    private String mSku;
+//    private String mSku = "android.test.purchased";
+    
     private Managed mManagedType;
     private CatalogAdapter mCatalogAdapter;
     private Activity mGameActivity;
-
+    private String mSERVER_URL;
+    private String mUID;
+    
     /** Called when the activity is first created. */
 //    @Override
     public void onCreate(Bundle savedInstanceState, Context context, Activity game) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.main);
+        Log.i(TAG, "*********************\nIn Oncreate");
+        if (game != null)                    
+            Log.i(TAG, "*********************\ngame not null");
+            
         mGameActivity = game;
         mHandler = new Handler();
         mAndroidBillingPurchaseObserver = new AndroidBillingPurchaseObserver(mHandler);
@@ -291,12 +317,19 @@ public class AndroidBilling  {
             mGameActivity.showDialog(DIALOG_SUBSCRIPTIONS_NOT_SUPPORTED_ID);
         }
     }
-    public void buyObject()
+    public void buyObject(int uid, String productNumber, String SERVER_URL)
     {
-            if (mManagedType != Managed.SUBSCRIPTION &&
-                    !mBillingService.requestPurchase(mSku, Consts.ITEM_TYPE_INAPP, mPayloadContents)) {
-                mGameActivity.showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
-            }        
+            Log.i(TAG, "*********************\nIn buyObject");
+            mSERVER_URL = new String(SERVER_URL);
+            mUID = Integer.toString(uid);
+            mSku = productNumber;
+            if (mManagedType != Managed.SUBSCRIPTION)
+            {
+                if ( !mBillingService.requestPurchase(mSku, Consts.ITEM_TYPE_INAPP, mPayloadContents)) 
+                {
+//                mGameActivity.showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
+                }        
+            }
     }
     /**
      * Called when this activity becomes visible.
@@ -446,10 +479,10 @@ public class AndroidBilling  {
     }
 
     private void logProductActivity(String product, String activity) {
-        SpannableStringBuilder contents = new SpannableStringBuilder();
-        contents.append(Html.fromHtml("<b>" + product + "</b>: "));
-        contents.append(activity);
-        prependLogEntry(contents);
+//        SpannableStringBuilder contents = new SpannableStringBuilder();
+//        contents.append(Html.fromHtml("<b>" + product + "</b>: "));
+//        contents.append(activity);
+//        prependLogEntry(contents);
     }
 
     /**

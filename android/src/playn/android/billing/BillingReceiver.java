@@ -46,6 +46,8 @@ public class BillingReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        Log.i(TAG, "**************** onReceive: " + action);
+
         if (Consts.ACTION_PURCHASE_STATE_CHANGED.equals(action)) {
             String signedData = intent.getStringExtra(Consts.INAPP_SIGNED_DATA);
             String signature = intent.getStringExtra(Consts.INAPP_SIGNATURE);
@@ -76,6 +78,9 @@ public class BillingReceiver extends BroadcastReceiver {
      * @param signature the signature for the signedData
      */
     private void purchaseStateChanged(Context context, String signedData, String signature) {
+        if (Consts.DEBUG) {
+                Log.i(TAG, "purchaseStateChanged: ");
+            }
         Intent intent = new Intent(Consts.ACTION_PURCHASE_STATE_CHANGED);
         intent.setClass(context, BillingService.class);
         intent.putExtra(Consts.INAPP_SIGNED_DATA, signedData);
@@ -95,6 +100,9 @@ public class BillingReceiver extends BroadcastReceiver {
      * @param notifyId the notification ID
      */
     private void notify(Context context, String notifyId) {
+        if (Consts.DEBUG) {
+                Log.i(TAG, "notify: " + notifyId);
+            }        
         Intent intent = new Intent(Consts.ACTION_GET_PURCHASE_INFORMATION);
         intent.setClass(context, BillingService.class);
         intent.putExtra(Consts.NOTIFICATION_ID, notifyId);
@@ -110,6 +118,9 @@ public class BillingReceiver extends BroadcastReceiver {
      * @param responseCodeIndex the ResponseCode ordinal value for the request
      */
     private void checkResponseCode(Context context, long requestId, int responseCodeIndex) {
+        if (Consts.DEBUG) {
+                Log.i(TAG, "checkResponseCode: " + Long.toString(requestId));
+            }         
         Intent intent = new Intent(Consts.ACTION_RESPONSE_CODE);
         intent.setClass(context, BillingService.class);
         intent.putExtra(Consts.INAPP_REQUEST_ID, requestId);
