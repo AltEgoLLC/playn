@@ -156,6 +156,8 @@ public class BillingService extends Service implements ServiceConnection {
 
         protected Bundle makeRequestBundle(String method) {
             Bundle request = new Bundle();
+                Log.i(TAG, "*********************** makeRequestBundle " + method);
+            
             request.putString(Consts.BILLING_REQUEST_METHOD, method);
             request.putInt(Consts.BILLING_REQUEST_API_VERSION, 2);
             request.putString(Consts.BILLING_REQUEST_PACKAGE_NAME, getPackageName());
@@ -563,6 +565,9 @@ public class BillingService extends Service implements ServiceConnection {
     private void purchaseStateChanged(int startId, String signedData, String signature) {
         ArrayList<Security.VerifiedPurchase> purchases;
         purchases = Security.verifyPurchase(signedData, signature);
+        if (Consts.DEBUG) {
+            Log.e(TAG, " purchaseStateChanged " + Integer.toString(startId));
+        }        
         if (purchases == null) {
             return;
         }

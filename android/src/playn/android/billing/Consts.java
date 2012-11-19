@@ -74,8 +74,10 @@ public class Consts {
     // Intent actions that we receive in the BillingReceiver from Market.
     // These are defined by Market and cannot be changed.
     public static final String ACTION_NOTIFY = "com.android.vending.billing.IN_APP_NOTIFY";
+    
     public static final String ACTION_RESPONSE_CODE =
         "com.android.vending.billing.RESPONSE_CODE";
+    
     public static final String ACTION_PURCHASE_STATE_CHANGED =
         "com.android.vending.billing.PURCHASE_STATE_CHANGED";
 
@@ -106,5 +108,5 @@ public class Consts {
     public static final String ITEM_TYPE_INAPP = "inapp";
     public static final String ITEM_TYPE_SUBSCRIPTION = "subs";
     
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 }
