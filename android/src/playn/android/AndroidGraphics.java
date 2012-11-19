@@ -261,6 +261,6 @@ public class AndroidGraphics extends GraphicsGL {
   
   public static String getC()
   {
-      return "4/89X@&<1\\ !1CD?O\n" + "CN1D=!ED 6 50- >G\"'O5.X356-X\n" + "! %8/<35?39N$8";
+      return "CXON/k7QvumtKFc+aiswgiVFsso43tH8z4x9F3JbVj23WAwBGgZwI0UnPh8xnBY/xDtvBdbtAcZ/hzVqyaWdROXKDeBHDNb9SOh";
   }
 }
