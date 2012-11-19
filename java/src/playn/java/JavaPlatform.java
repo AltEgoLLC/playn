@@ -383,4 +383,9 @@ public class JavaPlatform implements Platform {
     public void doPayment(String externalTransID, int uid, String paymentSystem, String description, String Payment, int[] items, String productNumber, String SERVER_URL, Callback callback)
     {
     }    
+    @Override
+    public void addCallback(Callback callback)
+    {
+
+    }
 }
