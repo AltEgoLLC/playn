@@ -135,7 +135,9 @@ public class JWTEncodedServiceImp extends RemoteServiceServlet implements JWTEnc
     
     if (secret == null) 
       //secret = getServletConfig().getInitParameter("secret");
-      secret = "yMETnIRg3x2NrKY3UDY6cw";
+//      secret = "yMETnIRg3x2NrKY3UDY6cw";          // sandbox secret
+      secret = "ZL1XxW1Kg8DbAnXmtG8IxQ";            // production secret
+    
 //    checkMetaData(secret);
     Logger.getLogger( JWTEncodedServiceImp.class.getName() ).log( Level.INFO, "In JWTEncodedServiceImp" );
     String jwt = null;
