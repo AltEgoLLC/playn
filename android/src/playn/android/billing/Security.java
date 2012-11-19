@@ -116,7 +116,6 @@ public class Security {
             
             String base64EncodedPublicKey = Shaders.getA() + AndroidGL20.getB() + AndroidGraphics.getC() + AndroidSurfaceGL.getD();
             
-            base64EncodedPublicKey = stringTransform(base64EncodedPublicKey, 0x77);
             /**
              * Compute your public key (that you got from the Android Market publisher site).
              *
@@ -254,15 +253,5 @@ public class Security {
         }
         return false;
     }
-    
-    
-    static String stringTransform(String s, int i) {
-        
-        char[] chars = s.toCharArray();
-        
-        for(int j = 0; j<chars.length; j++)
-           chars[j] = (char)(chars[j] ^ i);
-        
-        return String.valueOf(chars);
-    }
+
 }
