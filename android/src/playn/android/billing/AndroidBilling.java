@@ -14,6 +14,7 @@ import playn.android.billing.Consts.PurchaseState;
 import playn.android.billing.Consts.ResponseCode;
 import playn.android.billing.Consts;
 import playn.core.PlayN;
+import playn.core.ResourceCallback;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -116,7 +117,7 @@ public class AndroidBilling  {
     private static final int DIALOG_CANNOT_CONNECT_ID = 1;
     private static final int DIALOG_BILLING_NOT_SUPPORTED_ID = 2;
     private static final int DIALOG_SUBSCRIPTIONS_NOT_SUPPORTED_ID = 3;
-
+    private Callback mBillingCallback = null;
     /**
      * Each product in the catalog can be MANAGED, UNMANAGED, or SUBSCRIPTION.  MANAGED
      * means that the product can be purchased only once per user (such as a new
@@ -159,6 +160,7 @@ public class AndroidBilling  {
             }
         }
 
+
         @Override
         public void onPurchaseStateChange(PurchaseState purchaseState, String itemId,
                 int quantity, long purchaseTime, String developerPayload) {
@@ -173,12 +175,20 @@ public class AndroidBilling  {
             }
             
             if (purchaseState == PurchaseState.PURCHASED) {
-                String purchasedObject = mSERVER_URL + "?userid=" + mUID + "&productid=" + itemId;
+                String databaseItems;
+                
+                if (skuList.length > 1)
+                    databaseItems = mOriginalSku;
+                else
+                    databaseItems = itemId;
+                String purchasedObject = mSERVER_URL + "?userid=" + mUID + "&productid=" + databaseItems;
                 PlayN.net().get(purchasedObject, null, 
                 new Callback<String>(){
 
                 @Override
                 public void onSuccess(String result) {
+                    if (mBillingCallback != null)
+                        mBillingCallback.onSuccess(result);
                     PlayN.log().debug("purchase success! :" + result);
                 }
 
@@ -249,6 +259,11 @@ public class AndroidBilling  {
         }
     }
 
+    public void addCallback(Callback callback) {
+        // we're always ready immediately
+        mBillingCallback = callback;
+    }
+
     private static class CatalogEntry {
         public String sku;
         public int nameId;
@@ -281,8 +296,10 @@ public class AndroidBilling  {
 
     private String mItemName;
     private String mSku;
-//    private String mSku = "android.test.purchased";
+    private String mOriginalSku;
     
+//    private String mSku = "android.test.purchased";
+    private String[] skuList;
     private Managed mManagedType;
     private CatalogAdapter mCatalogAdapter;
     private Activity mGameActivity;
@@ -323,6 +340,13 @@ public class AndroidBilling  {
             mSERVER_URL = new String(SERVER_URL);
             mUID = Integer.toString(uid);
             mSku = productNumber;
+            mOriginalSku = productNumber;
+            
+            skuList = mSku.split(",");
+            if (skuList.length > 1)
+            {
+                mSku = skuList[1];
+            }
             if (mManagedType != Managed.SUBSCRIPTION)
             {
                 if ( !mBillingService.requestPurchase(mSku, Consts.ITEM_TYPE_INAPP, mPayloadContents)) 

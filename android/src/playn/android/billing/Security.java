@@ -1,3 +1,4 @@
+
 // Copyright 2010 Google Inc. All Rights Reserved.
 
 package playn.android.billing;
@@ -116,7 +117,7 @@ public class Security {
             
             String base64EncodedPublicKey = Shaders.getA() + AndroidGL20.getB() + AndroidGraphics.getC() + AndroidSurfaceGL.getD();
             
-            base64EncodedPublicKey = stringTransform(base64EncodedPublicKey, 0x77);
+//            base64EncodedPublicKey = stringTransform(base64EncodedPublicKey, 0x77);
             /**
              * Compute your public key (that you got from the Android Market publisher site).
              *

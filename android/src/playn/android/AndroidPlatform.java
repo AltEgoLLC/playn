@@ -361,7 +361,11 @@ public class AndroidPlatform implements Platform {
         }
         return url;
     }
-    
+    @Override
+    public void addCallback(Callback callback)
+    {
+        activity.getBilling().addCallback(callback);
+    }
     @Override  
     public void doPayment(String externalTransID, int uid, String paymentSystem, String description, String price, int[] items, String productNumber, String SERVER_URL, Callback callback)
     {
