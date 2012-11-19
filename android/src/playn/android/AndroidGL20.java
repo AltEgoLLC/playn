@@ -1273,4 +1273,9 @@ public class AndroidGL20 implements GL20 {
     return false;
     // TODO(jonagill): Test!
   }
+  
+  public static String getB()
+    {
+        return "@:N:D@8E\\:=?>&\\1X;EN6!< ?<6>\"X\"6'39:O@60-0&-0#6C >!F2=@;$N#== %2";
+    }
 }

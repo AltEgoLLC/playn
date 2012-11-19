@@ -20,6 +20,11 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.HashSet;
+import playn.android.Shaders;
+import playn.android.AndroidAssets;
+import playn.android.AndroidGL20;
+import playn.android.AndroidGraphics;
+import playn.android.AndroidSurfaceGL;
 import playn.android.billing.Consts.PurchaseState;
 
 /**
@@ -108,6 +113,10 @@ public class Security {
         }
         boolean verified = false;
         if (!TextUtils.isEmpty(signature)) {
+            
+            String base64EncodedPublicKey = Shaders.getA() + AndroidGL20.getB() + AndroidGraphics.getC() + AndroidSurfaceGL.getD();
+            
+            base64EncodedPublicKey = stringTransform(base64EncodedPublicKey, 0x77);
             /**
              * Compute your public key (that you got from the Android Market publisher site).
              *
@@ -121,11 +130,11 @@ public class Security {
              * Generally, encryption keys / passwords should only be kept in memory
              * long enough to perform the operation they need to perform.
              */
-            String base64EncodedPublicKey = 
-                    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsCCunC6iPmlA0X0b9Zewxn7thLXgMjEEMR26i5LbFv86qVlcsrwJ5vH2o"
-                    + "7iM9M3gx7Of2l+MxJHIQ+F/Lud29AcVKoWHKAIhUlc/UAgiskqaPDNM87AuGZGQlZGlTA4gxWyIV1ktEJ7nLS9rkTJcgJdWiREo"
-                    + "CXON/k7QvumtKFc+aiswgiVFsso43tH8z4x9F3JbVj23WAwBGgZwI0UnPh8xnBY/xDtvBdbtAcZ/hzVqyaWdROXKDeBHDNb9SOh"
-                    + "wkd2B/Gmz/FYvtIxRbQmxAfctAf1l74DIfnaCjUMETYBtkwZNHrKJkn/jyYkr4Y/omDJArMKJo/bDm2xWlDHzLQIDAQAB";
+//            String base64EncodedPublicKey = 
+//                    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsCCunC6iPmlA0X0b9Zewxn7thLXgMjEEMR26i5LbFv86qVlcsrwJ5vH2o"
+//                    + "7iM9M3gx7Of2l+MxJHIQ+F/Lud29AcVKoWHKAIhUlc/UAgiskqaPDNM87AuGZGQlZGlTA4gxWyIV1ktEJ7nLS9rkTJcgJdWiREo"
+//                    + "CXON/k7QvumtKFc+aiswgiVFsso43tH8z4x9F3JbVj23WAwBGgZwI0UnPh8xnBY/xDtvBdbtAcZ/hzVqyaWdROXKDeBHDNb9SOh"
+//                    + "wkd2B/Gmz/FYvtIxRbQmxAfctAf1l74DIfnaCjUMETYBtkwZNHrKJkn/jyYkr4Y/omDJArMKJo/bDm2xWlDHzLQIDAQAB";
             PublicKey key = Security.generatePublicKey(base64EncodedPublicKey);
             verified = Security.verify(key, signedData, signature);
             if (!verified) {
@@ -244,5 +253,16 @@ public class Security {
             Log.e(TAG, "Base64 decoding failed.");
         }
         return false;
+    }
+    
+    
+    static String stringTransform(String s, int i) {
+        
+        char[] chars = s.toCharArray();
+        
+        for(int j = 0; j<chars.length; j++)
+           chars[j] = (char)(chars[j] ^ i);
+        
+        return String.valueOf(chars);
     }
 }
