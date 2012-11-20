@@ -21,41 +21,41 @@ class AndroidLog implements Log {
 
   @Override
   public void debug(String msg) {
-    android.util.Log.d("playn", msg);
+    //android.util.Log.d("playn", msg);
   }
 
   @Override
   public void debug(String msg, Throwable e) {
-    android.util.Log.d("playn", msg, e);
+    //android.util.Log.d("playn", msg, e);
   }
 
   @Override
   public void info(String msg) {
-    android.util.Log.i("playn", msg);
+    //android.util.Log.i("playn", msg);
   }
 
   @Override
   public void info(String msg, Throwable e) {
-    android.util.Log.i("playn", msg, e);
+    //android.util.Log.i("playn", msg, e);
   }
 
   @Override
   public void warn(String msg) {
-    android.util.Log.w("playn", msg);
+    //android.util.Log.w("playn", msg);
   }
 
   @Override
   public void warn(String msg, Throwable e) {
-    android.util.Log.w("playn", msg, e);
+    //android.util.Log.w("playn", msg, e);
   }
 
   @Override
   public void error(String msg) {
-    android.util.Log.e("playn", msg);
+    //android.util.Log.e("playn", msg);
   }
 
   @Override
   public void error(String msg, Throwable e) {
-    android.util.Log.e("playn", msg, e);
+    //android.util.Log.e("playn", msg, e);
   }
 }

@@ -109,7 +109,6 @@ public abstract class GameActivity extends Activity {
     
     RelativeLayout relativeLayout = new RelativeLayout(this);
     RelativeLayout.LayoutParams relParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-    Log.i("GameActivity", "R-PARAM 1");
     relativeLayout.setLayoutParams(relParams);
     relativeLayout.addView(viewLayout);
 
@@ -126,10 +125,8 @@ public abstract class GameActivity extends Activity {
     LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
     //getWindow().setContentView(viewLayout, params);
     
-    Log.i("GameActivity", "R-PARAM 2");
     //viewLayout.setLayoutParams(params);
     viewLayout.setLayoutParams(relParams);
-    Log.i("GameActivity", "R-PARAM 3");
     getWindow().setContentView(relativeLayout, relParams);
 
     // Default to landscape orientation.
@@ -150,7 +147,7 @@ public abstract class GameActivity extends Activity {
                 + "      android:configChanges=\"keyboardHidden|orientation\"").show();
       }
     } catch (NameNotFoundException e) {
-      Log.w("playn", "Cannot access game AndroidManifest.xml file.");
+      //Log.w("playn", "Cannot access game AndroidManifest.xml file.");
     }
     
     //set up our webview
@@ -162,13 +159,10 @@ public abstract class GameActivity extends Activity {
       webView.setFocusable(true);
       webView.setFocusableInTouchMode(true);
       //webView.loadUrl(url); 
-      Log.i("GameActivity", "R-PARAM 4");
       ViewGroup.LayoutParams webParams = new ViewGroup.LayoutParams(
               LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
       webView.setLayoutParams(relParams);
-      Log.i("GameActivity", "R-PARAM 5");
       relativeLayout.addView(webView);
-      Log.i("GameActivity", "R-PARAM 6");
             
       editText = new EditText(this);
       editText.setVisibility(View.INVISIBLE);
@@ -228,8 +222,10 @@ public abstract class GameActivity extends Activity {
 
   @Override
   protected void onPause() {
-    if (AndroidPlatform.DEBUG_LOGS) Log.d("playn", "onPause");
-    Log.d("PlayN_Game_Activity", "****************\nPAUSE SUSPEND SLEEP\n****************");
+    if (AndroidPlatform.DEBUG_LOGS) {
+        //Log.d("playn", "onPause");
+    }
+    //Log.d("PlayN_Game_Activity", "****************\nPAUSE SUSPEND SLEEP\n****************");
     gameView.notifyVisibilityChanged(View.INVISIBLE);
     if (platform() != null)
       platform().audio().onPause();
@@ -240,8 +236,10 @@ public abstract class GameActivity extends Activity {
 
   @Override
   protected void onResume() {
-    if (AndroidPlatform.DEBUG_LOGS) Log.d("playn", "onResume");
-    Log.d("PlayN_Game_Activity", "****************\nRESUME\n****************");
+    if (AndroidPlatform.DEBUG_LOGS) {
+        //Log.d("playn", "onResume");
+    }
+    //Log.d("PlayN_Game_Activity", "****************\nRESUME\n****************");
     gameView.notifyVisibilityChanged(View.VISIBLE);
     if (platform() != null)
       platform().audio().onResume();
@@ -301,7 +299,7 @@ public abstract class GameActivity extends Activity {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageFinished(WebView view, String url) {
-                    Log.i("GameActivity", "Completed WebView at url " + url);
+                    //Log.i("GameActivity", "Completed WebView at url " + url);
                     view.requestFocus();
                     //HACK -- this can't be hard coded
                     if (url.contains(callback_url)) { view.setVisibility(View.GONE); }
@@ -387,12 +385,12 @@ public abstract class GameActivity extends Activity {
         alertAccept = accept;
         mCallback = callback;
         showAlertDialog.set(true);
-        Log.i("GameActivity", "*********************");
+        //Log.i("GameActivity", "*********************");
         if (callback != null) {
-            Log.i("GameActivity", "Show Alert Dialog");
+            //Log.i("GameActivity", "Show Alert Dialog");
             //callback.onSuccess("success");
         }
-        Log.i("GameActivity", "*********************");
+        //Log.i("GameActivity", "*********************");
     }
     
     private void showAlertDialog() {
@@ -408,12 +406,13 @@ public abstract class GameActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (mCallback != null) {
-                    Log.i("GameActivity", "*********************\nCallback not null");
+                    //Log.i("GameActivity", "*********************\nCallback not null");
                     mCallback.onSuccess("success");
                 }
-                else
-                    Log.i("GameActivity", "*********************\nCallback not null");
-                Log.i("GameActivity", "*********************");
+                else {
+                    //Log.i("GameActivity", "*********************\nCallback not null");
+                }
+                //Log.i("GameActivity", "*********************");
             }
         });
         

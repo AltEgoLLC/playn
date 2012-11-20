@@ -143,7 +143,7 @@ public class AndroidBilling  {
         @Override
         public void onBillingSupported(boolean supported, String type) {
             if (Consts.DEBUG) {
-                Log.i(TAG, "supported: " + supported);
+                //Log.i(TAG, "supported: " + supported);
             }
             if (type == null || type.equals(Consts.ITEM_TYPE_INAPP)) {
                 if (supported) {
@@ -165,7 +165,7 @@ public class AndroidBilling  {
         public void onPurchaseStateChange(PurchaseState purchaseState, String itemId,
                 int quantity, long purchaseTime, String developerPayload) {
             if (Consts.DEBUG) {
-                Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
+                //Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
             }
 
             if (developerPayload == null) {
@@ -218,21 +218,21 @@ public class AndroidBilling  {
         public void onRequestPurchaseResponse(RequestPurchase request,
                 ResponseCode responseCode) {
             if (Consts.DEBUG) {
-                Log.d(TAG, request.mProductId + ": " + responseCode);
+                //Log.d(TAG, request.mProductId + ": " + responseCode);
             }
             if (responseCode == ResponseCode.RESULT_OK) {
                 if (Consts.DEBUG) {
-                    Log.i(TAG, "purchase was successfully sent to server");
+                    //Log.i(TAG, "purchase was successfully sent to server");
                 }
                 logProductActivity(request.mProductId, "sending purchase request");
             } else if (responseCode == ResponseCode.RESULT_USER_CANCELED) {
                 if (Consts.DEBUG) {
-                    Log.i(TAG, "user canceled purchase");
+                    //Log.i(TAG, "user canceled purchase");
                 }
                 logProductActivity(request.mProductId, "dismissed purchase dialog");
             } else {
                 if (Consts.DEBUG) {
-                    Log.i(TAG, "purchase failed");
+                   // Log.i(TAG, "purchase failed");
                 }
                 logProductActivity(request.mProductId, "request purchase returned " + responseCode);
             }
@@ -243,7 +243,7 @@ public class AndroidBilling  {
                 ResponseCode responseCode) {
             if (responseCode == ResponseCode.RESULT_OK) {
                 if (Consts.DEBUG) {
-                    Log.d(TAG, "completed RestoreTransactions request");
+                    //Log.d(TAG, "completed RestoreTransactions request");
                 }
                 // Update the shared preferences so that we don't perform
                 // a RestoreTransactions again.
@@ -253,7 +253,7 @@ public class AndroidBilling  {
 //                edit.commit();
             } else {
                 if (Consts.DEBUG) {
-                    Log.d(TAG, "RestoreTransactions error: " + responseCode);
+                    //Log.d(TAG, "RestoreTransactions error: " + responseCode);
                 }
             }
         }
@@ -311,9 +311,9 @@ public class AndroidBilling  {
     public void onCreate(Bundle savedInstanceState, Context context, Activity game) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.main);
-        Log.i(TAG, "*********************\nIn Oncreate");
+        //Log.i(TAG, "*********************\nIn Oncreate");
         if (game != null)                    
-            Log.i(TAG, "*********************\ngame not null");
+            //Log.i(TAG, "*********************\ngame not null");
             
         mGameActivity = game;
         mHandler = new Handler();
@@ -336,7 +336,7 @@ public class AndroidBilling  {
     }
     public void buyObject(int uid, String productNumber, String SERVER_URL)
     {
-            Log.i(TAG, "*********************\nIn buyObject");
+            //Log.i(TAG, "*********************\nIn buyObject");
             mSERVER_URL = new String(SERVER_URL);
             mUID = Integer.toString(uid);
             mSku = productNumber;

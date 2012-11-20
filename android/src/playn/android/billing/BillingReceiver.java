@@ -46,7 +46,7 @@ public class BillingReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Log.i(TAG, "**************** onReceive: " + action);
+        //Log.i(TAG, "**************** onReceive: " + action);
 
         if (Consts.ACTION_PURCHASE_STATE_CHANGED.equals(action)) {
             String signedData = intent.getStringExtra(Consts.INAPP_SIGNED_DATA);
@@ -55,7 +55,7 @@ public class BillingReceiver extends BroadcastReceiver {
         } else if (Consts.ACTION_NOTIFY.equals(action)) {
             String notifyId = intent.getStringExtra(Consts.NOTIFICATION_ID);
             if (Consts.DEBUG) {
-                Log.i(TAG, "notifyId: " + notifyId);
+                //Log.i(TAG, "notifyId: " + notifyId);
             }
             notify(context, notifyId);
         } else if (Consts.ACTION_RESPONSE_CODE.equals(action)) {
@@ -64,7 +64,7 @@ public class BillingReceiver extends BroadcastReceiver {
                     ResponseCode.RESULT_ERROR.ordinal());
             checkResponseCode(context, requestId, responseCodeIndex);
         } else {
-            Log.w(TAG, "unexpected action: " + action);
+            //Log.w(TAG, "unexpected action: " + action);
         }
     }
 
@@ -79,7 +79,7 @@ public class BillingReceiver extends BroadcastReceiver {
      */
     private void purchaseStateChanged(Context context, String signedData, String signature) {
         if (Consts.DEBUG) {
-                Log.i(TAG, "purchaseStateChanged: ");
+                //Log.i(TAG, "purchaseStateChanged: ");
             }
         Intent intent = new Intent(Consts.ACTION_PURCHASE_STATE_CHANGED);
         intent.setClass(context, BillingService.class);
@@ -101,7 +101,7 @@ public class BillingReceiver extends BroadcastReceiver {
      */
     private void notify(Context context, String notifyId) {
         if (Consts.DEBUG) {
-                Log.i(TAG, "notify: " + notifyId);
+                //Log.i(TAG, "notify: " + notifyId);
             }        
         Intent intent = new Intent(Consts.ACTION_GET_PURCHASE_INFORMATION);
         intent.setClass(context, BillingService.class);
@@ -119,7 +119,7 @@ public class BillingReceiver extends BroadcastReceiver {
      */
     private void checkResponseCode(Context context, long requestId, int responseCodeIndex) {
         if (Consts.DEBUG) {
-                Log.i(TAG, "checkResponseCode: " + Long.toString(requestId));
+                //Log.i(TAG, "checkResponseCode: " + Long.toString(requestId));
             }         
         Intent intent = new Intent(Consts.ACTION_RESPONSE_CODE);
         intent.setClass(context, BillingService.class);

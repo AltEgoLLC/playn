@@ -249,7 +249,7 @@ public class AndroidAssets extends AbstractAssets {
       HttpResponse response = client.execute(getRequest);
       final int statusCode = response.getStatusLine().getStatusCode();
       if (statusCode != HttpStatus.SC_OK) {
-        Log.w("ImageDownloader", "Error " + statusCode + " while retrieving bitmap from " + url);
+        //Log.w("ImageDownloader", "Error " + statusCode + " while retrieving bitmap from " + url);
         return null;
       }
 
@@ -270,7 +270,7 @@ public class AndroidAssets extends AbstractAssets {
       // Could provide a more explicit error message for IOException or
       // IllegalStateException
       getRequest.abort();
-      Log.w("ImageDownloader", "Error while retrieving bitmap from " + url, e);
+      //Log.w("ImageDownloader", "Error while retrieving bitmap from " + url, e);
     } finally {
       if (client != null) {
         client.close();

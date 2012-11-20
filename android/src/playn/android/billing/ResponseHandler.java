@@ -73,7 +73,7 @@ public class ResponseHandler {
     public static void buyPageIntentResponse(PendingIntent pendingIntent, Intent intent) {
         if (sPurchaseObserver == null) {
             if (Consts.DEBUG) {
-                Log.d(TAG, "UI is not running");
+                //Log.d(TAG, "UI is not running");
             }
             return;
         }
