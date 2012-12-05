@@ -2,6 +2,7 @@ package playn.android.gcm;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import com.google.android.gcm.GCMBaseIntentService;
 
 public class GCMIntentService extends GCMBaseIntentService {
@@ -11,6 +12,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         // Called when your server sends a message to GCM, and GCM 
         // delivers it to the device. If the message has a payload, 
         // its contents are available as extras in the intent.
+        Log.i("GCM Service", "Message Received");
     }
 
     @Override
