@@ -296,17 +296,17 @@ public class AndroidPlatform implements Platform {
     @Override
   public void setPlatformCache(String location) {
       if (imageDownload != null) {
-          System.out.println("****************");
+          //System.out.println("****************");
           File sdDir = Environment.getExternalStorageDirectory();
-          System.out.println("SD Card Path: " + sdDir.getAbsolutePath());
+          //System.out.println("SD Card Path: " + sdDir.getAbsolutePath());
           String abs = sdDir.getAbsolutePath() + "/PlayN/" + location;
           sdDir = new File(abs);
           imageDownload.setCacheDirectory(sdDir);
-          System.out.println("SD Card Final: " + sdDir.getAbsolutePath());
-          System.out.println("****************");
+          //System.out.println("SD Card Final: " + sdDir.getAbsolutePath());
+          //System.out.println("****************");
       }
-      else
-          System.out.println("****************\nNo SD Card\n****************");
+      else {}
+          //System.out.println("****************\nNo SD Card\n****************");
   }
     
     @Override
@@ -361,7 +361,11 @@ public class AndroidPlatform implements Platform {
         }
         return url;
     }
-    
+    @Override
+    public void addCallback(Callback callback)
+    {
+        activity.getBilling().addCallback(callback);
+    }
     @Override  
     public void doPayment(String externalTransID, int uid, String paymentSystem, String description, String price, int[] items, String productNumber, String SERVER_URL, Callback callback)
     {

@@ -85,7 +85,7 @@ public class AndroidImageDownload implements ImageDownload {
                         else
                         {
                             //AltEgo.LogWarning( "downloadImage", strUrl, " retry: ", Integer.toString( intAttempt ) );
-                            System.err.println("downloadImage: " + strUrl + "\nretry: " + Integer.toString( intAttempt ) );
+                            //System.err.println("downloadImage: " + strUrl + "\nretry: " + Integer.toString( intAttempt ) );
                             try
                             {
                                 Thread.sleep( longDelayMS );
@@ -93,24 +93,24 @@ public class AndroidImageDownload implements ImageDownload {
                             catch (InterruptedException ex)
                             {
                                 //AltEgo.LogError( "downloadImage", "Retry thread sleep interrupted: ", ex.getMessage() );
-                                System.out.println( "downloadImage -- Retry thread sleep interrupted:\n" + ex.getMessage() );
+                                //System.out.println( "downloadImage -- Retry thread sleep interrupted:\n" + ex.getMessage() );
                             }
                         }
                     }
                     catch (SocketTimeoutException ex)
                     {
                         //AltEgo.LogError( "downloadImage", "SocketTimeoutException occurred: ", ex.getMessage() );
-                        System.out.println( "downloadImage -- SocketTimeoutException occurred:\n" + ex.getMessage() );
+                        //System.out.println( "downloadImage -- SocketTimeoutException occurred:\n" + ex.getMessage() );
                     }
                     catch (IOException ex)
                     {
                         //AltEgo.LogError( "downloadImage", "Exception occurred: ", ex.getMessage() );
-                        System.out.println( "downloadImage -- Exception Occurred:\n" + ex.getMessage() );
+                        //System.out.println( "downloadImage -- Exception Occurred:\n" + ex.getMessage() );
                     }
                     catch (Throwable e)
                     {
                         //AltEgo.LogError( "downloadImage", "Exception occurred: ", ex.getMessage() );
-                        System.out.println( "downloadImage -- Error/Exception Occurred:\n" + e.getMessage() );
+                        //System.out.println( "downloadImage -- Error/Exception Occurred:\n" + e.getMessage() );
                     }
                     finally
                     {
@@ -122,11 +122,11 @@ public class AndroidImageDownload implements ImageDownload {
                 }
                 catch (MalformedURLException ex)
                 {
-                    System.out.println( "downloadImage -- MalformedURLException occurred:\n" + ex.getMessage() );
+                    //System.out.println( "downloadImage -- MalformedURLException occurred:\n" + ex.getMessage() );
                 }
                 catch (IOException ex)
                 {
-                    System.out.println( "downloadImage -- IOException occurred:\n" + ex.getMessage() );
+                    //System.out.println( "downloadImage -- IOException occurred:\n" + ex.getMessage() );
                 }
             }
             
@@ -142,8 +142,12 @@ public class AndroidImageDownload implements ImageDownload {
                     {
                         //System.out.println( "Image Path Is File: " + fileLocalImage.isFile() );
                         
-                        try { System.out.println( "MKDIR Image Path: " + fileLocalImage.mkdir() ); }
-                        catch (SecurityException e) { System.out.println("Exception: " + e.toString() + "\n" + e.getMessage()); }
+                        try { 
+                            //System.out.println( "MKDIR Image Path: " + fileLocalImage.mkdir() ); 
+                        }
+                        catch (SecurityException e) { 
+                            //System.out.println("Exception: " + e.toString() + "\n" + e.getMessage()); 
+                        }
                         
                         streamFileOutput = new FileOutputStream( fileLocalImage );
                         if (imageBitmap.compress( Bitmap.CompressFormat.PNG, 100, streamFileOutput ))
@@ -154,14 +158,14 @@ public class AndroidImageDownload implements ImageDownload {
                         else
                         {
                             //AltEgo.LogError( "downloadImage", "Failed to locally store bitmap: " + fileLocalImage.getAbsolutePath() );
-                            System.out.println( "downloadImage -- Failed to locally store bitmap: " + fileLocalImage.getAbsolutePath() );
+                            //System.out.println( "downloadImage -- Failed to locally store bitmap: " + fileLocalImage.getAbsolutePath() );
                         }
                     }
                     catch (FileNotFoundException ex)
                     {
-                        System.out.println( "downloadImage -- Failed to open file: " + fileLocalImage.getAbsolutePath() + 
-                                "\n" + ex.toString() + 
-                                "\n" + ex.getMessage());
+                        //System.out.println( "downloadImage -- Failed to open file: " + fileLocalImage.getAbsolutePath() + 
+                        //        "\n" + ex.toString() + 
+                        //        "\n" + ex.getMessage());
                     }
                     finally
                     {
@@ -234,7 +238,7 @@ public class AndroidImageDownload implements ImageDownload {
             catch (Exception ex)
             {
                 //AltEgo.LogError( "loadImage", "Failed to load image from local storage: ", fileLocalImage.getAbsolutePath() );
-                System.out.println( "loadImage -- Failed to load image from local storage:\n" + fileLocalImage.getAbsolutePath() );
+                //System.out.println( "loadImage -- Failed to load image from local storage:\n" + fileLocalImage.getAbsolutePath() );
             }
         }
         
@@ -252,7 +256,7 @@ public class AndroidImageDownload implements ImageDownload {
             else
             {
                 //AltEgo.LogWarning( "setCacheDirectory", "Failed to find accessible cache path: ", fileCacheDirectory.getAbsolutePath() );
-                System.out.println( "setCacheDirectory -- Failed to find accessible cache path:\n" + fileCacheDirectory.getAbsolutePath() );
+                //System.out.println( "setCacheDirectory -- Failed to find accessible cache path:\n" + fileCacheDirectory.getAbsolutePath() );
             }
         }
     }

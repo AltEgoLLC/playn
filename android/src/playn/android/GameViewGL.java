@@ -51,8 +51,9 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             gl20.glViewport(0, 0, width, height);
-            if (AndroidPlatform.DEBUG_LOGS)
-                Log.d("playn", "Surface dimensions changed to ( " + width + " , " + height + ")");
+            if (AndroidPlatform.DEBUG_LOGS) {
+                //Log.d("playn", "Surface dimensions changed to ( " + width + " , " + height + ")");
+            }
         }
 
         @Override
@@ -120,20 +121,23 @@ public class GameViewGL extends GLSurfaceView implements SurfaceHolder.Callback 
       int width = platform.graphics().width();
       int height = platform.graphics().height();
       if (width == 0 || height == 0) {
-        Log.e("playn", "Invalid game size set: (" + width + " , " + height + ")");
+        //Log.e("playn", "Invalid game size set: (" + width + " , " + height + ")");
       } else {
         int minWidth = getSuggestedMinimumWidth();
         int minHeight = getSuggestedMinimumHeight();
         width = width > minWidth ? width : minWidth;
         height = height > minHeight ? height : minHeight;
         setMeasuredDimension(width, height);
-        if (AndroidPlatform.DEBUG_LOGS)
-          Log.d("playn", "Using game-specified sizing. (" + width + " , " + height + ")");
+        if (AndroidPlatform.DEBUG_LOGS) {
+            //Log.d("playn", "Using game-specified sizing. (" + width + " , " + height + ")");
+        }
         return;
       }
     }
 
-    if (AndroidPlatform.DEBUG_LOGS) Log.d("playn", "Using default sizing.");
+    if (AndroidPlatform.DEBUG_LOGS) {
+        //Log.d("playn", "Using default sizing.");
+    }
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
   }
 

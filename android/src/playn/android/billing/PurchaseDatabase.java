@@ -184,8 +184,7 @@ public class PurchaseDatabase {
             // the database version changes instead of dropping the tables and
             // re-creating them.
             if (newVersion != DATABASE_VERSION) {
-                Log.w(TAG, "Database upgrade from old: " + oldVersion + " to: " +
-                    newVersion);
+                //Log.w(TAG, "Database upgrade from old: " + oldVersion + " to: " + newVersion);
                 db.execSQL("DROP TABLE IF EXISTS " + PURCHASE_HISTORY_TABLE_NAME);
                 db.execSQL("DROP TABLE IF EXISTS " + PURCHASED_ITEMS_TABLE_NAME);
                 createPurchaseTable(db);

@@ -585,4 +585,11 @@ public class HtmlPlatform implements Platform {
         });
 
     }    
+    
+@Override
+public void addCallback(Callback callback)
+{
+
+}    
 }
+

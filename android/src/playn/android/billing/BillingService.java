@@ -110,13 +110,13 @@ public class BillingService extends Service implements ServiceConnection {
          */
         public boolean runIfConnected() {
             if (Consts.DEBUG) {
-                Log.d(TAG, getClass().getSimpleName());
+                //Log.d(TAG, getClass().getSimpleName());
             }
             if (mService != null) {
                 try {
                     mRequestId = run();
                     if (Consts.DEBUG) {
-                        Log.d(TAG, "request id: " + mRequestId);
+                        //Log.d(TAG, "request id: " + mRequestId);
                     }
                     if (mRequestId >= 0) {
                         mSentRequests.put(mRequestId, this);
@@ -136,7 +136,7 @@ public class BillingService extends Service implements ServiceConnection {
          * @param e the exception
          */
         protected void onRemoteException(RemoteException e) {
-            Log.w(TAG, "remote billing service crashed");
+            //Log.w(TAG, "remote billing service crashed");
             mService = null;
         }
 
@@ -156,7 +156,7 @@ public class BillingService extends Service implements ServiceConnection {
 
         protected Bundle makeRequestBundle(String method) {
             Bundle request = new Bundle();
-                Log.i(TAG, "*********************** makeRequestBundle " + method);
+                //Log.i(TAG, "*********************** makeRequestBundle " + method);
             
             request.putString(Consts.BILLING_REQUEST_METHOD, method);
             request.putInt(Consts.BILLING_REQUEST_API_VERSION, 2);
@@ -168,7 +168,7 @@ public class BillingService extends Service implements ServiceConnection {
             ResponseCode responseCode = ResponseCode.valueOf(
                     response.getInt(Consts.BILLING_RESPONSE_RESPONSE_CODE));
             if (Consts.DEBUG) {
-                Log.e(TAG, method + " received " + responseCode.toString());
+                //Log.e(TAG, method + " received " + responseCode.toString());
             }
         }
     }
@@ -223,8 +223,7 @@ public class BillingService extends Service implements ServiceConnection {
             Bundle response = mService.sendBillingRequest(request);
             int responseCode = response.getInt(Consts.BILLING_RESPONSE_RESPONSE_CODE);
             if (Consts.DEBUG) {
-                Log.i(TAG, "CheckBillingSupported response code: " +
-                        ResponseCode.valueOf(responseCode));
+                //Log.i(TAG, "CheckBillingSupported response code: " + ResponseCode.valueOf(responseCode));
             }
             boolean billingSupported = (responseCode == ResponseCode.RESULT_OK.ordinal());
             ResponseHandler.checkBillingSupportedResponse(billingSupported, mProductType);
@@ -292,7 +291,7 @@ public class BillingService extends Service implements ServiceConnection {
             PendingIntent pendingIntent
                     = response.getParcelable(Consts.BILLING_RESPONSE_PURCHASE_INTENT);
             if (pendingIntent == null) {
-                Log.e(TAG, "Error with requestPurchase");
+                //Log.e(TAG, "Error with requestPurchase");
                 return Consts.BILLING_RESPONSE_INVALID_REQUEST_ID;
             }
 
@@ -429,7 +428,7 @@ public class BillingService extends Service implements ServiceConnection {
     public void handleCommand(Intent intent, int startId) {
         String action = intent.getAction();
         if (Consts.DEBUG) {
-            Log.i(TAG, "handleCommand() action: " + action);
+            //Log.i(TAG, "handleCommand() action: " + action);
         }
         if (Consts.ACTION_CONFIRM_NOTIFICATION.equals(action)) {
             String[] notifyIds = intent.getStringArrayExtra(Consts.NOTIFICATION_ID);
@@ -458,7 +457,7 @@ public class BillingService extends Service implements ServiceConnection {
     private boolean bindToMarketBillingService() {
         try {
             if (Consts.DEBUG) {
-                Log.i(TAG, "binding to Market billing service");
+                //Log.i(TAG, "binding to Market billing service");
             }
             boolean bindResult = bindService(
                     new Intent(Consts.MARKET_BILLING_SERVICE_ACTION),
@@ -468,10 +467,10 @@ public class BillingService extends Service implements ServiceConnection {
             if (bindResult) {
                 return true;
             } else {
-                Log.e(TAG, "Could not bind to service.");
+                //Log.e(TAG, "Could not bind to service.");
             }
         } catch (SecurityException e) {
-            Log.e(TAG, "Security exception: " + e);
+            //Log.e(TAG, "Security exception: " + e);
         }
         return false;
     }
@@ -566,7 +565,7 @@ public class BillingService extends Service implements ServiceConnection {
         ArrayList<Security.VerifiedPurchase> purchases;
         purchases = Security.verifyPurchase(signedData, signature);
         if (Consts.DEBUG) {
-            Log.e(TAG, " purchaseStateChanged " + Integer.toString(startId));
+            //Log.e(TAG, " purchaseStateChanged " + Integer.toString(startId));
         }        
         if (purchases == null) {
             return;
@@ -602,7 +601,7 @@ public class BillingService extends Service implements ServiceConnection {
         BillingRequest request = mSentRequests.get(requestId);
         if (request != null) {
             if (Consts.DEBUG) {
-                Log.d(TAG, request.getClass().getSimpleName() + ": " + responseCode);
+                //Log.d(TAG, request.getClass().getSimpleName() + ": " + responseCode);
             }
             request.responseCodeReceived(responseCode);
         }
@@ -639,7 +638,7 @@ public class BillingService extends Service implements ServiceConnection {
         // stop it now.
         if (maxStartId >= 0) {
             if (Consts.DEBUG) {
-                Log.i(TAG, "stopping service, startId: " + maxStartId);
+                //Log.i(TAG, "stopping service, startId: " + maxStartId);
             }
             stopSelf(maxStartId);
         }
@@ -652,7 +651,7 @@ public class BillingService extends Service implements ServiceConnection {
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         if (Consts.DEBUG) {
-            Log.d(TAG, "Billing service connected");
+            //Log.d(TAG, "Billing service connected");
         }
         mService = IMarketBillingService.Stub.asInterface(service);
         runPendingRequests();
@@ -663,7 +662,7 @@ public class BillingService extends Service implements ServiceConnection {
      */
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        Log.w(TAG, "Billing service disconnected");
+        //Log.w(TAG, "Billing service disconnected");
         mService = null;
     }
 

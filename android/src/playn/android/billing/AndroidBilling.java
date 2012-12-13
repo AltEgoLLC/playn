@@ -14,6 +14,7 @@ import playn.android.billing.Consts.PurchaseState;
 import playn.android.billing.Consts.ResponseCode;
 import playn.android.billing.Consts;
 import playn.core.PlayN;
+import playn.core.ResourceCallback;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -116,7 +117,7 @@ public class AndroidBilling  {
     private static final int DIALOG_CANNOT_CONNECT_ID = 1;
     private static final int DIALOG_BILLING_NOT_SUPPORTED_ID = 2;
     private static final int DIALOG_SUBSCRIPTIONS_NOT_SUPPORTED_ID = 3;
-
+    private Callback mBillingCallback = null;
     /**
      * Each product in the catalog can be MANAGED, UNMANAGED, or SUBSCRIPTION.  MANAGED
      * means that the product can be purchased only once per user (such as a new
@@ -142,7 +143,7 @@ public class AndroidBilling  {
         @Override
         public void onBillingSupported(boolean supported, String type) {
             if (Consts.DEBUG) {
-                Log.i(TAG, "supported: " + supported);
+                //Log.i(TAG, "supported: " + supported);
             }
             if (type == null || type.equals(Consts.ITEM_TYPE_INAPP)) {
                 if (supported) {
@@ -159,11 +160,12 @@ public class AndroidBilling  {
             }
         }
 
+
         @Override
         public void onPurchaseStateChange(PurchaseState purchaseState, String itemId,
                 int quantity, long purchaseTime, String developerPayload) {
             if (Consts.DEBUG) {
-                Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
+                //Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
             }
 
             if (developerPayload == null) {
@@ -173,12 +175,20 @@ public class AndroidBilling  {
             }
             
             if (purchaseState == PurchaseState.PURCHASED) {
-                String purchasedObject = mSERVER_URL + "?userid=" + mUID + "&productid=" + itemId;
+                String databaseItems;
+                
+                if (skuList.length > 1)
+                    databaseItems = mOriginalSku;
+                else
+                    databaseItems = itemId;
+                String purchasedObject = mSERVER_URL + "?userid=" + mUID + "&productid=" + databaseItems;
                 PlayN.net().get(purchasedObject, null, 
                 new Callback<String>(){
 
                 @Override
                 public void onSuccess(String result) {
+                    if (mBillingCallback != null)
+                        mBillingCallback.onSuccess(result);
                     PlayN.log().debug("purchase success! :" + result);
                 }
 
@@ -208,21 +218,21 @@ public class AndroidBilling  {
         public void onRequestPurchaseResponse(RequestPurchase request,
                 ResponseCode responseCode) {
             if (Consts.DEBUG) {
-                Log.d(TAG, request.mProductId + ": " + responseCode);
+                //Log.d(TAG, request.mProductId + ": " + responseCode);
             }
             if (responseCode == ResponseCode.RESULT_OK) {
                 if (Consts.DEBUG) {
-                    Log.i(TAG, "purchase was successfully sent to server");
+                    //Log.i(TAG, "purchase was successfully sent to server");
                 }
                 logProductActivity(request.mProductId, "sending purchase request");
             } else if (responseCode == ResponseCode.RESULT_USER_CANCELED) {
                 if (Consts.DEBUG) {
-                    Log.i(TAG, "user canceled purchase");
+                    //Log.i(TAG, "user canceled purchase");
                 }
                 logProductActivity(request.mProductId, "dismissed purchase dialog");
             } else {
                 if (Consts.DEBUG) {
-                    Log.i(TAG, "purchase failed");
+                   // Log.i(TAG, "purchase failed");
                 }
                 logProductActivity(request.mProductId, "request purchase returned " + responseCode);
             }
@@ -233,7 +243,7 @@ public class AndroidBilling  {
                 ResponseCode responseCode) {
             if (responseCode == ResponseCode.RESULT_OK) {
                 if (Consts.DEBUG) {
-                    Log.d(TAG, "completed RestoreTransactions request");
+                    //Log.d(TAG, "completed RestoreTransactions request");
                 }
                 // Update the shared preferences so that we don't perform
                 // a RestoreTransactions again.
@@ -243,10 +253,15 @@ public class AndroidBilling  {
 //                edit.commit();
             } else {
                 if (Consts.DEBUG) {
-                    Log.d(TAG, "RestoreTransactions error: " + responseCode);
+                    //Log.d(TAG, "RestoreTransactions error: " + responseCode);
                 }
             }
         }
+    }
+
+    public void addCallback(Callback callback) {
+        // we're always ready immediately
+        mBillingCallback = callback;
     }
 
     private static class CatalogEntry {
@@ -281,8 +296,10 @@ public class AndroidBilling  {
 
     private String mItemName;
     private String mSku;
-//    private String mSku = "android.test.purchased";
+    private String mOriginalSku;
     
+//    private String mSku = "android.test.purchased";
+    private String[] skuList;
     private Managed mManagedType;
     private CatalogAdapter mCatalogAdapter;
     private Activity mGameActivity;
@@ -294,9 +311,9 @@ public class AndroidBilling  {
     public void onCreate(Bundle savedInstanceState, Context context, Activity game) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.main);
-        Log.i(TAG, "*********************\nIn Oncreate");
+        //Log.i(TAG, "*********************\nIn Oncreate");
         if (game != null)                    
-            Log.i(TAG, "*********************\ngame not null");
+            //Log.i(TAG, "*********************\ngame not null");
             
         mGameActivity = game;
         mHandler = new Handler();
@@ -319,10 +336,17 @@ public class AndroidBilling  {
     }
     public void buyObject(int uid, String productNumber, String SERVER_URL)
     {
-            Log.i(TAG, "*********************\nIn buyObject");
+            //Log.i(TAG, "*********************\nIn buyObject");
             mSERVER_URL = new String(SERVER_URL);
             mUID = Integer.toString(uid);
             mSku = productNumber;
+            mOriginalSku = productNumber;
+            
+            skuList = mSku.split(",");
+            if (skuList.length > 1)
+            {
+                mSku = skuList[1];
+            }
             if (mManagedType != Managed.SUBSCRIPTION)
             {
                 if ( !mBillingService.requestPurchase(mSku, Consts.ITEM_TYPE_INAPP, mPayloadContents)) 

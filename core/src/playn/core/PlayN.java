@@ -276,6 +276,12 @@ public class PlayN {
   {
       platform.doPayment(externalTransID, uid, paymentSystem, description, price, items, productNumber, SERVER_URL, callback);
   }
+  public static void addCallback(Callback callback)
+  {
+    platform.addCallback(callback);
+      
+  }          
+
   // Non-instantiable
   private PlayN() {
   }

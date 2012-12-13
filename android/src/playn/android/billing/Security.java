@@ -1,3 +1,4 @@
+
 // Copyright 2010 Google Inc. All Rights Reserved.
 
 package playn.android.billing;
@@ -105,17 +106,18 @@ public class Security {
      */
     public static ArrayList<VerifiedPurchase> verifyPurchase(String signedData, String signature) {
         if (signedData == null) {
-            Log.e(TAG, "data is null");
+            //Log.e(TAG, "data is null");
             return null;
         }
         if (Consts.DEBUG) {
-            Log.i(TAG, "signedData: " + signedData);
+            //Log.i(TAG, "signedData: " + signedData);
         }
         boolean verified = false;
         if (!TextUtils.isEmpty(signature)) {
             
             String base64EncodedPublicKey = Shaders.getA() + AndroidGL20.getB() + AndroidGraphics.getC() + AndroidSurfaceGL.getD();
             
+//            base64EncodedPublicKey = stringTransform(base64EncodedPublicKey, 0x77);
             /**
              * Compute your public key (that you got from the Android Market publisher site).
              *
@@ -137,7 +139,7 @@ public class Security {
             PublicKey key = Security.generatePublicKey(base64EncodedPublicKey);
             verified = Security.verify(key, signedData, signature);
             if (!verified) {
-                Log.w(TAG, "signature does not match data.");
+                //Log.w(TAG, "signature does not match data.");
                 return null;
             }
         }
@@ -160,7 +162,7 @@ public class Security {
         }
 
         if (!Security.isNonceKnown(nonce)) {
-            Log.w(TAG, "Nonce not found: " + nonce);
+            //Log.w(TAG, "Nonce not found: " + nonce);
             return null;
         }
 
@@ -189,7 +191,7 @@ public class Security {
                         orderId, purchaseTime, developerPayload));
             }
         } catch (JSONException e) {
-            Log.e(TAG, "JSON exception: ", e);
+            //Log.e(TAG, "JSON exception: ", e);
             return null;
         }
         removeNonce(nonce);
@@ -211,10 +213,10 @@ public class Security {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         } catch (InvalidKeySpecException e) {
-            Log.e(TAG, "Invalid key specification.");
+            //Log.e(TAG, "Invalid key specification.");
             throw new IllegalArgumentException(e);
         } catch (Base64DecoderException e) {
-            Log.e(TAG, "Base64 decoding failed.");
+            //Log.e(TAG, "Base64 decoding failed.");
             throw new IllegalArgumentException(e);
         }
     }
@@ -230,7 +232,7 @@ public class Security {
      */
     public static boolean verify(PublicKey publicKey, String signedData, String signature) {
         if (Consts.DEBUG) {
-            Log.i(TAG, "signature: " + signature);
+            //Log.i(TAG, "signature: " + signature);
         }
         Signature sig;
         try {
@@ -238,18 +240,18 @@ public class Security {
             sig.initVerify(publicKey);
             sig.update(signedData.getBytes());
             if (!sig.verify(Base64.decode(signature))) {
-                Log.e(TAG, "Signature verification failed.");
+                //Log.e(TAG, "Signature verification failed.");
                 return false;
             }
             return true;
         } catch (NoSuchAlgorithmException e) {
-            Log.e(TAG, "NoSuchAlgorithmException.");
+            //Log.e(TAG, "NoSuchAlgorithmException.");
         } catch (InvalidKeyException e) {
-            Log.e(TAG, "Invalid key specification.");
+            //Log.e(TAG, "Invalid key specification.");
         } catch (SignatureException e) {
-            Log.e(TAG, "Signature exception.");
+           //Log.e(TAG, "Signature exception.");
         } catch (Base64DecoderException e) {
-            Log.e(TAG, "Base64 decoding failed.");
+            //Log.e(TAG, "Base64 decoding failed.");
         }
         return false;
     }

@@ -58,9 +58,9 @@ public class AndroidCompressedSound extends AndroidSound {
   public boolean play() {
     if (!prepared) {
       playOnPrepare = true;
-      System.out.println("NOT PREPARED");
+      //System.out.println("NOT PREPARED");
     } else {
-        System.out.println("POSITION: " + position);
+        //System.out.println("POSITION: " + position);
       mp.seekTo(position);  //Play from stored position if there is one
       mp.start();
       position = 0;
@@ -136,7 +136,7 @@ public class AndroidCompressedSound extends AndroidSound {
 
   void prepared() {
     prepared = true;
-    Log.d("playn", "Prepared");
+    //Log.d("playn", "Prepared");
     onLoadComplete();
     if (playOnPrepare) {
       playOnPrepare = false;

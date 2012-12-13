@@ -33,7 +33,7 @@ public class AndroidLayoutView extends LinearLayout {
   @Override
   public void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
-    Log.i("playn", "Screen sized changed to ( " + w + " , " + h + ")");
+    //Log.i("playn", "Screen sized changed to ( " + w + " , " + h + ")");
     AndroidPlatform platform = activity.platform();
     if (platform != null) {
       platform.graphics().refreshScreenSize();

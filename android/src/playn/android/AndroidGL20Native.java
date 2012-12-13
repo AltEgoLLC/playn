@@ -26,7 +26,7 @@ public class AndroidGL20Native extends AndroidGL20 {
       System.loadLibrary("playn-android-nativelib");
       available = true;
     } catch (Throwable t) {
-      android.util.Log.w("playn", "Failed to load playn-android-nativelib: " + t);
+      //android.util.Log.w("playn", "Failed to load playn-android-nativelib: " + t);
     }
   }
 
