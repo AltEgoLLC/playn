@@ -1,49 +1,101 @@
 package playn.android.gcm;
 
+import android.R;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import com.google.android.gcm.GCMBaseIntentService;
+import com.google.android.gcm.GCMRegistrar;
+import playn.android.GameActivity;
+import playn.core.PlayN;
 
 public class GCMIntentService extends GCMBaseIntentService {
 
-    @Override
-    protected void onMessage(Context cntxt, Intent intent) {
-        // Called when your server sends a message to GCM, and GCM 
-        // delivers it to the device. If the message has a payload, 
-        // its contents are available as extras in the intent.
-        Log.i("GCM Service", "Message Received");
-    }
+    private static final String TAG = "GCMIntentService";
 
-    @Override
-    protected void onError(Context cntxt, String string) {
-        // Called when the device tries to register or unregister, but 
-        // GCM returned an error. There is nothing to be done other than 
-        // evaluating the error (returned by errorId) and trying to fix 
-        // the problem.
-    }
-
-    @Override
-    protected void onRegistered(Context cntxt, String regid) {
-        // Called after a registration intent is received, passes the 
-        // registration ID assigned by GCM to that device/application 
-        // pair as parameter. You should send the regid to your server 
-        // so it can use it to send messages to this device.
-    }
-
-    @Override
-    protected void onUnregistered(Context cntxt, String string) {
-        // Called after the device has been unregistered from GCM. You
-        // should send the regid to the server so it unregisters the device.
+    public GCMIntentService() {
+        super(CommonUtilities.SENDER_ID);
     }
     
-    //@Override
-    //protected void onRecoverableError(Context context, String errorId) {
-        // Called when the device tries to register or unregister, but the 
-        // GCM servers are unavailable. The GCM library will retry the 
-        // operation using exponential backup, unless this method is overridden 
-        // and returns false. This method is optional and should be overridden 
-        // only if you want to display the message to the user or cancel the 
-        // retry attempts.
-    //}
+    @Override
+    protected void onRegistered(Context context, String registrationId) {
+        Log.i(TAG, "Device registered: regId = " + registrationId);
+        //displayMessage(context, getString(R.string.gcm_registered));
+        ServerUtilities.register(context, registrationId);
+        generateNotification(context, "Registered");
+    }
+
+    @Override
+    protected void onUnregistered(Context context, String registrationId) {
+        Log.i(TAG, "Device unregistered");
+        //displayMessage(context, getString(R.string.gcm_unregistered));
+        if (GCMRegistrar.isRegisteredOnServer(context)) {
+            ServerUtilities.unregister(context, registrationId);
+            generateNotification(context, "Unregistered");
+        } else {
+            // This callback results from the call to unregister made on
+            // ServerUtilities when the registration to the server failed.
+            Log.i(TAG, "Ignoring unregister callback");
+        }
+    }
+
+    @Override
+    protected void onMessage(Context context, Intent intent) {
+        Log.i(TAG, "Received message");
+        //String message = getString(R.string.gcm_message);
+        //displayMessage(context, message);
+        // notifies user
+        generateNotification(context, "Message Received");
+    }
+
+    @Override
+    protected void onDeletedMessages(Context context, int total) {
+        Log.i(TAG, "Received deleted messages notification");
+        //String message = getString(R.string.gcm_deleted, total);
+        //displayMessage(context, message);
+        // notifies user
+        generateNotification(context, "Received Deleted Message");
+    }
+
+    @Override
+    public void onError(Context context, String errorId) {
+        Log.i(TAG, "Received error: " + errorId);
+        //displayMessage(context, getString(R.string.gcm_error, errorId));
+        generateNotification(context, "Error: " + errorId);
+    }
+
+    @Override
+    protected boolean onRecoverableError(Context context, String errorId) {
+        // log message
+        Log.i(TAG, "Received recoverable error: " + errorId);
+        //displayMessage(context, getString(R.string.gcm_recoverable_error, errorId));
+        generateNotification(context, "Recoverable Error: " + errorId);
+        return super.onRecoverableError(context, errorId);
+    }
+
+    /**
+     * Issues a notification to inform the user that server has sent a message.
+     */
+    private static void generateNotification(Context context, String message) {
+        //int icon = R.drawable.ic_stat_gcm;
+        int icon = PlayN.getAppIcon();
+        Log.i(TAG, "##############\nIcon == " + icon + "\n##############");
+        long when = System.currentTimeMillis();
+        NotificationManager notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = new Notification(icon, message, when);
+        String title = PlayN.getAppName();
+        Intent notificationIntent = new Intent(context, GameActivity.class);
+        // set intent so it does not start a new activity
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent intent =
+                PendingIntent.getActivity(context, 0, notificationIntent, 0);
+        notification.setLatestEventInfo(context, title, message, intent);
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notificationManager.notify(0, notification);
+    }
 }

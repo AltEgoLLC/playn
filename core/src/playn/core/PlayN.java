@@ -30,6 +30,8 @@ public class PlayN {
 
   private static Platform platform;
   private static Analytics analytics;
+  private static String name;
+  private static int appIcon = 0;
 
   /**
    * Call this method to start your {@link Game}. It must be called only once,
@@ -281,6 +283,22 @@ public class PlayN {
     platform.addCallback(callback);
       
   }          
+  
+  public static void setAppName(String appName) {
+      name = appName;
+  } 
+  
+  public static String getAppName() {
+      return name;
+  }
+  
+  public static void setAppIcon(int icon) {
+      appIcon = icon;
+  }
+  
+  public static int getAppIcon() {
+      return appIcon;
+  }
 
   // Non-instantiable
   private PlayN() {

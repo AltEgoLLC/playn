@@ -23,14 +23,12 @@ import playn.core.Keyboard;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -52,6 +50,7 @@ import playn.android.billing.PurchaseDatabase;
 import playn.android.billing.PurchaseObserver;
 import playn.core.util.Callback;
 import playn.android.billing.AndroidBilling;
+import playn.android.gcm.ServerUtilities;
 
 /**
  * TODO: save/restore state
@@ -82,6 +81,12 @@ public abstract class GameActivity extends Activity {
   
   private Handler updateHandler = new Handler();
   private AndroidBilling androidBilling = null;
+  
+  static final String DISPLAY_MESSAGE_ACTION =
+            "playn.android.DISPLAY_MESSAGE";
+  
+  AsyncTask<Void, Void, Void> mRegisterTask;
+  
   /**
    * The entry-point into a PlayN game. Developers should implement main() to call
    * platform().assets().setPathPrefix() and PlayN.run().
@@ -170,16 +175,59 @@ public abstract class GameActivity extends Activity {
         editText.setVisibility(View.INVISIBLE);
         editText.setLayoutParams(relParams);
         relativeLayout.addView(editText);
+        
+        //*/ GCM STUFF
+        GCMRegistrar.checkDevice(this);
+        GCMRegistrar.checkManifest(this);
+        registerReceiver(mHandleMessageReceiver,
+                new IntentFilter(DISPLAY_MESSAGE_ACTION));
+        final String regId = GCMRegistrar.getRegistrationId(this);
+        Log.d("GameActivity", "Sender ID: " + GCM_SENDER_ID + "\nRegID: " + regId);
+        if (regId.equals("")) {
+            GCMRegistrar.register(this, GCM_SENDER_ID);
+            Log.d("GameActivity", "Blarg");
+        } else {
+            Log.d("GameActivity", "Honk");
+            if (GCMRegistrar.isRegisteredOnServer(this)) {
+                // Skips registration.
+            } else {
+                // Try to register again, but not in the UI thread.
+                // It's also necessary to cancel the thread onDestroy(),
+                // hence the use of AsyncTask instead of a raw thread.
+                final Context context = this;
+                mRegisterTask = new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        boolean registered = ServerUtilities.register(context, regId);
+                        // At this point all attempts to register with the app
+                        // server failed, so we need to unregister the device
+                        // from GCM - the app will try to register again when
+                        // it is restarted. Note that GCM will send an
+                        // unregistered callback upon completion, but
+                        // GCMIntentService.onUnregistered() will ignore it.
+                        if (!registered) {
+                            GCMRegistrar.unregister(context);
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void result) {
+                        mRegisterTask = null;
+                    }
+
+                };
+                mRegisterTask.execute(null, null, null);
+            }
+        }
+        //*// END GCM STUFF 
+        
         androidBilling = new AndroidBilling();
         androidBilling.onCreate(savedInstanceState, context, this);
         //updateHandler.postDelayed(mUpdateTime, 1000);
       
-        GCMRegistrar.checkDevice(this);
-        GCMRegistrar.checkManifest(this);
-        final String regId = GCMRegistrar.getRegistrationId(this);
-        if (regId.equals("")) {
-            GCMRegistrar.register(this, GCM_SENDER_ID);
-        } else {}
+        
     }
   
   public IBinder getApplicationWindowToken() {
@@ -219,6 +267,18 @@ public abstract class GameActivity extends Activity {
   boolean isHoneycombOrLater() {
     return android.os.Build.VERSION.SDK_INT >= 11;
   }
+  
+  private final BroadcastReceiver mHandleMessageReceiver =
+    //*/
+            new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i("MessageReceiver", "Blarg -- Message Received");
+        }
+    };
+    /*/
+    null;
+    //*/
 
   @Override
   protected void onDestroy() {
@@ -226,8 +286,18 @@ public abstract class GameActivity extends Activity {
       file.delete();
     }
     platform().audio().onDestroy();
+    
+    if (mRegisterTask != null) {
+        mRegisterTask.cancel(true);
+    }
+    if (mHandleMessageReceiver != null) {
+        unregisterReceiver(mHandleMessageReceiver);
+    }
+    GCMRegistrar.onDestroy(this);
+    
     super.onDestroy();
   }
+  
 
   @Override
   protected void onPause() {
