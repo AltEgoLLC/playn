@@ -255,15 +255,5 @@ public class Security {
         }
         return false;
     }
-    
-    
-    static String stringTransform(String s, int i) {
-        
-        char[] chars = s.toCharArray();
-        
-        for(int j = 0; j<chars.length; j++)
-           chars[j] = (char)(chars[j] ^ i);
-        
-        return String.valueOf(chars);
-    }
+
 }
