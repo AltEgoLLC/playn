@@ -59,7 +59,7 @@ public abstract class GameActivity extends Activity {
   private final int REQUIRED_CONFIG_CHANGES = ActivityInfo.CONFIG_ORIENTATION
       | ActivityInfo.CONFIG_KEYBOARD_HIDDEN;
   
-  public final static String GCM_SENDER_ID = "530415083496";
+  public final static String GCM_SENDER_ID = "692082014112";
 
   private GameViewGL gameView;
   private AndroidLayoutView viewLayout;
@@ -221,7 +221,8 @@ public abstract class GameActivity extends Activity {
                 mRegisterTask.execute(null, null, null);
             }
         }
-        //*// END GCM STUFF 
+        //*/ 
+        //END GCM STUFF 
         
         androidBilling = new AndroidBilling();
         androidBilling.onCreate(savedInstanceState, context, this);
@@ -285,7 +286,9 @@ public abstract class GameActivity extends Activity {
     for (File file : getCacheDir().listFiles()) {
       file.delete();
     }
-    platform().audio().onDestroy();
+    if (platform() != null && platform().audio() != null) {
+        platform().audio().onDestroy();
+    }
     
     if (mRegisterTask != null) {
         mRegisterTask.cancel(true);
