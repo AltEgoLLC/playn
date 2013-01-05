@@ -176,7 +176,7 @@ public abstract class GameActivity extends Activity {
         editText.setLayoutParams(relParams);
         relativeLayout.addView(editText);
         
-        //*/ GCM STUFF
+        /*/ GCM STUFF
         GCMRegistrar.checkDevice(this);
         GCMRegistrar.checkManifest(this);
         registerReceiver(mHandleMessageReceiver,
@@ -290,6 +290,7 @@ public abstract class GameActivity extends Activity {
         platform().audio().onDestroy();
     }
     
+    /*/ GCM
     if (mRegisterTask != null) {
         mRegisterTask.cancel(true);
     }
@@ -297,6 +298,7 @@ public abstract class GameActivity extends Activity {
         unregisterReceiver(mHandleMessageReceiver);
     }
     GCMRegistrar.onDestroy(this);
+    //*/
     
     super.onDestroy();
   }
@@ -340,7 +342,9 @@ public abstract class GameActivity extends Activity {
       //Log.i("GameActivity", "Keycode: " + keyCode);
       
     long time = nativeEvent.getEventTime();
+    //System.out.println("KeyCode Pre " + keyCode);
     Keyboard.Event event = new Keyboard.Event.Impl(time, keyForCode(keyCode));
+    //System.out.println("KeyCode Post " + keyCode);
     gameView.onKeyDown(event);
     boolean downPrevent = event.getPreventDefault();
 

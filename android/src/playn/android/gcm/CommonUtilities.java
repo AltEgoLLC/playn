@@ -27,8 +27,9 @@ public final class CommonUtilities {
     /**
      * Base URL of the Demo Server (such as http://my_host:8080/gcm-demo)
      */
-    public static final String SERVER_URL = "http://192.168.1.77:8080";
-
+    //public static final String SERVER_URL = "http://192.168.1.77:8080";
+    static final String SERVER_URL = "http://slipstreamgamma.appspot.com";
+    
     /**
      * Google API project id registered to use GCM.
      */
@@ -37,7 +38,7 @@ public final class CommonUtilities {
     /**
      * Tag used on log messages.
      */
-    static final String TAG = "GCMDemo";
+    static final String TAG = "PlayN GCM";
 
     /**
      * Intent used to display a message in the screen.
