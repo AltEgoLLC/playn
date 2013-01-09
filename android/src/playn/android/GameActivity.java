@@ -176,7 +176,9 @@ public abstract class GameActivity extends Activity {
         editText.setLayoutParams(relParams);
         relativeLayout.addView(editText);
         
-        /*/ GCM STUFF
+        //*/ GCM STUFF
+        getSharedPreferences("playn", 0).edit().putString("gcmtest", "We Are the Meta").commit();
+        
         GCMRegistrar.checkDevice(this);
         GCMRegistrar.checkManifest(this);
         registerReceiver(mHandleMessageReceiver,
@@ -290,7 +292,7 @@ public abstract class GameActivity extends Activity {
         platform().audio().onDestroy();
     }
     
-    /*/ GCM
+    //*/ GCM
     if (mRegisterTask != null) {
         mRegisterTask.cancel(true);
     }
