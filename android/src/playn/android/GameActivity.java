@@ -102,10 +102,10 @@ public abstract class GameActivity extends Activity {
         // Build the AndroidPlatform and register this activity.
         AndroidGL20 gl20;
         if (isHoneycombOrLater() || !AndroidGL20Native.available) {
-        gl20 = new AndroidGL20();
+            gl20 = new AndroidGL20();
         } else {
         // Provide our own native bindings for some missing methods.
-        gl20 = new AndroidGL20Native();
+            gl20 = new AndroidGL20Native();
         }
 
         // Build a View to hold the surface view and report changes to the screen
@@ -124,11 +124,10 @@ public abstract class GameActivity extends Activity {
         // Use the raw constant rather than the flag to avoid blowing up on
         // earlier Android
         int flagHardwareAccelerated = 0x1000000;
-        getWindow().setFlags(flagHardwareAccelerated, flagHardwareAccelerated);
+            getWindow().setFlags(flagHardwareAccelerated, flagHardwareAccelerated);
         }
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         //getWindow().setContentView(viewLayout, params);
 
@@ -138,23 +137,24 @@ public abstract class GameActivity extends Activity {
 
         // Default to landscape orientation.
         if (usePortraitOrientation()) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
         // Make sure the AndroidManifest.xml is set up correctly.
         try {
-        ActivityInfo info = this.getPackageManager().getActivityInfo(
-            new ComponentName(context, this.getPackageName() + "." + this.getLocalClassName()), 0);
-        if ((info.configChanges & REQUIRED_CONFIG_CHANGES) != REQUIRED_CONFIG_CHANGES) {
-            new AlertDialog.Builder(this).setMessage(
-                "Unable to guarantee application will handle configuration changes. "
-                    + "Please add the following line to the Activity manifest: "
-                    + "      android:configChanges=\"keyboardHidden|orientation\"").show();
-        }
+            ActivityInfo info = this.getPackageManager().getActivityInfo(
+                    new ComponentName(context, this.getPackageName() + "." + this.getLocalClassName()), 0);
+
+            if ((info.configChanges & REQUIRED_CONFIG_CHANGES) != REQUIRED_CONFIG_CHANGES) {
+                new AlertDialog.Builder(this).setMessage(
+                    "Unable to guarantee application will handle configuration changes. "
+                        + "Please add the following line to the Activity manifest: "
+                        + "      android:configChanges=\"keyboardHidden|orientation\"").show();
+            }
         } catch (NameNotFoundException e) {
-        //Log.w("playn", "Cannot access game AndroidManifest.xml file.");
+            //Log.w("playn", "Cannot access game AndroidManifest.xml file.");
         }
 
         //set up our webview
@@ -166,8 +166,7 @@ public abstract class GameActivity extends Activity {
         webView.setFocusable(true);
         webView.setFocusableInTouchMode(true);
         //webView.loadUrl(url); 
-        ViewGroup.LayoutParams webParams = new ViewGroup.LayoutParams(
-                LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        ViewGroup.LayoutParams webParams = new ViewGroup.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         webView.setLayoutParams(relParams);
         relativeLayout.addView(webView);
                 
@@ -181,9 +180,9 @@ public abstract class GameActivity extends Activity {
         
         GCMRegistrar.checkDevice(this);
         GCMRegistrar.checkManifest(this);
-        registerReceiver(mHandleMessageReceiver,
-                new IntentFilter(DISPLAY_MESSAGE_ACTION));
+        registerReceiver(mHandleMessageReceiver, new IntentFilter(DISPLAY_MESSAGE_ACTION));
         final String regId = GCMRegistrar.getRegistrationId(this);
+        
         Log.d("GameActivity", "Sender ID: " + GCM_SENDER_ID + "\nRegID: " + regId);
         if (regId.equals("")) {
             GCMRegistrar.register(this, GCM_SENDER_ID);
@@ -426,9 +425,11 @@ public abstract class GameActivity extends Activity {
     public String getEditText() {
         return editText.getEditableText().toString();
     }
+    
     public AndroidBilling getBilling() {
         return androidBilling;
     }
+    
     public void updateWebView() {
         /*//
         Log.i("GameActivity", "WebView Booleans: " 
