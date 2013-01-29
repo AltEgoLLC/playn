@@ -299,6 +299,28 @@ public class PlayN {
   public static int getAppIcon() {
       return appIcon;
   }
+  
+  public static void showEditText() {
+      if (platform.type().equals(Platform.Type.ANDROID)) {
+          platform.showEditText();
+      }
+  }
+  
+  public static void showEditText(int w, int h, int x, int y, float s, int[] types) {
+      if (platform.type().equals(Platform.Type.ANDROID)) {
+          platform.showEditText(w, h, x, y, s, types);
+      }
+  }
+  
+  public static void hideEditText() {
+      if (platform.type().equals(Platform.Type.ANDROID)) {
+          platform.hideEditText();
+      }
+  }
+  
+    public static void setEditTextCallback(final Callback<String> callback) {
+        platform.setEditTextCallback(callback);
+    }
 
   // Non-instantiable
   private PlayN() {

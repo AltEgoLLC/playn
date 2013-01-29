@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
@@ -312,6 +313,7 @@ public class AndroidPlatform implements Platform {
     @Override
     public void showSoftKeyboard() {
         activity.runOnUiThread(new Runnable() {
+            @Override
             public void run () {
                 InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.toggleSoftInputFromWindow(activity.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
@@ -322,12 +324,51 @@ public class AndroidPlatform implements Platform {
     @Override
     public void hideSoftKeyboard() {
         activity.runOnUiThread(new Runnable() {
+            @Override
             public void run () {
                 InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.toggleSoftInputFromWindow(activity.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS, 0);
                 activity.hideEditText();
             }
         });
+    }
+    
+    @Override
+    public void showEditText() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run () {
+                activity.showEditText();
+            }
+        });
+    }
+    
+    @Override
+    public void showEditText(final int w, final int h, final int x, final int y, final float s, final int types[]) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run () {
+                activity.showEditText(InputType.TYPE_CLASS_TEXT, "", w, h, x, y, s, types);
+            }
+        });
+    }
+    
+    @Override
+    public void hideEditText() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run () {
+                activity.hideEditText();
+            }
+        });
+    }
+    
+    public String getEditText() {
+        return activity.getEditText();
+    }
+    
+    public void setEditTextCallback(final Callback<String> callback) {
+        activity.setEditTextCallback(callback);
     }
     
     @Override

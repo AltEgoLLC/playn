@@ -22,32 +22,25 @@ import playn.core.Keyboard;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.*;
 import com.google.android.gcm.GCMRegistrar;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import playn.android.billing.BillingService;
-import playn.android.billing.Consts;
-import playn.android.billing.Consts.PurchaseState;
-import playn.android.billing.Consts.ResponseCode;
-import playn.android.billing.PurchaseDatabase;
-import playn.android.billing.PurchaseObserver;
 import playn.core.util.Callback;
 import playn.android.billing.AndroidBilling;
 import playn.android.gcm.ServerUtilities;
@@ -68,6 +61,7 @@ public abstract class GameActivity extends Activity {
   //so we can display and remove a webview for authentication with social networks
   private WebView webView;
   private EditText editText;
+  TextWatcher mTextWatcher;
   
   private AtomicBoolean showAlertDialog = new AtomicBoolean(false);
   private AtomicBoolean showWebView = new AtomicBoolean(false);
@@ -115,9 +109,18 @@ public abstract class GameActivity extends Activity {
         viewLayout.addView(gameView);
 
         RelativeLayout relativeLayout = new RelativeLayout(this);
+        AbsoluteLayout absoluteLayout = new AbsoluteLayout(this);
+        
         RelativeLayout.LayoutParams relParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         relativeLayout.setLayoutParams(relParams);
+        
+        Display display = getWindowManager().getDefaultDisplay();
+        Log.i("GameActivity", "W: " + display.getWidth() + ", H: " + display.getHeight());
+        AbsoluteLayout.LayoutParams absParams = new AbsoluteLayout.LayoutParams(display.getWidth(), display.getHeight(), 0, 0);
+        absoluteLayout.setLayoutParams(absParams);
+        
         relativeLayout.addView(viewLayout);
+        relativeLayout.addView(absoluteLayout);
 
         // Build the Window and View
         if (isHoneycombOrLater()) {
@@ -172,11 +175,40 @@ public abstract class GameActivity extends Activity {
                 
         editText = new EditText(this);
         editText.setVisibility(View.INVISIBLE);
-        editText.setLayoutParams(relParams);
-        relativeLayout.addView(editText);
+        //editText.setLayoutParams(relParams);
+        editText.setLayoutParams(absParams);
+        //relativeLayout.addView(editText);
+        absoluteLayout.addView(editText);
+        
+        TextView.OnEditorActionListener blerg = new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView tv, int i, KeyEvent ke) {
+                if (ke != null) {
+                    Log.i("EditText", "KeyEvent: " + ke.getKeyCode() + " " + ke.getCharacters());
+                }
+                else {
+                    Log.i("EditText", "KeyEvent is null; " + i);
+                }
+                hideEditText();
+                return true;
+            }
+        };
+        //editText.setOnEditorActionListener(blerg);
+        /*//
+        editText.setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent ke) {
+                if (ke != null) {
+                    Log.i("EditText", "Key Down: " + ke.getCharacters());
+                    Log.i("EditText", "Key Down: " + ke.toString());
+                }
+                return true;
+            }
+        });
+        //*/
         
         //*/ GCM STUFF
-        getSharedPreferences("playn", 0).edit().putString("gcmtest", "We Are the Meta").commit();
+        //getSharedPreferences("playn", 0).edit().putString("gcmtest", "We Are the Meta").commit();
         
         GCMRegistrar.checkDevice(this);
         GCMRegistrar.checkManifest(this);
@@ -410,20 +442,72 @@ public abstract class GameActivity extends Activity {
       webView.setVisibility(View.GONE);
   }
   
-    public void showEditText(int inputType, String initVal) {
-        editText.setInputType(inputType);
-        editText.setText(initVal);
-        editText.requestFocus();
-        //editText.setVisibility(View.VISIBLE);
+    public void showEditText() {
+        //editText.setInputType(inputType);
+        if (editText != null) {
+            editText.setVisibility(View.VISIBLE);
+            Log.i("GameActivty", "Show Edit Text - 6A");
+        }
+    }
+    
+    public void showEditText(int inputType, String initVal, int w, int h, int x, int y, float s, int[] types) {
+        //editText.setInputType(inputType);
+        if (editText != null) {
+            for (int type : types) {
+                editText.setInputType(type);
+            }
+            
+            editText.setWidth(w);
+            editText.setHeight(h);
+            editText.setTextSize(s);
+            
+            AbsoluteLayout.LayoutParams params = new AbsoluteLayout.LayoutParams(w, h, x, y);
+            
+            editText.setLayoutParams(params);
+            editText.setLayoutParams(params);
+            
+            editText.setText(initVal);
+            editText.setVisibility(View.VISIBLE);
+            //gameView.setVisibility(View.GONE);
+            //editText.requestFocus();
+            Log.i("GameActivty", "Show Edit Text - 6B");
+            Log.i("GameActivity", "W: " + w + ", H: " + h + ", X: " + x + " Y: " + y);
+        }
     }
     
     public void hideEditText() {
-        //editText.setVisibility(View.GONE);
+        gameView.setVisibility(View.VISIBLE);
+        editText.setVisibility(View.GONE);
         gameView.requestFocus();
+        Log.i("GameActivty", "Hide Edit Text - 6");
     }
     
     public String getEditText() {
         return editText.getEditableText().toString();
+    }
+    
+    public void setEditTextCallback(final Callback<String> callback) {
+        if (callback != null) {
+            mTextWatcher = new TextWatcher() {
+                @Override
+                public void afterTextChanged(Editable s){
+                    if (callback != null && s != null) {
+                        callback.onSuccess(s.toString());
+                    }
+                }
+
+                @Override
+                public void  beforeTextChanged(CharSequence s, int start, int count, int after){}
+
+                @Override
+                public void  onTextChanged (CharSequence s, int start, int before,int count) {} 
+
+            };
+            editText.addTextChangedListener(mTextWatcher);
+        }
+        else if (callback == null && mTextWatcher != null) {
+            editText.removeTextChangedListener(mTextWatcher);
+        }
     }
     
     public AndroidBilling getBilling() {

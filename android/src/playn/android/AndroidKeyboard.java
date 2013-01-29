@@ -153,12 +153,12 @@ public class AndroidKeyboard implements Keyboard {
 
     @Override
     public String getText() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return platform.getEditText();
     }
 
     @Override
     public void hideText() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        platform.hideEditText();
     }
 
     @Override

@@ -95,6 +95,14 @@ public interface Platform {
   public void doPayment(String externalTransID, int uid, String paymentSystem, String description, String Payment, int[] items, String productNumber, String SERVER_URL, Callback callback);
   
   public void addCallback(Callback callback);
-
-
+  
+  public void showEditText();
+  
+  public void hideEditText();
+  
+  public void showEditText(final int w, final int h, final int x, final int y, final float s, final int[] types);
+  
+  public String getEditText();
+  
+  public void setEditTextCallback(final Callback<String> callback);
 }

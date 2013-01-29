@@ -326,4 +326,21 @@ public class FlashPlatform implements Platform {
         
         return url;
     }
+    
+    @Override
+    public void showEditText() {}
+
+    @Override
+    public void hideEditText() {}
+
+    @Override
+    public void showEditText(int w, int h, int x, int y, float s, int[] types) {}
+
+    @Override
+    public String getEditText() {
+        return "";
+    }
+
+    @Override
+    public void setEditTextCallback(Callback<String> callback) {}
 }
