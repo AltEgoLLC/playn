@@ -31,6 +31,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
@@ -184,10 +185,10 @@ public abstract class GameActivity extends Activity {
             @Override
             public boolean onEditorAction(TextView tv, int i, KeyEvent ke) {
                 if (ke != null) {
-                    Log.i("EditText", "KeyEvent: " + ke.getKeyCode() + " " + ke.getCharacters());
+                    //Log.i("EditText", "KeyEvent: " + ke.getKeyCode() + " " + ke.getCharacters());
                 }
                 else {
-                    Log.i("EditText", "KeyEvent is null; " + i);
+                    //Log.i("EditText", "KeyEvent is null; " + i);
                 }
                 hideEditText();
                 return true;
@@ -215,12 +216,12 @@ public abstract class GameActivity extends Activity {
         registerReceiver(mHandleMessageReceiver, new IntentFilter(DISPLAY_MESSAGE_ACTION));
         final String regId = GCMRegistrar.getRegistrationId(this);
         
-        Log.d("GameActivity", "Sender ID: " + GCM_SENDER_ID + "\nRegID: " + regId);
+        //Log.d("GameActivity", "Sender ID: " + GCM_SENDER_ID + "\nRegID: " + regId);
         if (regId.equals("")) {
             GCMRegistrar.register(this, GCM_SENDER_ID);
-            Log.d("GameActivity", "Blarg");
+            //Log.d("GameActivity", "Blarg");
         } else {
-            Log.d("GameActivity", "Honk");
+            //Log.d("GameActivity", "Honk");
             if (GCMRegistrar.isRegisteredOnServer(this)) {
                 // Skips registration.
             } else {
@@ -307,7 +308,7 @@ public abstract class GameActivity extends Activity {
             new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i("MessageReceiver", "Blarg -- Message Received");
+            //Log.i("MessageReceiver", "Blarg -- Message Received");
         }
     };
     /*/
@@ -446,22 +447,32 @@ public abstract class GameActivity extends Activity {
         //editText.setInputType(inputType);
         if (editText != null) {
             editText.setVisibility(View.VISIBLE);
-            Log.i("GameActivty", "Show Edit Text - 6A");
+            //Log.i("GameActivty", "Show Edit Text - 6A");
         }
     }
     
     public void showEditText(int inputType, String initVal, int w, int h, int x, int y, float s, int[] types) {
         //editText.setInputType(inputType);
         if (editText != null) {
+            //*/
             for (int type : types) {
                 editText.setInputType(type);
+                if (type == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
+                    //Log.i("GAME_ACTIVITY", "MULTI-LINE TRUE");
+                    editText.setHorizontallyScrolling(false);
+                    editText.setVerticalScrollBarEnabled(true);
+                }
             }
+            //*/
+            
+            //editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+            //editText.setMaxLines(5);
             
             editText.setWidth(w);
             editText.setHeight(h);
             editText.setTextSize(s);
             
-            AbsoluteLayout.LayoutParams params = new AbsoluteLayout.LayoutParams(w, h, x, y);
+            AbsoluteLayout.LayoutParams params = new AbsoluteLayout.LayoutParams(w + 20, h + 20, x - 10, y - 10);
             
             editText.setLayoutParams(params);
             editText.setLayoutParams(params);
@@ -470,8 +481,8 @@ public abstract class GameActivity extends Activity {
             editText.setVisibility(View.VISIBLE);
             //gameView.setVisibility(View.GONE);
             //editText.requestFocus();
-            Log.i("GameActivty", "Show Edit Text - 6B");
-            Log.i("GameActivity", "W: " + w + ", H: " + h + ", X: " + x + " Y: " + y);
+            //Log.i("GameActivty", "Show Edit Text - 6B");
+            //Log.i("GameActivity", "W: " + w + ", H: " + h + ", X: " + x + " Y: " + y);
         }
     }
     
@@ -479,7 +490,7 @@ public abstract class GameActivity extends Activity {
         gameView.setVisibility(View.VISIBLE);
         editText.setVisibility(View.GONE);
         gameView.requestFocus();
-        Log.i("GameActivty", "Hide Edit Text - 6");
+        //Log.i("GameActivty", "Hide Edit Text - 6");
     }
     
     public String getEditText() {
