@@ -249,8 +249,8 @@ public class PlayN {
   }
   //*/
   
-  public static boolean downloadImage(String url, int intRetryCount, long longDelayMS, ResourceCallback callback) {
-      return platform.downloadImage(url, intRetryCount, longDelayMS, callback);
+  public static void downloadImage(String url, int intRetryCount, long longDelayMS, ResourceCallback callback) {
+      platform.downloadImage(url, intRetryCount, longDelayMS, callback);
   }
   
   public static void openUrl(String url) {

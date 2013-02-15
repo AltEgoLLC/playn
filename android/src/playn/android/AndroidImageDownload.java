@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import playn.android.altego.DownloadedBitmap;
 import playn.core.Image;
 import playn.core.ImageDownload;
+import playn.core.PlayN;
 import playn.core.ResourceCallback;
 import playn.core.gl.Scale;
 
@@ -195,14 +196,17 @@ public class AndroidImageDownload implements ImageDownload {
         //System.out.println("*******************");
         //if (callback != null && bitmapDownloaded != null) 
         try {
+            PlayN.log().debug("Android Image Download Successful: " + strUrl);
             callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));
             return true;
         }
         catch (Exception ex) {
+            PlayN.log().debug("Android Image Download Failed: " + strUrl, ex);
             callback.error(ex);
             return false;
         }
         catch (Error err) {
+            PlayN.log().debug("Android Image Download Failed: " + strUrl, err);
             callback.error(err);
             return false;
         }

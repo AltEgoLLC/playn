@@ -13,6 +13,7 @@
  */
 package playn.core.gl;
 
+import java.util.ConcurrentModificationException;
 import pythagoras.f.Point;
 import pythagoras.f.Vector;
 
@@ -161,8 +162,12 @@ public class GroupLayerGL extends LayerGL implements GroupLayer, ParentLayer {
   }
 
   protected void render (InternalTransform xform, float alpha, GLShader shader) {
-    for (LayerGL child : impl.children) {
-      child.paint(xform, alpha, shader);
-    }
+      try {
+        for (LayerGL child : impl.children) {
+            child.paint(xform, alpha, shader);
+        }
+      } catch (ConcurrentModificationException ex) {
+          System.err.println("GroupLayerGL Exception: " + ex.toString());
+      }
   }
 }

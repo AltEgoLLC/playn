@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.InputType;
 import android.view.View;
@@ -243,7 +244,7 @@ public class AndroidPlatform implements Platform {
   }
   
     @Override
-    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
+    public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, final ResourceCallback<Image> callback) {
         /*//
         PlayN.log().debug("Url: " + strUrl);
         PlayN.log().debug("Retries: " + intRetryCount);
@@ -251,8 +252,22 @@ public class AndroidPlatform implements Platform {
         PlayN.log().debug("Callback null: " + (callback == null));
         PlayN.log().debug("imageDownload null: " + (imageDownload == null));
         //*/
-        return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
-    }
+        AsyncTask<Void, Void, Void> mRegisterTask = new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {}
+
+        };
+        mRegisterTask.execute(null, null, null);
+        
+        return true;
+    } // end downloadImage()
     
     @Override
     public void showAlertDialog(String message, String accept) {
