@@ -408,13 +408,14 @@ public class AndroidPlatform implements Platform {
     @Override
     public String urlEncode(String str) {
         String url = str;
+        
         try {
             url = URLEncoder.encode(url, "UTF-8");
-            //URL
-        } catch (UnsupportedEncodingException ex) {
-            PlayN.log().error("Url Encoding Exception: ", ex);
-            url = URLEncoder.encode(str);
+        } catch (UnsupportedEncodingException e) {
+            PlayN.log().debug("Url Encode Exception: ", e);
+            url = str;
         }
+        
         return url;
     }
     @Override
