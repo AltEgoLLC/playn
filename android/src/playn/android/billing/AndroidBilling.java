@@ -104,7 +104,7 @@ public class AndroidBilling  {
     private Spinner mSelectItemSpinner;
     private ListView mOwnedItemsTable;
     private SimpleCursorAdapter mOwnedItemsAdapter;
-    private PurchaseDatabase mPurchaseDatabase;
+//    private PurchaseDatabase mPurchaseDatabase;
     private Cursor mOwnedItemsCursor;
     private Set<String> mOwnedItems = new HashSet<String>();
 
@@ -321,7 +321,7 @@ public class AndroidBilling  {
         mBillingService = new BillingService();
         mBillingService.setContext(context);
 
-        mPurchaseDatabase = new PurchaseDatabase(context);
+//        mPurchaseDatabase = new PurchaseDatabase(context);
         setupWidgets();
 
         // Check if billing is supported.
@@ -544,7 +544,9 @@ public class AndroidBilling  {
      * thread.
      */
     private void doInitializeOwnedItems() {
-        Cursor cursor = mPurchaseDatabase.queryAllPurchasedItems();
+//        Cursor cursor = mPurchaseDatabase.queryAllPurchasedItems();
+        Cursor cursor = null;
+        
         if (cursor == null) {
             return;
         }
