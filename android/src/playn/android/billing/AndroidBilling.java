@@ -336,7 +336,11 @@ public class AndroidBilling  {
     }
     public void buyObject(int uid, String productNumber, String SERVER_URL)
     {
-            //Log.i(TAG, "*********************\nIn buyObject");
+            Log.i(TAG, "*********************\nIn buyObject"
+                    + "\nUID: " + uid
+                    + "\nProduct: " + productNumber
+                    + "\nServer: " + SERVER_URL
+                    + "\n*********************");
             mSERVER_URL = new String(SERVER_URL);
             mUID = Integer.toString(uid);
             mSku = productNumber;

@@ -195,7 +195,12 @@ public class PlayN {
    * Returns the {@link Storage} storage service.
    */
   public static Storage storage() {
-    return platform.storage();
+      if (platform != null) {
+        return platform.storage();
+      }
+      else {
+          return null;
+      }
   }
 
   /**
