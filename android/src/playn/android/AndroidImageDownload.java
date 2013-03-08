@@ -197,7 +197,9 @@ public class AndroidImageDownload implements ImageDownload {
         //if (callback != null && bitmapDownloaded != null) 
         try {
             PlayN.log().debug("Android Image Download Successful: " + strUrl);
-            callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));
+            if (callback != null) {
+                callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));
+            }
             return true;
         }
         catch (Exception ex) {
@@ -251,17 +253,21 @@ public class AndroidImageDownload implements ImageDownload {
     
     public void setCacheDirectory(File fileCacheDirectory)
     {
-        if (fileCacheDirectory != null)
-        {
-            if (fileCacheDirectory.exists() || fileCacheDirectory.mkdirs())
+        try {
+            if (fileCacheDirectory != null)
             {
-                m_fileCacheDirectory = fileCacheDirectory;
+                if (fileCacheDirectory.exists() || fileCacheDirectory.mkdirs())
+                {
+                    m_fileCacheDirectory = fileCacheDirectory;
+                }
+                else
+                {
+                    //AltEgo.LogWarning( "setCacheDirectory", "Failed to find accessible cache path: ", fileCacheDirectory.getAbsolutePath() );
+                    //System.out.println( "setCacheDirectory -- Failed to find accessible cache path:\n" + fileCacheDirectory.getAbsolutePath() );
+                }
             }
-            else
-            {
-                //AltEgo.LogWarning( "setCacheDirectory", "Failed to find accessible cache path: ", fileCacheDirectory.getAbsolutePath() );
-                //System.out.println( "setCacheDirectory -- Failed to find accessible cache path:\n" + fileCacheDirectory.getAbsolutePath() );
-            }
+        } catch (ExceptionInInitializerError e) {
+            PlayN.log().debug("Set Cache Directory: ", e);
         }
     }
      

@@ -246,12 +246,6 @@ public class AndroidPlatform implements Platform {
     @Override
     public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, final ResourceCallback<Image> callback) {
         /*//
-        PlayN.log().debug("Url: " + strUrl);
-        PlayN.log().debug("Retries: " + intRetryCount);
-        PlayN.log().debug("Delay (ms): " + longDelayMS);
-        PlayN.log().debug("Callback null: " + (callback == null));
-        PlayN.log().debug("imageDownload null: " + (imageDownload == null));
-        //*/
         AsyncTask<Void, Void, Void> mRegisterTask = new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -265,6 +259,26 @@ public class AndroidPlatform implements Platform {
 
         };
         mRegisterTask.execute(null, null, null);
+        /*/
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run () {
+                AsyncTask<Void, Void, Void> mRegisterTask = new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void result) {}
+
+                };
+                mRegisterTask.execute(null, null, null);
+            }
+        });
+        //*/
         
         return true;
     } // end downloadImage()
@@ -317,7 +331,11 @@ public class AndroidPlatform implements Platform {
           //System.out.println("SD Card Path: " + sdDir.getAbsolutePath());
           String abs = sdDir.getAbsolutePath() + "/PlayN/" + location;
           sdDir = new File(abs);
-          imageDownload.setCacheDirectory(sdDir);
+          try {
+            imageDownload.setCacheDirectory(sdDir);
+          } catch (ExceptionInInitializerError e) {
+            PlayN.log().debug("Set Cache Directory: ", e);
+          }
           //System.out.println("SD Card Final: " + sdDir.getAbsolutePath());
           //System.out.println("****************");
       }

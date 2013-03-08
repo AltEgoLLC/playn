@@ -21,12 +21,12 @@ class AndroidLog implements Log {
 
   @Override
   public void debug(String msg) {
-    android.util.Log.d("playn", msg);
+    //android.util.Log.d("playn", msg);
   }
 
   @Override
   public void debug(String msg, Throwable e) {
-    android.util.Log.d("playn", msg, e);
+    //android.util.Log.d("playn", msg, e);
   }
 
   @Override
