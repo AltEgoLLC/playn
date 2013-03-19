@@ -33,7 +33,7 @@ public class AndroidImageDownload implements ImageDownload {
     @Override
     public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, ResourceCallback<Image> callback)
     {
-        //System.out.println("*******************");
+//        System.out.println("*******************");
         DownloadedBitmap bitmapDownloaded = null;
 
         File fileLocalImage = null;
@@ -49,17 +49,18 @@ public class AndroidImageDownload implements ImageDownload {
         }
         
         /*//
-        System.out.println( "File Image Url: " + strUrl);
+        System.out.println( "*******************File Image Url: " + strUrl);
         if (fileLocalImage != null) {
-            System.out.println( "File Image Path: " + fileLocalImage.toString());
-            System.out.println( "Image Path Is File: " + fileLocalImage.isFile() );
-            System.out.println( "Image Path Exists: " + fileLocalImage.exists());
+            System.out.println( "*******************File Image Path: " + fileLocalImage.toString());
+            System.out.println( "*******************Image Path Is File: " + fileLocalImage.isFile() );
+            System.out.println( "*******************Image Path Exists: " + fileLocalImage.exists());
         }
         //*/
 
         if (bitmapDownloaded == null)
         {
             Bitmap imageBitmap = null;
+//        System.out.println( "*******************bitmapDownloaded == null ");
 
             for (int intAttempt = 0; intAttempt < intRetryCount; ++intAttempt)
             {
@@ -141,7 +142,7 @@ public class AndroidImageDownload implements ImageDownload {
                     FileOutputStream streamFileOutput = null;
                     try
                     {
-                        //System.out.println( "Image Path Is File: " + fileLocalImage.isFile() );
+//                        System.out.println( "*******************Image Path Is File: " + fileLocalImage.isFile() );
                         
                         try { 
                             //System.out.println( "MKDIR Image Path: " + fileLocalImage.mkdir() ); 
@@ -196,7 +197,7 @@ public class AndroidImageDownload implements ImageDownload {
         //System.out.println("*******************");
         //if (callback != null && bitmapDownloaded != null) 
         try {
-            PlayN.log().debug("Android Image Download Successful: " + strUrl);
+//            PlayN.log().debug("*******************Android Image Download Successful: " + strUrl);
             if (callback != null) {
                 callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));
             }
@@ -233,6 +234,10 @@ public class AndroidImageDownload implements ImageDownload {
                         bitmapDownloaded = new DownloadedBitmap( fileLocalImage, bitmap ); 
                     }
                 }
+                catch(OutOfMemoryError E)
+                {
+                        System.out.println( "*******************OutOfMemoryError: " + fileLocalImage.getAbsolutePath() );
+                }                
                 finally
                 {
                     if (input != null)
