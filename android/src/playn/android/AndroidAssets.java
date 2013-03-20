@@ -89,7 +89,13 @@ public class AndroidAssets extends AbstractAssets {
             imageScale = viewScale;
           }
           return new AndroidImage(platform.graphics().ctx, bitmap, imageScale);
-        } finally {
+        } 
+        catch(OutOfMemoryError E)
+        {
+          System.out.println( "*******************OutOfMemoryError: " );
+        }         
+        finally 
+        {
           is.close();
         }
       } catch (FileNotFoundException fnfe) {
