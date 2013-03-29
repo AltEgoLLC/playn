@@ -24,10 +24,11 @@ class AndroidCanvasImage extends AndroidImage implements CanvasImage {
 
   private final AndroidCanvas canvas;
 
-  AndroidCanvasImage(AndroidGraphics gfx, float width, float height) {
-    super(gfx.ctx, Bitmap.createBitmap(gfx.ctx.scale.scaledCeil(width),
-                                       gfx.ctx.scale.scaledCeil(height),
-                                       gfx.preferredBitmapConfig), gfx.ctx.scale);
+  AndroidCanvasImage(AndroidGraphics gfx, float width, float height, Bitmap bm) {
+//    super(gfx.ctx, Bitmap.createBitmap(gfx.ctx.scale.scaledCeil(width),
+//                                       gfx.ctx.scale.scaledCeil(height),
+//                                       gfx.preferredBitmapConfig), gfx.ctx.scale);
+    super(gfx.ctx, bm, gfx.ctx.scale);    
     this.canvas = new AndroidCanvas(bitmap());
     this.canvas.scale(gfx.ctx.scale.factor, gfx.ctx.scale.factor);
   }

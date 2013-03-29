@@ -76,9 +76,13 @@ public class AndroidImageDownload implements ImageDownload {
                         //connection.setUseCaches(true);
                         connection.setConnectTimeout( 2000 );
                         connection.connect();
-
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inDither = true;
+                        options.inPurgeable = true;
+                        System.out.println( "*******************Trying to load from wireless: " + strUrl );
+                        
                         InputStream streamIn = connection.getInputStream();
-                        imageBitmap = BitmapFactory.decodeStream( streamIn );
+                        imageBitmap = BitmapFactory.decodeStream( streamIn, null, options );
 
                         if (imageBitmap != null)
                         {
@@ -113,6 +117,8 @@ public class AndroidImageDownload implements ImageDownload {
                     {
                         //AltEgo.LogError( "downloadImage", "Exception occurred: ", ex.getMessage() );
                         //System.out.println( "downloadImage -- Error/Exception Occurred:\n" + e.getMessage() );
+                        System.out.println( "*******************OutOfMemoryError: " + strUrl );
+                        
                     }
                     finally
                     {
@@ -186,6 +192,7 @@ public class AndroidImageDownload implements ImageDownload {
                 }
             }
         }
+        System.out.println("*********************************callback null? " + (callback == null));
 
         /*//
         System.out.println("callback null? " + (callback == null));
@@ -197,7 +204,7 @@ public class AndroidImageDownload implements ImageDownload {
         //System.out.println("*******************");
         //if (callback != null && bitmapDownloaded != null) 
         try {
-//            PlayN.log().debug("*******************Android Image Download Successful: " + strUrl);
+            System.out.println("*******************Android Image Download Successful: bitmapDownloaded= " + (bitmapDownloaded == null) + " url: " + strUrl);
             if (callback != null) {
                 callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));
             }
@@ -228,7 +235,12 @@ public class AndroidImageDownload implements ImageDownload {
                 try
                 {
                     input = new FileInputStream( fileLocalImage.getAbsolutePath() );
-                    Bitmap bitmap = BitmapFactory.decodeStream( input );
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inDither = true;    
+                    options.inPurgeable = true;
+        System.out.println("*********************************trying to load " + fileLocalImage.getAbsolutePath());
+
+                    Bitmap bitmap = BitmapFactory.decodeStream( input, null, options );
                     if (bitmap != null)
                     {
                         bitmapDownloaded = new DownloadedBitmap( fileLocalImage, bitmap ); 

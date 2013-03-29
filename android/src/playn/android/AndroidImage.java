@@ -18,6 +18,7 @@ package playn.android;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
 
 import playn.core.Image;
 import playn.core.Pattern;
@@ -48,6 +49,7 @@ class AndroidImage extends ImageGL implements AndroidGLContext.Refreshable, Andr
 
   @Override
   public void onSurfaceLost() {
+    System.out.println("*********************************AndroidImage onSurfaceLost w: " + bitmap.getWidth() + " ht: " + bitmap.getHeight());
     clearTexture();
   }
 
@@ -115,13 +117,19 @@ class AndroidImage extends ImageGL implements AndroidGLContext.Refreshable, Andr
     ((AndroidGLContext) ctx).updateTexture(tex, bitmap);
   }
   
-  /*//
+  //
   @Override
   protected void finalize() {
-  if (tex > 0)
-      ctx.queueDestroyTexture(tex);
-  if (reptex > 0)
-      ctx.queueDeleteFramebuffer(reptex);
+    System.out.println("*********************************AndroidImage finalize w: " + bitmap.getWidth() + " ht: " + bitmap.getHeight() + " tex: " + tex + " reptex: " + reptex);
+    
+    if (tex > 0)
+    {
+        ctx.queueDestroyTexture(tex);
+    }
+    if (reptex > 0)
+    {
+        ctx.queueDeleteFramebuffer(reptex);
+    }
   }
   //*/ 
 }

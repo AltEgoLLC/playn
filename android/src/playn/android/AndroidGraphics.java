@@ -100,7 +100,18 @@ public class AndroidGraphics extends GraphicsGL {
 
   @Override
   public CanvasImage createImage(float width, float height) {
-    return new AndroidCanvasImage(this, width, height);
+    Bitmap bm = null;  
+    try
+    {
+        bm = Bitmap.createBitmap(this.ctx.scale.scaledCeil(width),
+                                       this.ctx.scale.scaledCeil(height),
+                                       this.preferredBitmapConfig);
+    }
+    catch (OutOfMemoryError Oome)
+    {
+        
+    }
+    return new AndroidCanvasImage(this, width, height, bm);
   }
 
   @Override

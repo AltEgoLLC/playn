@@ -47,9 +47,11 @@ public class AndroidAssets extends AbstractAssets {
   private final AndroidPlatform platform;
   private String pathPrefix = null;
   private Scale assetScale = null;
-
+  private Bitmap defaultErrorBitmap = null;
+  
   AndroidAssets(AndroidPlatform platform) {
     this.platform = platform;
+    this.defaultErrorBitmap = createErrorBitmap();
   }
 
   public void setPathPrefix(String prefix) {
@@ -76,7 +78,22 @@ public class AndroidAssets extends AbstractAssets {
       try {
         InputStream is = openAsset(rsrc.path);
         try {
-          Bitmap bitmap = decodeBitmap(is);
+          int lastslash = path.lastIndexOf('/')  ;
+          String filename = "";
+          boolean doCompress = false;
+          
+          if (lastslash >= 0)
+          {
+              filename = path.substring(lastslash+1);
+          }
+//          if (filename == "blackout.png")
+          if (filename.equals("blackout.png"))
+          {
+              doCompress = true;
+          }
+          System.out.println( "************************ trying to load : " + path);
+          
+          Bitmap bitmap = decodeBitmap(is, doCompress);
           // if this image is at a higher scale factor than the view, scale the bitmap down to the
           // view display factor (because otherwise the GPU will end up doing that every time the
           // bitmap is drawn, and it will do a crappy job of it)
@@ -85,14 +102,20 @@ public class AndroidAssets extends AbstractAssets {
           if (viewImageRatio < 1) {
             int swidth = MathUtil.iceil(viewImageRatio * bitmap.getWidth());
             int sheight = MathUtil.iceil(viewImageRatio * bitmap.getHeight());
+          System.out.println( "************************ trying to scale : " + path + " w: " + swidth + " h: " + sheight);
+            
             bitmap = Bitmap.createScaledBitmap(bitmap, swidth, sheight, true);
             imageScale = viewScale;
+          }
+          if (doCompress)
+          {
+              imageScale = new Scale(1.0f);
           }
           return new AndroidImage(platform.graphics().ctx, bitmap, imageScale);
         } 
         catch(OutOfMemoryError E)
         {
-          System.out.println( "*******************OutOfMemoryError: " );
+          System.out.println( "*******************OutOfMemoryError: " + path);
         }         
         finally 
         {
@@ -108,7 +131,7 @@ public class AndroidAssets extends AbstractAssets {
     platform.log().warn("Could not load image: " + pathPrefix + path, error);
     // TODO: create error image which reports failure to callbacks
     // error != null ? error : new FileNotFoundException(path);
-    return new AndroidImage(platform.graphics().ctx, createErrorBitmap(), Scale.ONE);
+    return new AndroidImage(platform.graphics().ctx, defaultErrorBitmap, Scale.ONE);
   }
 
   /**
@@ -155,9 +178,14 @@ public class AndroidAssets extends AbstractAssets {
     return is;
   }
 
-  private Bitmap decodeBitmap(InputStream is) {
+  private Bitmap decodeBitmap(InputStream is, boolean doCompress) {
     BitmapFactory.Options options = new BitmapFactory.Options();
     options.inDither = true;
+    options.inPurgeable = true;
+    if (doCompress)
+    {
+        options.inSampleSize = 2;
+    }
     // Prefer the bitmap config we computed from the window parameter
     options.inPreferredConfig = platform.graphics().preferredBitmapConfig;
     // Never scale bitmaps based on device parameters
@@ -167,14 +195,26 @@ public class AndroidAssets extends AbstractAssets {
 
   private Bitmap createErrorBitmap() {
     int height = 100, width = 100;
-    Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
-    android.graphics.Canvas c = new android.graphics.Canvas(bitmap);
-    android.graphics.Paint p = new android.graphics.Paint();
-    p.setColor(android.graphics.Color.RED);
-    for (int yy = 0; yy <= height / 15; yy++) {
-      for (int xx = 0; xx <= width / 45; xx++) {
-        c.drawText("ERROR", xx * 45, yy * 15, p);
-      }
+    Bitmap bitmap = null;
+    try
+    {
+        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+    }
+    catch(OutOfMemoryError E)
+    {
+        System.out.println( "*******************OutOfMemoryError: createErrorBitmap" );
+    } 
+    
+    if (bitmap != null)
+    {
+        android.graphics.Canvas c = new android.graphics.Canvas(bitmap);
+        android.graphics.Paint p = new android.graphics.Paint();
+        p.setColor(android.graphics.Color.RED);
+        for (int yy = 0; yy <= height / 15; yy++) {
+          for (int xx = 0; xx <= width / 45; xx++) {
+            c.drawText("ERROR", xx * 45, yy * 15, p);
+          }
+        }
     }
     return bitmap;
   }
@@ -264,7 +304,7 @@ public class AndroidAssets extends AbstractAssets {
         InputStream inputStream = null;
         try {
           inputStream = entity.getContent();
-          return decodeBitmap(inputStream);
+          return decodeBitmap(inputStream, false);
         } finally {
           if (inputStream != null) {
             inputStream.close();
