@@ -41,6 +41,26 @@ import playn.core.util.RunQueue;
  */
 public class IOSPlatform implements Platform {
 
+    @Override
+    public String urlEncode(String str) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void doPayment(String externalTransID, int uid, String paymentSystem, String description, String Payment, int[] items, String productNumber, String SERVER_URL, Callback callback) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void addCallback(Callback callback) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void doInstagram(String imageUrl) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
   /** Defines the orientations supported by your app. */
   public enum SupportedOrients {
     /** Supports portrait and portrait upside down orients. */

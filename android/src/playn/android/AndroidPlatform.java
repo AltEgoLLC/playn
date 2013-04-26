@@ -20,6 +20,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -446,4 +448,57 @@ public class AndroidPlatform implements Platform {
     {
         activity.getBilling().buyObject(uid, productNumber, SERVER_URL);
     }    
+    @Override
+    public void doInstagram(final String imageUrl) {     
+        if(appInstalledOrNot() == true)
+        {
+             PlayN.log().debug("doInstagram imageUrl: " + imageUrl);
+            imageDownload.downloadImage(imageUrl, 10, 100, new ResourceCallback<Image>() {
+               
+                @Override
+                public void done(Image resource) {
+                    
+                    int intLastPath = imageUrl.lastIndexOf( File.separator );
+                    if (intLastPath >= 0)
+                    {
+                        
+                        String strFilename = imageUrl.substring( intLastPath + 1 );
+                        PlayN.log().debug("strFilename: " + strFilename);
+                        shareInstagram(Uri.parse("file://" + imageDownload.getCacheDirectory() +"/"+strFilename));
+                    }
+                    
+                    
+                    
+                }
+
+                @Override
+                public void error(Throwable err) {
+                    
+                    
+                    
+                }
+            });
+            
+        }
+    }    
+    
+    private boolean appInstalledOrNot() 
+    {
+        boolean app_installed = false;
+        try {
+        ApplicationInfo info = activity.getPackageManager().getApplicationInfo("com.instagram.android", 0);
+        app_installed = true;
+        } catch (PackageManager.NameNotFoundException e) {
+        app_installed = false;
+        }
+        return app_installed;
+    }    
+    private void shareInstagram(Uri uri)
+    {
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setType("image/*"); // set mime type
+        shareIntent.putExtra(Intent.EXTRA_STREAM,uri); // set uri
+        shareIntent.setPackage("com.instagram.android");
+        activity.startActivity(shareIntent);
+    }
 }

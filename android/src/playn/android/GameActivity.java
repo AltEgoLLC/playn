@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.*;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -45,6 +46,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import playn.core.util.Callback;
 import playn.android.billing.AndroidBilling;
 import playn.android.gcm.ServerUtilities;
+import playn.core.PlayN;
 
 /**
  * TODO: save/restore state
@@ -260,8 +262,15 @@ public abstract class GameActivity extends Activity {
         
         androidBilling = new AndroidBilling();
         androidBilling.onCreate(savedInstanceState, context, this);
-        //updateHandler.postDelayed(mUpdateTime, 1000);
-      
+        //updateHandler.postDelayed(mUpdateTime, 1000);     
+        
+        //PlayN.log().debug("ON ACTION TEST LINE");
+        /*
+        Log.d("playn", "ON ACTION TEST LINE");
+                        PackageManager pm = this.getPackageManager();
+                        Intent intent = pm.getLaunchIntentForPackage("com.instagram.android");
+                        this.startActivity(intent); 
+                        */
         
     }
   

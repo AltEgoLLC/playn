@@ -105,4 +105,6 @@ public interface Platform {
   public String getEditText();
   
   public void setEditTextCallback(final Callback<String> callback);
+  
+  public void doInstagram(String imageUrl);
 }

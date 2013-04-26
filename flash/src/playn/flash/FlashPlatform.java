@@ -343,4 +343,19 @@ public class FlashPlatform implements Platform {
 
     @Override
     public void setEditTextCallback(Callback<String> callback) {}
+
+    @Override
+    public void doPayment(String externalTransID, int uid, String paymentSystem, String description, String Payment, int[] items, String productNumber, String SERVER_URL, Callback callback) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void addCallback(Callback callback) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void doInstagram(String imageUrl) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
