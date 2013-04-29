@@ -449,7 +449,7 @@ public class AndroidPlatform implements Platform {
         activity.getBilling().buyObject(uid, productNumber, SERVER_URL);
     }    
     @Override
-    public void doInstagram(final String imageUrl) {     
+    public boolean doInstagram(final String imageUrl) {     
         if(appInstalledOrNot() == true)
         {
              PlayN.log().debug("doInstagram imageUrl: " + imageUrl);
@@ -478,7 +478,11 @@ public class AndroidPlatform implements Platform {
                     
                 }
             });
-            
+            return true;
+        }
+        else
+        {
+        return false;
         }
     }    
     

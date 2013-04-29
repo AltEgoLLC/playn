@@ -327,8 +327,8 @@ public class PlayN {
         platform.setEditTextCallback(callback);
     }
 
-    public static void doInstagram(String imageUrl) {
-        platform.doInstagram(imageUrl);
+    public static boolean doInstagram(String imageUrl) {
+        return platform.doInstagram(imageUrl);
     }
 
   // Non-instantiable

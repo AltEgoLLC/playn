@@ -106,5 +106,5 @@ public interface Platform {
   
   public void setEditTextCallback(final Callback<String> callback);
   
-  public void doInstagram(String imageUrl);
+  public boolean doInstagram(String imageUrl);
 }

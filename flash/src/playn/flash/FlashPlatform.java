@@ -355,7 +355,7 @@ public class FlashPlatform implements Platform {
     }
 
     @Override
-    public void doInstagram(String imageUrl) {
+    public boolean doInstagram(String imageUrl) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

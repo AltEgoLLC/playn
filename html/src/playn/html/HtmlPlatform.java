@@ -610,7 +610,7 @@ public void addCallback(Callback callback)
     public void setEditTextCallback(Callback<String> callback) {}
     
         @Override
-    public void doInstagram(String imageUrl) {
+    public boolean doInstagram(String imageUrl) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
