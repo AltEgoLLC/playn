@@ -453,6 +453,7 @@ public class AndroidPlatform implements Platform {
         if(appInstalledOrNot() == true)
         {
              PlayN.log().debug("doInstagram imageUrl: " + imageUrl);
+            imageDownload.setInstagramMode();
             imageDownload.downloadImage(imageUrl, 10, 100, new ResourceCallback<Image>() {
                
                 @Override
@@ -464,7 +465,7 @@ public class AndroidPlatform implements Platform {
                         
                         String strFilename = imageUrl.substring( intLastPath + 1 );
                         PlayN.log().debug("strFilename: " + strFilename);
-                        shareInstagram(Uri.parse("file://" + imageDownload.getCacheDirectory() +"/"+strFilename));
+                        shareInstagram(Uri.parse("file://" + imageDownload.getCacheDirectory() +"/i_"+strFilename));
                     }
                     
                     

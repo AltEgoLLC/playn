@@ -7,6 +7,8 @@ package playn.android;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -25,6 +27,7 @@ public class AndroidImageDownload implements ImageDownload {
     
     private File m_fileCacheDirectory = null;
     private final AndroidPlatform mPlatform;
+    private boolean m_instagram = false;
     
     public AndroidImageDownload(AndroidPlatform platform) {
         mPlatform = platform;
@@ -37,26 +40,85 @@ public class AndroidImageDownload implements ImageDownload {
         DownloadedBitmap bitmapDownloaded = null;
 
         File fileLocalImage = null;
+        String strFilename = "";
         int intLastPath = strUrl.lastIndexOf( File.separator );
         if (intLastPath >= 0)
         {
-            String strFilename = strUrl.substring( intLastPath + 1 );
+            strFilename = strUrl.substring( intLastPath + 1 );
             if (getCacheDirectory() != null)
             {
                 fileLocalImage = new File( getCacheDirectory(), strFilename );
                 bitmapDownloaded = loadImage( fileLocalImage );
             }
         }
-        
-        /*//
-        System.out.println( "*******************File Image Url: " + strUrl);
-        if (fileLocalImage != null) {
-            System.out.println( "*******************File Image Path: " + fileLocalImage.toString());
-            System.out.println( "*******************Image Path Is File: " + fileLocalImage.isFile() );
-            System.out.println( "*******************Image Path Exists: " + fileLocalImage.exists());
-        }
-        //*/
+        if (m_instagram == true)
+        {
+            final int instagramSize = 612;
+            m_instagram = false;
+            if (bitmapDownloaded != null )
+            {
+                // save as max side = 612
+                Bitmap instagramBitmap = bitmapDownloaded.getBitmap();
+                int instaW = instagramBitmap.getWidth();
+                int instaH = instagramBitmap.getHeight();
+                int maxSide = 0;
+                if (instaH >= instaW) { maxSide = instaH;} else {maxSide = instaW;}
+                if (maxSide > instagramSize)
+                {
+                    instaH = (instaH * instagramSize)/maxSide;
+                    instaW = (instaW * instagramSize)/maxSide;
+                }
+                Bitmap iSizeBitmap = null;
+                try
+                {
+                    // create an instagramSize bitmap - almost black
+                    Bitmap bgBitmap = Bitmap.createBitmap(instagramSize, instagramSize, Bitmap.Config.ARGB_8888);
+                    bgBitmap.eraseColor(0xff1d1b1b);
+                    // create the scaled poster and BLIT it centered horizontally
+                    iSizeBitmap = Bitmap.createScaledBitmap(instagramBitmap, instaW, instaH, false);
+                    Canvas canvas = new Canvas(bgBitmap);
+                    Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
+                    canvas.drawBitmap(iSizeBitmap, (instagramSize - instaW)/2, 0, paint);
+                    iSizeBitmap = bgBitmap.copy(Bitmap.Config.ARGB_8888, true);
+                }
+                catch(OutOfMemoryError E)
+                {
+    //                    System.out.println( "*******************OutOfMemoryError: " + fileLocalImage.getAbsolutePath() );
+                }              
+                FileOutputStream streamFileOutput2 = null;
+                try
+                {
+                    // append "i_" to the start of instagram saved files
+                    File fileLocalImage2 = new File( getCacheDirectory(), "i_" + strFilename );
+                    streamFileOutput2 = new FileOutputStream( fileLocalImage2 );
+                    if (iSizeBitmap != null)
+                    {
+                        if (iSizeBitmap.compress( Bitmap.CompressFormat.PNG, 100, streamFileOutput2 ))
+                        {
+                            //System.out.println( "downloadImage -- Stored downloaded bitmap as: " + fileLocalImage.getAbsolutePath() );
+                        }
+                    }
+                }
+                catch (FileNotFoundException ex)
+                {
 
+                }
+                finally
+                {
+                    if (streamFileOutput2 != null)
+                    {
+                        try
+                        {
+                            streamFileOutput2.close();
+                        }
+                        catch (IOException ex)
+                        {
+                            Logger.getLogger( AndroidImageDownload.class.getName() ).log( Level.SEVERE, null, ex );
+                        }
+                    }
+                }            
+            }
+        }
         if (bitmapDownloaded == null)
         {
             Bitmap imageBitmap = null;
@@ -290,5 +352,9 @@ public class AndroidImageDownload implements ImageDownload {
      
     public File getCacheDirectory() {
         return m_fileCacheDirectory;
+    }
+    
+    public void setInstagramMode() {
+        m_instagram = true;
     }
 }
