@@ -41,6 +41,26 @@ import playn.payments.core.InAppPaymentsFactory;
 
 public class HtmlPlatform implements Platform {
 
+    @Override
+    public boolean getDoneFlag() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void setDoneFlag(boolean flag) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean doGooglePlayRedirect() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void showBigAlertDialog(String message, String accept, String cancel, Callback callback) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
   /** Used by {@link #register(Mode)}. */
   public static enum Mode {
     WEBGL, CANVAS, DOM, AUTODETECT;

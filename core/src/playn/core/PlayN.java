@@ -331,6 +331,23 @@ public class PlayN {
         return platform.doInstagram(imageUrl);
     }
 
+    public static boolean doGooglePlayRedirect(){
+        return platform.doGooglePlayRedirect();
+    }
+    
+    public static boolean getDoneFlag()
+    {
+        return platform.getDoneFlag();
+    }
+    
+    public static void setDoneFlag(boolean flag)
+    {
+        platform.setDoneFlag(flag);
+    }
+    public  static void showBigAlertDialog(final String message, final String accept, final String cancel, final Callback callback)
+    {
+        platform.showBigAlertDialog(message, accept, cancel, callback);
+    }
   // Non-instantiable
   private PlayN() {
   }

@@ -24,6 +24,8 @@ import playn.core.util.Callback;
  * Generic platform interface. New platforms are defined as implementations of this interface.
  */
 public interface Platform {
+
+    
   public enum Type { JAVA, HTML, ANDROID, IOS, FLASH }
 
   void run(Game game);
@@ -107,4 +109,10 @@ public interface Platform {
   public void setEditTextCallback(final Callback<String> callback);
   
   public boolean doInstagram(String imageUrl);
+  public boolean doGooglePlayRedirect(); 
+  
+  public boolean getDoneFlag();
+  
+  public void setDoneFlag(boolean flag);
+  public void showBigAlertDialog(final String message, final String accept, final String cancel, final Callback callback);
 }

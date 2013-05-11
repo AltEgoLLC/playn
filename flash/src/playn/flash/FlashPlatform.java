@@ -358,4 +358,24 @@ public class FlashPlatform implements Platform {
     public boolean doInstagram(String imageUrl) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public boolean getDoneFlag() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void setDoneFlag(boolean flag) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean doGooglePlayRedirect() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void showBigAlertDialog(String message, String accept, String cancel, Callback callback) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

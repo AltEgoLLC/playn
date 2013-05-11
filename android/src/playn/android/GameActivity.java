@@ -38,9 +38,11 @@ import android.util.Log;
 import android.view.*;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.*;
+import android.widget.TextView.OnEditorActionListener;
 import com.google.android.gcm.GCMRegistrar;
 import java.util.concurrent.atomic.AtomicBoolean;
 import playn.core.util.Callback;
@@ -78,7 +80,8 @@ public abstract class GameActivity extends Activity {
   
   private Handler updateHandler = new Handler();
   private AndroidBilling androidBilling = null;
-  
+  private boolean mbEnableDone = false;
+  private boolean mbInitDone = false;
   static final String DISPLAY_MESSAGE_ACTION =
             "playn.android.DISPLAY_MESSAGE";
   
@@ -180,6 +183,7 @@ public abstract class GameActivity extends Activity {
         editText.setVisibility(View.INVISIBLE);
         //editText.setLayoutParams(relParams);
         editText.setLayoutParams(absParams);
+        editText.setImeOptions( EditorInfo.IME_ACTION_DONE );
         //relativeLayout.addView(editText);
         absoluteLayout.addView(editText);
         
@@ -506,6 +510,47 @@ public abstract class GameActivity extends Activity {
         return editText.getEditableText().toString();
     }
     
+    public void setEditTextDone()
+    {
+        Log.i("GameActivty", "SET TEXT DONE");
+        if(mbInitDone == false)
+        {
+            mbInitDone = true;
+            
+            Log.i("GameActivty", "setEditTextDone - true");
+            editText.setOnEditorActionListener(new OnEditorActionListener() 
+            {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) 
+                {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)
+                            ||(actionId == EditorInfo.IME_ACTION_GO)|| (actionId == EditorInfo.IME_ACTION_SEARCH)
+                            || (actionId == EditorInfo.IME_ACTION_SEND)|| (actionId == EditorInfo.IME_ACTION_NEXT)
+                            || (actionId == EditorInfo.IME_ACTION_UNSPECIFIED)
+                            ) 
+                    {
+                        Log.i("GameActivty", "setEditTextDone - mbEnableDone  true");
+                        mbEnableDone = true;
+                    }    
+                    return false;
+                }
+            });
+            
+        }
+    
+    }
+
+    public boolean getDoneFlag()
+    {
+        //Log.i("GameActivty", "getDoneFlag");
+        return mbEnableDone;
+    }
+    
+    public void setDoneFlag(boolean flag)
+    {
+        Log.i("GameActivty", "setDoneFlag");
+        mbEnableDone = flag;        
+    }
+    
     public void setEditTextCallback(final Callback<String> callback) {
         if (callback != null) {
             mTextWatcher = new TextWatcher() {
@@ -615,6 +660,11 @@ public abstract class GameActivity extends Activity {
   
   // TODO: uncomment the remaining key codes when we upgrade to latest Android jars
   private static Key keyForCode(int keyCode) {
+if (keyCode == KeyEvent.FLAG_EDITOR_ACTION)
+{
+    return Key.ENTER;
+}
+      
     switch (keyCode) {
     case KeyEvent.KEYCODE_0: return Key.K0;
     case KeyEvent.KEYCODE_1: return Key.K1;
@@ -818,6 +868,7 @@ public abstract class GameActivity extends Activity {
     case KeyEvent.KEYCODE_X: return Key.X;
     case KeyEvent.KEYCODE_Y: return Key.Y;
     case KeyEvent.KEYCODE_Z: return Key.Z;
+            
     // case KeyEvent.KEYCODE_ZOOM_IN: return Key.ZOOM_IN;
     // case KeyEvent.KEYCODE_ZOOM_OUT: return Key.ZOOM_OUT;
     default: return Key.UNKNOWN;

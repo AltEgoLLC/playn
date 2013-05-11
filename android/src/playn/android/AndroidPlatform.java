@@ -27,6 +27,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.InputType;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -75,7 +76,7 @@ public class AndroidPlatform implements Platform {
   
   protected AndroidPlatform(GameActivity activity, AndroidGL20 gl20) {
     this.activity = activity;
-
+    activity.setEditTextDone();
     log = new AndroidLog();
     audio = new AndroidAudio(this);
     graphics = new AndroidGraphics(this, gl20, activity.scaleFactor());
@@ -318,6 +319,58 @@ public class AndroidPlatform implements Platform {
         });
     }
 
+    
+    public void showBigAlertDialog(final String message, final String accept, final String cancel, final Callback callback)
+    {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run () {
+                String alertAccept = accept;
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+                if (message != null && !message.equals("")) {
+                    builder.setTitle(message);
+                }
+                else {
+                    builder.setTitle("AltEgo broke something!");
+                    alertAccept = "OK";
+                }
+
+                builder.setPositiveButton(alertAccept, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                        if (callback != null) {
+                            callback.onSuccess("success");
+                        }
+                }
+                });
+
+                builder.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                        if (callback != null) {
+                            //callback.onSuccess("fail");
+                        }
+                }
+                });              
+                /*
+                builder.setNeutralButton(alertAccept, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (callback != null) {
+                            callback.onSuccess("success");
+                        }
+                    }
+                });*/
+                AlertDialog alert = builder.create();
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(alert.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.FILL_PARENT;
+                lp.height = WindowManager.LayoutParams.FILL_PARENT;
+    
+                alert.show();
+                alert.getWindow().setAttributes(lp);
+            }
+        });        
+    }
   void update(float delta) {
     runQueue.execute();
     if (game != null) {
@@ -347,6 +400,8 @@ public class AndroidPlatform implements Platform {
     
     @Override
     public void showSoftKeyboard() {
+        
+        PlayN.log().debug("SHOW SOFT KEYBOARD");
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run () {
@@ -450,7 +505,7 @@ public class AndroidPlatform implements Platform {
     }    
     @Override
     public boolean doInstagram(final String imageUrl) {     
-        if(appInstalledOrNot() == true)
+        if(appInstalledOrNot("com.instagram.android") == true)
         {
              PlayN.log().debug("doInstagram imageUrl: " + imageUrl);
             imageDownload.setInstagramMode();
@@ -486,12 +541,28 @@ public class AndroidPlatform implements Platform {
         return false;
         }
     }    
+
     
-    private boolean appInstalledOrNot() 
+    @Override
+    public boolean doGooglePlayRedirect() {     
+        if(appInstalledOrNot("com.android.vending") == true)
+        {
+             //PlayN.log().debug("doInstagram imageUrl: " + imageUrl);
+            openGooglePlay();
+            return true;
+        }
+        else
+        {
+        return false;
+        }
+    }    
+        
+    
+    private boolean appInstalledOrNot(String appname) 
     {
         boolean app_installed = false;
         try {
-        ApplicationInfo info = activity.getPackageManager().getApplicationInfo("com.instagram.android", 0);
+        ApplicationInfo info = activity.getPackageManager().getApplicationInfo(appname, 0);
         app_installed = true;
         } catch (PackageManager.NameNotFoundException e) {
         app_installed = false;
@@ -504,6 +575,28 @@ public class AndroidPlatform implements Platform {
         shareIntent.setType("image/*"); // set mime type
         shareIntent.putExtra(Intent.EXTRA_STREAM,uri); // set uri
         shareIntent.setPackage("com.instagram.android");
-        activity.startActivity(shareIntent);
+        activity.startActivity(shareIntent);        
     }
+    
+    private void openGooglePlay()
+    {
+        try {
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+"com.altego.riot.android")));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="+"com.altego.riot.android")));
+        }
+        //activity.startActivity(shareIntent);             
+    }
+    @Override
+    public boolean getDoneFlag()
+    {
+        return activity.getDoneFlag();
+    }
+    @Override
+    public void setDoneFlag(boolean flag)
+    {
+        activity.setDoneFlag(flag);
+    }
+    
+    
 }

@@ -61,6 +61,26 @@ public class IOSPlatform implements Platform {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public boolean getDoneFlag() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void setDoneFlag(boolean flag) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean doGooglePlayRedirect() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void showBigAlertDialog(String message, String accept, String cancel, Callback callback) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
   /** Defines the orientations supported by your app. */
   public enum SupportedOrients {
     /** Supports portrait and portrait upside down orients. */
