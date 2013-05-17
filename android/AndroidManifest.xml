@@ -10,7 +10,7 @@
     -->
           
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        
+        <activity android:configChanges="keyboardHidden|orientation">
         <!-- Billing -->
         <service android:name=".BillingService" />
 
@@ -25,8 +25,8 @@
         
         <!-- GCM STUFF -->
         <service android:name=".GCMIntentService" />
-        
-        <receiver android:name="com.google.android.gcm.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+        <receiver android:name="playn.android.gcm.MyBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+        <!-- receiver android:name="com.google.android.gcm.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" -->
           <intent-filter>
             <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             <action android:name="com.google.android.c2dm.intent.REGISTRATION" />

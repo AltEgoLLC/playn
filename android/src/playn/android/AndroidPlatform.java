@@ -603,24 +603,24 @@ public class AndroidPlatform implements Platform {
     
     
     public void scanMedia(String imageUrl) {
-          /*
+          
         String strFilename = "";
         int intLastPath = imageUrl.lastIndexOf( File.separator );
         if (intLastPath >= 0)
         {        
            strFilename  = imageUrl.substring( intLastPath + 1 );
         }
-        */
+        
         File sdDir = Environment.getExternalStorageDirectory();
         String path = sdDir.getAbsolutePath() + "/PlayN/Champion Select";                                
-        /*
+        
         File file = new File(path,strFilename);
         Uri uri = Uri.fromFile(file);
-        */
-        Uri uri = Uri.parse(path);
+        
+        //Uri uri = Uri.parse(path);
 
-        Intent scanFileIntent =  new Intent(Intent.ACTION_MEDIA_MOUNTED,Uri.parse("file://" + Environment.getExternalStorageDirectory()+ "/PlayN/Champion Select"));
-                                //new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE , uri);//
+        //Intent scanFileIntent =  new Intent(Intent.ACTION_MEDIA_MOUNTED,Uri.parse("file://" + Environment.getExternalStorageDirectory()+ "/PlayN/Champion Select"));
+        Intent scanFileIntent =  new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE , uri);//
         activity.sendBroadcast(scanFileIntent);
     }
 

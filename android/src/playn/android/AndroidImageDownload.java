@@ -83,11 +83,11 @@ public class AndroidImageDownload implements ImageDownload {
                     {
                         if (filePath.exists() || filePath.mkdirs())
                         {       
-                            // append "i_" to the start of instagram saved files
-                            String newFilePath = filePath.getAbsolutePath() + "/i_" + strFilename;
+                            // append "i_" to the start of  saved files
+                            String newFilePath = filePath.getAbsolutePath() + "/" + strFilename;
 
                              Log.i("downloadFlag & doSaveFile","TEST2: "+ newFilePath);
-                            File fileLocalImage2 = new File( filePath, "i_" + strFilename );
+                            File fileLocalImage2 = new File( filePath, strFilename );
                             streamFileOutput2 = new FileOutputStream( fileLocalImage2 );
                             if (downloadBitmap != null)
                             {

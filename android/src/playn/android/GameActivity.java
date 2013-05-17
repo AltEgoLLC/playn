@@ -47,6 +47,7 @@ import com.google.android.gcm.GCMRegistrar;
 import java.util.concurrent.atomic.AtomicBoolean;
 import playn.core.util.Callback;
 import playn.android.billing.AndroidBilling;
+import playn.android.gcm.MyBroadcastReceiver;
 import playn.android.gcm.ServerUtilities;
 import playn.core.PlayN;
 
@@ -316,15 +317,22 @@ public abstract class GameActivity extends Activity {
     return android.os.Build.VERSION.SDK_INT >= 11;
   }
   
+  private final MyBroadcastReceiver mHandleMessageReceiver =
+            new MyBroadcastReceiver() {
+  };
+  
+    /*/
+
   private final BroadcastReceiver mHandleMessageReceiver =
-    //*/
+
             new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             //Log.i("MessageReceiver", "Blarg -- Message Received");
         }
     };
-    /*/
+
+
     null;
     //*/
 
