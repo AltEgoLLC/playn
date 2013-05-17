@@ -24,7 +24,7 @@ public class JavaImageDownload implements ImageDownload {
     }
     
     @Override
-    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
+    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, int downloadFlag, ResourceCallback<Image> callback) {
         BufferedImage img = null;
         try {
             URL url = new URL(strUrl);

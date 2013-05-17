@@ -13,17 +13,29 @@ import playn.core.Image;
 import playn.core.ImageDownload;
 import playn.core.PlayN;
 import playn.core.ResourceCallback;
+import playn.core.util.Callback;
+
 
 public class HtmlImageDownload implements ImageDownload {
 
     private HtmlPlatform mPlatform;
-    
+    private String SERVER_URL = "http://slipstream-live.altego.com/" + "downloadImage.php";
     public HtmlImageDownload(HtmlPlatform platform) {
         mPlatform = platform;
     }
 
     @Override
-    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
+    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, int downloadFlag, ResourceCallback<Image> callback) {
+        final int doSaveFile = 1;
+        if ((downloadFlag & doSaveFile) == doSaveFile)
+        {
+           String url = (new StringBuilder("")).append(SERVER_URL)
+                            .append("?url=").append(strUrl).toString();
+           
+        PlayN.log().debug("Auth URL: " + url);
+        PlayN.openWebView(url, "");           
+            
+        }
         ImageElement img = Document.get().createImageElement();
                             
 //        if (img.hasAttribute("crossOrigin"))

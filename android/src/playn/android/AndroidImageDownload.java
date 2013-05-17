@@ -5,10 +5,14 @@
 
 package playn.android;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Environment;
+import android.util.Log;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -32,27 +36,94 @@ public class AndroidImageDownload implements ImageDownload {
     public AndroidImageDownload(AndroidPlatform platform) {
         mPlatform = platform;
     }
+    
 
+    
+    
     @Override
-    public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, ResourceCallback<Image> callback)
+    public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, int downloadFlag, ResourceCallback<Image> callback)
     {
 //        System.out.println("*******************");
         DownloadedBitmap bitmapDownloaded = null;
-
+        final int doSaveFile = 1; //android save
+        
         File fileLocalImage = null;
         String strFilename = "";
+        File filePath = getCacheDirectory();
         int intLastPath = strUrl.lastIndexOf( File.separator );
         if (intLastPath >= 0)
         {
+            
             strFilename = strUrl.substring( intLastPath + 1 );
-            if (getCacheDirectory() != null)
+            if (filePath != null)
             {
-                fileLocalImage = new File( getCacheDirectory(), strFilename );
+                fileLocalImage = new File( filePath, strFilename );
                 bitmapDownloaded = loadImage( fileLocalImage );
+            }
+        }
+        if ((downloadFlag & doSaveFile) == doSaveFile)
+        {
+            Log.i("downloadFlag & doSaveFile","TEST0");
+            if (bitmapDownloaded != null )
+            {
+
+             
+                File sdDir = Environment.getExternalStorageDirectory();
+                //System.out.println("SD Card Path: " + sdDir.getAbsolutePath());
+                String abs = sdDir.getAbsolutePath() + "/PlayN/Champion Select";  
+                filePath = new File(abs);
+
+                
+                 Log.i("downloadFlag & doSaveFile","TEST1");
+                FileOutputStream streamFileOutput2 = null;
+                Bitmap downloadBitmap = bitmapDownloaded.getBitmap();
+                try
+                {
+                    if (filePath != null)
+                    {
+                        if (filePath.exists() || filePath.mkdirs())
+                        {       
+                            // append "i_" to the start of instagram saved files
+                            String newFilePath = filePath.getAbsolutePath() + "/i_" + strFilename;
+
+                             Log.i("downloadFlag & doSaveFile","TEST2: "+ newFilePath);
+                            File fileLocalImage2 = new File( filePath, "i_" + strFilename );
+                            streamFileOutput2 = new FileOutputStream( fileLocalImage2 );
+                            if (downloadBitmap != null)
+                            {
+                                if (downloadBitmap.compress( Bitmap.CompressFormat.PNG, 100, streamFileOutput2 ))
+                                {
+                                    //System.out.println( "downloadImage -- Stored downloaded bitmap as: " + fileLocalImage.getAbsolutePath() );
+                                }
+                            }                            
+                            
+                        }
+                    }
+
+                }
+                catch (FileNotFoundException ex)
+                {
+
+                }
+                finally
+                {
+                    if (streamFileOutput2 != null)
+                    {
+                        try
+                        {
+                            streamFileOutput2.close();
+                        }
+                        catch (IOException ex)
+                        {
+                            Logger.getLogger( AndroidImageDownload.class.getName() ).log( Level.SEVERE, null, ex );
+                        }
+                    }
+                }    
             }
         }
         if (m_instagram == true)
         {
+            Log.i("INSTAGRAM","TRUE");
             final int instagramSize = 612;
             m_instagram = false;
             if (bitmapDownloaded != null )
@@ -121,6 +192,7 @@ public class AndroidImageDownload implements ImageDownload {
         }
         if (bitmapDownloaded == null)
         {
+            Log.i("bitmapDownloaded","TRUE");
             Bitmap imageBitmap = null;
 //        System.out.println( "*******************bitmapDownloaded == null ");
 

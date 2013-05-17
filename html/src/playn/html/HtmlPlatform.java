@@ -386,8 +386,8 @@ public class HtmlPlatform implements Platform {
   }
   
     @Override
-    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
-        return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
+    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, int downloadFlag, ResourceCallback<Image> callback) {
+        return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, downloadFlag, callback);
     }
     
     @Override
@@ -631,6 +631,10 @@ public void addCallback(Callback callback)
     
         @Override
     public boolean doInstagram(String imageUrl) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+            @Override
+    public void scanMedia(String path) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

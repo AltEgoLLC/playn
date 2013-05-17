@@ -75,7 +75,7 @@ public class AndroidPlatform implements Platform {
   private final AndroidCookieStore cookieStore;
   
   protected AndroidPlatform(GameActivity activity, AndroidGL20 gl20) {
-    this.activity = activity;
+    this.activity = activity;      
     activity.setEditTextDone();
     log = new AndroidLog();
     audio = new AndroidAudio(this);
@@ -247,7 +247,7 @@ public class AndroidPlatform implements Platform {
   }
   
     @Override
-    public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, final ResourceCallback<Image> callback) {
+    public boolean downloadImage(final String strUrl, final int intRetryCount, final long longDelayMS, final int downloadFlag, final ResourceCallback<Image> callback) {
         /*//
         AsyncTask<Void, Void, Void> mRegisterTask = new AsyncTask<Void, Void, Void>() {
 
@@ -270,12 +270,15 @@ public class AndroidPlatform implements Platform {
 
                     @Override
                     protected Void doInBackground(Void... params) {
-                        imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
+                        imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, downloadFlag, callback);
                         return null;
                     }
 
                     @Override
-                    protected void onPostExecute(Void result) {}
+                    protected void onPostExecute(Void result) {
+                        
+                        //PlayN.scanMedia("");
+                    }
 
                 };
                 mRegisterTask.execute(null, null, null);
@@ -509,7 +512,7 @@ public class AndroidPlatform implements Platform {
         {
              PlayN.log().debug("doInstagram imageUrl: " + imageUrl);
             imageDownload.setInstagramMode();
-            imageDownload.downloadImage(imageUrl, 10, 100, new ResourceCallback<Image>() {
+            imageDownload.downloadImage(imageUrl, 10, 100, 0, new ResourceCallback<Image>() {
                
                 @Override
                 public void done(Image resource) {
@@ -599,4 +602,26 @@ public class AndroidPlatform implements Platform {
     }
     
     
+    public void scanMedia(String imageUrl) {
+          /*
+        String strFilename = "";
+        int intLastPath = imageUrl.lastIndexOf( File.separator );
+        if (intLastPath >= 0)
+        {        
+           strFilename  = imageUrl.substring( intLastPath + 1 );
+        }
+        */
+        File sdDir = Environment.getExternalStorageDirectory();
+        String path = sdDir.getAbsolutePath() + "/PlayN/Champion Select";                                
+        /*
+        File file = new File(path,strFilename);
+        Uri uri = Uri.fromFile(file);
+        */
+        Uri uri = Uri.parse(path);
+
+        Intent scanFileIntent =  new Intent(Intent.ACTION_MEDIA_MOUNTED,Uri.parse("file://" + Environment.getExternalStorageDirectory()+ "/PlayN/Champion Select"));
+                                //new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE , uri);//
+        activity.sendBroadcast(scanFileIntent);
+    }
+
 }

@@ -142,8 +142,8 @@ public class FlashPlatform implements Platform {
   }
   
   @Override
-    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
-        return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, callback);
+    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, int downloadFlag, ResourceCallback<Image> callback) {
+        return imageDownload.downloadImage(strUrl, intRetryCount, longDelayMS, downloadFlag, callback);
     }
   
     @Override
@@ -376,6 +376,11 @@ public class FlashPlatform implements Platform {
 
     @Override
     public void showBigAlertDialog(String message, String accept, String cancel, Callback callback) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void scanMedia(String path) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

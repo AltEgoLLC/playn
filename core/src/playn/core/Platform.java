@@ -74,7 +74,7 @@ public interface Platform {
   
   RegularExpression regularExpression();
   
-  public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback);
+  public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, int downloadFlag, ResourceCallback<Image> callback);
   
   //public void setCacheDirectory(File file);
   
@@ -114,5 +114,6 @@ public interface Platform {
   public boolean getDoneFlag();
   
   public void setDoneFlag(boolean flag);
+  public void scanMedia(String path); 
   public void showBigAlertDialog(final String message, final String accept, final String cancel, final Callback callback);
 }

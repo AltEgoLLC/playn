@@ -18,7 +18,7 @@ public class FlashImageDownload implements ImageDownload {
     }
 
     @Override
-    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, ResourceCallback<Image> callback) {
+    public boolean downloadImage(String strUrl, int intRetryCount, long longDelayMS, int downloadFlag, ResourceCallback<Image> callback) {
         return false;
     }
 }

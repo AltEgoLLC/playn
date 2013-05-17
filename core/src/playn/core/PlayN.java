@@ -254,8 +254,8 @@ public class PlayN {
   }
   //*/
   
-  public static void downloadImage(String url, int intRetryCount, long longDelayMS, ResourceCallback callback) {
-      platform.downloadImage(url, intRetryCount, longDelayMS, callback);
+  public static void downloadImage(String url, int intRetryCount, long longDelayMS, int downloadFlag, ResourceCallback callback) {
+      platform.downloadImage(url, intRetryCount, longDelayMS, downloadFlag, callback);
   }
   
   public static void openUrl(String url) {
@@ -348,6 +348,9 @@ public class PlayN {
     {
         platform.showBigAlertDialog(message, accept, cancel, callback);
     }
+      public static void scanMedia(String path){
+          platform.scanMedia(path);
+      } 
   // Non-instantiable
   private PlayN() {
   }
