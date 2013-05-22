@@ -364,13 +364,20 @@ public class AndroidPlatform implements Platform {
                     }
                 });*/
                 AlertDialog alert = builder.create();
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(alert.getWindow().getAttributes());
-                lp.width = WindowManager.LayoutParams.FILL_PARENT;
-                lp.height = WindowManager.LayoutParams.FILL_PARENT;
-    
-                alert.show();
-                alert.getWindow().setAttributes(lp);
+                alert.getWindow().setLayout(600, 600);
+            alert.show();
+            
+            /*
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+
+            lp.copyFrom(alert.getWindow().getAttributes());
+            lp.width = 600;
+            lp.height = 1000;
+            lp.x=-170;
+            lp.y=100;
+            alert.getWindow().setAttributes(lp);  
+            */
+          
             }
         });        
     }
