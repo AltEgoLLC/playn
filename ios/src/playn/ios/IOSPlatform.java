@@ -87,6 +87,11 @@ public class IOSPlatform implements Platform {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public void setEditText(String s) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
   /** Defines the orientations supported by your app. */
   public enum SupportedOrients {
     /** Supports portrait and portrait upside down orients. */

@@ -66,7 +66,8 @@ public abstract class GameActivity extends Activity {
   
   //so we can display and remove a webview for authentication with social networks
   private WebView webView;
-  private EditText editText;
+  //private EditText editText;
+  private AutoCompleteTextView editText;
   TextWatcher mTextWatcher;
   
   private AtomicBoolean showAlertDialog = new AtomicBoolean(false);
@@ -85,7 +86,10 @@ public abstract class GameActivity extends Activity {
   private boolean mbInitDone = false;
   static final String DISPLAY_MESSAGE_ACTION =
             "playn.android.DISPLAY_MESSAGE";
-  
+      private static final String[] COUNTRIES = new String[] {
+         "Belgium", "France", "Italy", "Germany", "Spain"
+     };
+
   AsyncTask<Void, Void, Void> mRegisterTask;
   
   /**
@@ -180,10 +184,42 @@ public abstract class GameActivity extends Activity {
         webView.setLayoutParams(relParams);
         relativeLayout.addView(webView);
                 
-        editText = new EditText(this);
+        //editText = new EditText(this);
+        editText = new AutoCompleteTextView(this);
         editText.setVisibility(View.INVISIBLE);
         //editText.setLayoutParams(relParams);
         editText.setLayoutParams(absParams);
+        //PlayN.log().debug("ADAPTER TEST TEXT");
+        System.out.println("*****************************ADAPTER TEST TEXT");
+////
+        
+         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                 android.R.layout.select_dialog_multichoice, COUNTRIES);
+
+         editText.setAdapter(adapter);
+         
+        
+        
+   /*     
+                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item);
+                adapter.add("whatever data1");
+                adapter.add("whatever data2");
+                adapter.add("whatever data3");
+                //input.setInputType(inputType);
+                //input.setText(initVal);
+                editText.setAdapter(adapter);//
+                
+                /*setAdapter(adapter, new DialogInterface.OnClickListener() {
+    public void onClick(DialogInterface dialog, int item) {
+    *   
+    }
+});
+
+        */
+        
+////        
+        
+        
         editText.setImeOptions( EditorInfo.IME_ACTION_DONE );
         //relativeLayout.addView(editText);
         absoluteLayout.addView(editText);
@@ -475,9 +511,13 @@ public abstract class GameActivity extends Activity {
             //Log.i("GameActivty", "Show Edit Text - 6A");
         }
     }
-    
+    public void setEditText(String s)
+    {
+         editText.setText(s);
+    }
     public void showEditText(int inputType, String initVal, int w, int h, int x, int y, float s, int[] types) {
         //editText.setInputType(inputType);
+        System.out.println("**************************SHOW EDIT TEXT GAME ACTIVITY");
         if (editText != null) {
             //*/
             for (int type : types) {
