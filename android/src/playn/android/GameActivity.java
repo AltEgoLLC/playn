@@ -221,7 +221,7 @@ public abstract class GameActivity extends Activity {
         GCMRegistrar.checkDevice(this);
         GCMRegistrar.checkManifest(this);
         registerReceiver(mHandleMessageReceiver, new IntentFilter(DISPLAY_MESSAGE_ACTION));
-//        registerReceiver(mHandleMdotmReceiver, new IntentFilter());
+        registerReceiver(mHandleMdotmReceiver, new IntentFilter());
         
         
         final String regId = GCMRegistrar.getRegistrationId(this);
@@ -323,9 +323,9 @@ public abstract class GameActivity extends Activity {
 //  private final MyBroadcastReceiver mHandleMessageReceiver =
 //            new MyBroadcastReceiver() {
 //  };
-//  private final MdotmReceiver mHandleMdotmReceiver =
-//            new MdotmReceiver() {
-//  };  
+  private final MdotmReceiver mHandleMdotmReceiver =
+            new MdotmReceiver() {
+  };  
   private final BroadcastReceiver mHandleMessageReceiver =
 
             new BroadcastReceiver() {
@@ -353,9 +353,9 @@ public abstract class GameActivity extends Activity {
     if (mHandleMessageReceiver != null) {
         unregisterReceiver(mHandleMessageReceiver);
     }
-//    if (mHandleMdotmReceiver != null) {
-//        unregisterReceiver(mHandleMdotmReceiver);
-//    }    
+    if (mHandleMdotmReceiver != null) {
+        unregisterReceiver(mHandleMdotmReceiver);
+    }    
     GCMRegistrar.onDestroy(this);
     //*/
     

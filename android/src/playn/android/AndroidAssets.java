@@ -91,7 +91,7 @@ public class AndroidAssets extends AbstractAssets {
           {
               doCompress = true;
           }
-          System.out.println( "************************ trying to load : " + path);
+//          System.out.println( "************************ trying to load : " + path);
           
           Bitmap bitmap = decodeBitmap(is, doCompress);
           // if this image is at a higher scale factor than the view, scale the bitmap down to the

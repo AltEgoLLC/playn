@@ -49,7 +49,7 @@ class AndroidImage extends ImageGL implements AndroidGLContext.Refreshable, Andr
 
   @Override
   public void onSurfaceLost() {
-    System.out.println("*********************************AndroidImage onSurfaceLost w: " + bitmap.getWidth() + " ht: " + bitmap.getHeight());
+//    System.out.println("*********************************AndroidImage onSurfaceLost w: " + bitmap.getWidth() + " ht: " + bitmap.getHeight());
     clearTexture();
   }
 
@@ -120,7 +120,7 @@ class AndroidImage extends ImageGL implements AndroidGLContext.Refreshable, Andr
   //
   @Override
   protected void finalize() {
-    System.out.println("*********************************AndroidImage finalize w: " + bitmap.getWidth() + " ht: " + bitmap.getHeight() + " tex: " + tex + " reptex: " + reptex);
+//    System.out.println("*********************************AndroidImage finalize w: " + bitmap.getWidth() + " ht: " + bitmap.getHeight() + " tex: " + tex + " reptex: " + reptex);
     
     if (tex > 0)
     {

@@ -63,7 +63,6 @@ public class AndroidImageDownload implements ImageDownload {
         }
         if ((downloadFlag & doSaveFile) == doSaveFile)
         {
-            Log.i("downloadFlag & doSaveFile","TEST0");
             if (bitmapDownloaded != null )
             {
 
@@ -74,7 +73,6 @@ public class AndroidImageDownload implements ImageDownload {
                 filePath = new File(abs);
 
                 
-                 Log.i("downloadFlag & doSaveFile","TEST1");
                 FileOutputStream streamFileOutput2 = null;
                 Bitmap downloadBitmap = bitmapDownloaded.getBitmap();
                 try
@@ -86,7 +84,6 @@ public class AndroidImageDownload implements ImageDownload {
                             // append "i_" to the start of  saved files
                             String newFilePath = filePath.getAbsolutePath() + "/" + strFilename;
 
-                             Log.i("downloadFlag & doSaveFile","TEST2: "+ newFilePath);
                             File fileLocalImage2 = new File( filePath, strFilename );
                             streamFileOutput2 = new FileOutputStream( fileLocalImage2 );
                             if (downloadBitmap != null)
@@ -123,7 +120,6 @@ public class AndroidImageDownload implements ImageDownload {
         }
         if (m_instagram == true)
         {
-            Log.i("INSTAGRAM","TRUE");
             final int instagramSize = 612;
             m_instagram = false;
             if (bitmapDownloaded != null )
@@ -192,7 +188,6 @@ public class AndroidImageDownload implements ImageDownload {
         }
         if (bitmapDownloaded == null)
         {
-            Log.i("bitmapDownloaded","TRUE");
             Bitmap imageBitmap = null;
 //        System.out.println( "*******************bitmapDownloaded == null ");
 
@@ -213,7 +208,7 @@ public class AndroidImageDownload implements ImageDownload {
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inDither = true;
                         options.inPurgeable = true;
-                        System.out.println( "*******************Trying to load from wireless: " + strUrl );
+//                        System.out.println( "*******************Trying to load from wireless: " + strUrl );
                         
                         InputStream streamIn = connection.getInputStream();
                         imageBitmap = BitmapFactory.decodeStream( streamIn, null, options );
@@ -326,7 +321,7 @@ public class AndroidImageDownload implements ImageDownload {
                 }
             }
         }
-        System.out.println("*********************************callback null? " + (callback == null));
+//        System.out.println("*********************************callback null? " + (callback == null));
 
         /*//
         System.out.println("callback null? " + (callback == null));
@@ -338,7 +333,7 @@ public class AndroidImageDownload implements ImageDownload {
         //System.out.println("*******************");
         //if (callback != null && bitmapDownloaded != null) 
         try {
-            System.out.println("*******************Android Image Download Successful: bitmapDownloaded= " + (bitmapDownloaded == null) + " url: " + strUrl);
+//            System.out.println("*******************Android Image Download Successful: bitmapDownloaded= " + (bitmapDownloaded == null) + " url: " + strUrl);
             if (callback != null) {
                 callback.done(new AndroidImage(mPlatform.graphics().ctx(), bitmapDownloaded.getBitmap(), Scale.ONE));
             }
@@ -372,7 +367,7 @@ public class AndroidImageDownload implements ImageDownload {
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inDither = true;    
                     options.inPurgeable = true;
-        System.out.println("*********************************trying to load " + fileLocalImage.getAbsolutePath());
+//        System.out.println("*********************************trying to load " + fileLocalImage.getAbsolutePath());
 
                     Bitmap bitmap = BitmapFactory.decodeStream( input, null, options );
                     if (bitmap != null)
