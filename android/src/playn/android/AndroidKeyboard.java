@@ -19,6 +19,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.text.InputType;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import playn.core.Keyboard;
@@ -43,6 +44,11 @@ public class AndroidKeyboard implements Keyboard {
     return false; // TODO: return true for devices that have a hardware keyboard
   }
 
+       private static final String[] COUNTRIES = new String[] {
+         "Belgium", "France", "Italy", "Germany", "Spain"
+     };
+
+  
     @Override
     public void getText(final TextType textType, final String label, final String initVal,
       final Callback<String> callback) {
@@ -56,24 +62,39 @@ public class AndroidKeyboard implements Keyboard {
 
                 // Set an EditText view to get user input
                 final EditText input = new EditText(platform.activity);
+                
                 final int inputType;
                 switch (textType) {
                 case NUMBER:
-                    inputType = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED;
+                    inputType = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE;
                     break;
                 case EMAIL:
-                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS;
+                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE;
                     break;
                 case URL:
-                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI;
+                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE;
                     break;
                 case DEFAULT:
                 default:
-                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL;
+                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE;
                     break;
                 }
+                
+                /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(platform.activity,
+                 android.R.layout.select_dialog_multichoice, COUNTRIES);
+                */
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(platform.activity, android.R.layout.select_dialog_item);
+                adapter.add("whatever data1");
+                adapter.add("whatever data2");
+                adapter.add("whatever data3");
+                                
                 input.setInputType(inputType);
-                input.setText(initVal);
+                //input.setText(initVal);
+                alert.setAdapter(adapter, new DialogInterface.OnClickListener() {
+    public void onClick(DialogInterface dialog, int item) {
+
+    }
+});
                 alert.setView(input);
 
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

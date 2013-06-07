@@ -434,4 +434,8 @@ public class JavaPlatform implements Platform {
     public void scanMedia(String path) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    @Override
+    public void setEditText(String s) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }    
 }

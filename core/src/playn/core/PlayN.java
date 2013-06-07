@@ -310,6 +310,12 @@ public class PlayN {
           platform.showEditText();
       }
   }
+
+  public static void setEditText(String s) {
+      if (platform.type().equals(Platform.Type.ANDROID)) {
+          platform.setEditText(s);
+      }
+  }  
   
   public static void showEditText(int w, int h, int x, int y, float s, int[] types) {
       if (platform.type().equals(Platform.Type.ANDROID)) {

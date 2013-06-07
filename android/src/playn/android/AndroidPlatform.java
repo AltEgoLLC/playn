@@ -444,6 +444,17 @@ public class AndroidPlatform implements Platform {
     }
     
     @Override
+    public void setEditText(final String s) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run () {
+                activity.setEditText(s);
+            }
+        });
+    }
+        
+    
+    @Override
     public void showEditText(final int w, final int h, final int x, final int y, final float s, final int types[]) {
         activity.runOnUiThread(new Runnable() {
             @Override

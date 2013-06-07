@@ -100,6 +100,8 @@ public interface Platform {
   
   public void showEditText();
   
+  public void setEditText(String s);
+  
   public void hideEditText();
   
   public void showEditText(final int w, final int h, final int x, final int y, final float s, final int[] types);

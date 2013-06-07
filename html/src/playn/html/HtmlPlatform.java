@@ -61,6 +61,11 @@ public class HtmlPlatform implements Platform {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public void setEditText(String s) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
   /** Used by {@link #register(Mode)}. */
   public static enum Mode {
     WEBGL, CANVAS, DOM, AUTODETECT;
